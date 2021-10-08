@@ -25,6 +25,4 @@ public class Payment {
     private Company toCompany;
     @ManyToOne
     private Order order;
-    @ManyToOne
-    private DebtTemplate debtTemplate;
 }

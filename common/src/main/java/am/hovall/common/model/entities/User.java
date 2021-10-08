@@ -1,6 +1,6 @@
 package am.hovall.common.model.entities;
 
-import com.hovall.hovallprototype.model.Role;
+import am.hovall.common.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

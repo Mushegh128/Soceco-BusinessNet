@@ -18,10 +18,5 @@ public class Debt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double debtSize;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "debt_debtTemplate",
-//            joinColumns = {@JoinColumn(name = "debt_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "debt_template_id")})
-//    private List<DebtTemplate> debtTemplateList;
+
 }
