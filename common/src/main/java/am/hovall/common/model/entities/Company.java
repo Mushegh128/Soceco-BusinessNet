@@ -27,6 +27,8 @@ public class Company {
     private String logoUrl;
     private double level;
     private double rating;
+    @ManyToOne
+    private Discount discount;
     private LocalDateTime createdDateTime;
     @ManyToOne
     private CompanyType companyType;

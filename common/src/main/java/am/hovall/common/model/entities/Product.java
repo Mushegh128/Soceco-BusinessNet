@@ -29,8 +29,6 @@ public class Product {
     @ManyToOne
     private MadeInCountry maidInCountry;
     @ManyToOne
-    private Discount discount;
-    @ManyToOne
     private ProductCategory productCategory;
     @ManyToOne
     private Brand brand;

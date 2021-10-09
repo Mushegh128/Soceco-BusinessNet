@@ -17,5 +17,5 @@ public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private double count;
+    private double size;
 }
