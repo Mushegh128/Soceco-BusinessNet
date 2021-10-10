@@ -1,5 +1,6 @@
 package am.hovall.rest.endpoints;
 
+import am.hovall.common.model.OrderStatus;
 import am.hovall.common.model.dto.*;
 import am.hovall.common.model.entities.Company;
 import am.hovall.common.model.entities.Order;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,12 +39,27 @@ public class OrderEndpoint {
         return ResponseEntity.ok(dtoList);
     }
 
-    @PutMapping("/orders/add")
+    @PostMapping("/orders/add")
     public ResponseEntity<OrderForHistoryDto> addOrder(@RequestBody OrderCreateDto orderCreateDto){
         Order order = modelMapper.map(orderCreateDto, Order.class);
         Order savedOrder = orderService.save(order);
         return ResponseEntity.ok(modelMapper.map(savedOrder, OrderForHistoryDto.class));
     }
+
+    @PutMapping("orders/update")
+    public ResponseEntity<OrderForHistoryDto> updateOrder(@RequestBody OrderUpdateDto orderUpdateDto){
+        Order order = orderService.updateOrder(modelMapper.map(orderUpdateDto, Order.class));
+        return ResponseEntity.ok(parseToOrderForHistoryDto(order));
+    }
+
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity changeOrderStatusToDeleted(@PathVariable("id") Long id){
+        if (orderService.changeOrderStatus(OrderStatus.DELETED)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
 
     private OrderForHistoryDto parseToOrderForHistoryDto(Order order){
         CompanyDto companyDto = modelMapper.map(order.getCompany(), CompanyDto.class);

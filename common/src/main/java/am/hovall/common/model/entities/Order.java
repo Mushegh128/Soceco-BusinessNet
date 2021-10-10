@@ -28,6 +28,7 @@ public class Order {
     private LocalDateTime createdDateTime;
     private LocalDateTime saleDateTime;
     private boolean isVerified;
+    private boolean isSynchronized;
     private double orderCost;
     private double debtSize;
     @Enumerated(value = EnumType.STRING)

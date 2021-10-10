@@ -15,7 +15,7 @@ public class OrderCreateDto {
 
     public double getOrderCost() {
         for (ProductOrder productOrder : productOrders) {
-            orderCost += productOrder.getCount() * (productOrder.getProduct().getPrice() * companyDto.getDiscount().getSize()) / 100;
+            orderCost += productOrder.getCount() * productOrder.getProduct().getPrice() / 100;
         }
         return orderCost;
     }

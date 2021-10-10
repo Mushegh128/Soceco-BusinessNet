@@ -19,6 +19,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private long barcode;
     private String name;
     private String address;
     private long registerNumber;
@@ -27,6 +28,7 @@ public class Company {
     private String logoUrl;
     private double level;
     private double rating;
+    private boolean isSynchronized;
     @ManyToOne
     private Discount discount;
     private LocalDateTime createdDateTime;

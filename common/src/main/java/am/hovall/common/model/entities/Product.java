@@ -24,6 +24,9 @@ public class Product {
     private double price;
     private double weight;
     private double cashback;
+    private boolean isSynchronized;
+    private String smallPicUrl;
+    private String picUrl;
     private LocalDateTime createdDateTime;
     private boolean isActive;
     @ManyToOne

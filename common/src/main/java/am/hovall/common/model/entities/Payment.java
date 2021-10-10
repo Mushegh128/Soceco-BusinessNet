@@ -18,6 +18,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double size;
+    private boolean isSynchronized;
     private LocalDateTime createdDateTime;
     @ManyToOne
     private User fromUser;

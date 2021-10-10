@@ -32,6 +32,7 @@ public class User {
     private boolean isContractVerified;
     private boolean isActive;
     private boolean isBlackList;
+    private boolean isSynchronized;
     @ManyToOne
     private Debt debt;
     @ManyToOne
