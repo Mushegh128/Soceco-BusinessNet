@@ -23,7 +23,5 @@ public class Payment {
     @ManyToOne
     private User fromUser;
     @ManyToOne
-    private Company toCompany;
-    @ManyToOne
     private Order order;
 }

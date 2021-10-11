@@ -23,5 +23,6 @@ public class PresSeller {
     private String phoneNumber;
     private String email;
     private double rating;
+    private boolean isActive;
 
 }
