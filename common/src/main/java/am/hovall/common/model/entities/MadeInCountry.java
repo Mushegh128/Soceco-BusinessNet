@@ -18,4 +18,8 @@ public class MadeInCountry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
+
+    public MadeInCountry(String stringCellValue) {
+        this.title = stringCellValue;
+    }
 }

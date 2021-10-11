@@ -30,7 +30,7 @@ public class Product {
     private LocalDateTime createdDateTime;
     private boolean isActive;
     @ManyToOne
-    private MadeInCountry maidInCountry;
+    private MadeInCountry madeInCountry;
     @ManyToOne
     private ProductCategory productCategory;
     @ManyToOne
