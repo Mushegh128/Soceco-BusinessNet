@@ -24,7 +24,5 @@ logging:
   file:
     path: E:/enterprise
     name: prototype.log
-
-
-site:
-  url
+server:
+  port: 8090

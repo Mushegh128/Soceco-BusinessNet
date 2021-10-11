@@ -18,4 +18,8 @@ public class ProductCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
+
+    public ProductCategory (String category){
+        this.title = category;
+    }
 }

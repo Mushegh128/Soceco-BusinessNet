@@ -20,4 +20,8 @@ public class Brand {
     private long id;
     private String title;
     private String description;
+
+    public Brand(String title) {
+        this.title = title;
+    }
 }

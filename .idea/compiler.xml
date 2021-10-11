@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <option name="BUILD_PROCESS_HEAP_SIZE" value="1500" />
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common" />
         <module name="rest" />
+        <module name="common" />
         <module name="web" />
+        <module name="excel-parser" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="common" target="11" />
+      <module name="excel-parser" target="11" />
       <module name="prototype" target="11" />
       <module name="rest" target="11" />
       <module name="web" target="11" />
@@ -22,6 +25,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="common" options="-parameters" />
+      <module name="excel-parser" options="-parameters" />
       <module name="prototype" options="-parameters" />
       <module name="rest" options="-parameters" />
       <module name="web" options="-parameters" />
