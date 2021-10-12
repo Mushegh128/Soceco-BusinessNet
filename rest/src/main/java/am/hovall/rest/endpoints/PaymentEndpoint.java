@@ -8,7 +8,6 @@ import am.hovall.common.model.entities.User;
 import am.hovall.common.services.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

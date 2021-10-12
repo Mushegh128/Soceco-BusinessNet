@@ -12,16 +12,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product_category")
-public class ProductCategory {
+@Table(name = "product_group")
+public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
-    @ManyToOne
-    private ProductGroup productGroup;
-
-    public ProductCategory (String category){
-        this.title = category;
-    }
 }
