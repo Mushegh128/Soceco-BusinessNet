@@ -42,8 +42,7 @@ public class OrderEndpoint {
     @PostMapping("/orders/add")
     public ResponseEntity<OrderForHistoryDto> addOrder(@RequestBody OrderCreateDto orderCreateDto){
         Order order = modelMapper.map(orderCreateDto, Order.class);
-        Order savedOrder = orderService.save(order);
-        return ResponseEntity.ok(modelMapper.map(savedOrder, OrderForHistoryDto.class));
+        return ResponseEntity.ok(modelMapper.map(orderService.save(order), OrderForHistoryDto.class));
     }
 
     @PutMapping("orders/update")
@@ -52,7 +51,7 @@ public class OrderEndpoint {
         return ResponseEntity.ok(parseToOrderForHistoryDto(order));
     }
 
-    @DeleteMapping("/orders/{id}")
+    @DeleteMapping("/orders/delete{id}")
     public ResponseEntity changeOrderStatusToDeleted(@PathVariable("id") Long id){
         if (orderService.changeOrderStatus(OrderStatus.DELETED)){
             return ResponseEntity.ok().build();

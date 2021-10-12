@@ -28,6 +28,8 @@ public class Company {
     private String logoUrl;
     private double level;
     private double rating;
+    private boolean isActive;
+    private boolean isVerified;
     private boolean isSynchronized;
     @ManyToOne
     private Discount discount;
@@ -36,6 +38,8 @@ public class Company {
     private CompanyType companyType;
     @ManyToOne
     private PresSeller presSeller;
+    @ManyToOne
+    private Debt debt;
 
 
 }

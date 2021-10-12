@@ -3,10 +3,9 @@ package am.hovall.common.model.dto;
 import am.hovall.common.model.entities.CompanyType;
 import am.hovall.common.model.entities.Discount;
 import am.hovall.common.model.entities.PresSeller;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
 @Setter
 @Getter
 @Builder

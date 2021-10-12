@@ -34,8 +34,6 @@ public class User {
     private boolean isBlackList;
     private boolean isSynchronized;
     @ManyToOne
-    private Debt debt;
-    @ManyToOne
     private Region region;
     @ManyToOne
     private Company company;

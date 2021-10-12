@@ -24,35 +24,30 @@ public class PaymentEndpoint {
     public ResponseEntity<PaymentDto> doPayment(@RequestBody PaymentCreateDto paymentCreateDto){
         Payment payment = modelMapper.map(paymentCreateDto, Payment.class);
         Payment savedPayment = paymentService.save(payment);
-
-        return ResponseEntity.ok(parseToPaymentDto(savedPayment));
+        return ResponseEntity.ok(modelMapper.map(savedPayment, PaymentDto.class));
     }
 
     @GetMapping("/payments/company/{id}")
     public ResponseEntity<List<PaymentDto>> getAllByCompany(@PathVariable("id") Long id){
         List<Payment> paymentList = paymentService.findAllByCompanyId(id);
-        List<PaymentDto> paymentDtoList = new LinkedList<>();
-        for (Payment payment : paymentList) {
-            paymentDtoList.add(parseToPaymentDto(payment));
-        }
-            return ResponseEntity.ok(paymentDtoList);
+            return ResponseEntity.ok(parseToPaymentDto(paymentList));
     }
 
     @GetMapping("/payments/user/{id}")
     public ResponseEntity<List<PaymentDto>> getAllByUser(@PathVariable("id") Long id){
         List<Payment> paymentList = paymentService.findAllByFromUser(id);
-        List<PaymentDto> paymentDtoList = new LinkedList<>();
-        for (Payment payment : paymentList) {
-            paymentDtoList.add(parseToPaymentDto(payment));
-        }
-        return ResponseEntity.ok(paymentDtoList);
+        return ResponseEntity.ok(parseToPaymentDto(paymentList));
     }
 
-    private PaymentDto parseToPaymentDto(Payment payment){
-        User user = payment.getFromUser();
-        PaymentDto paymentDto = modelMapper.map(payment, PaymentDto.class);
-        paymentDto.setFromUserDto(modelMapper.map(user, UserDto.class));
-        return paymentDto;
+    private List<PaymentDto> parseToPaymentDto(List<Payment> paymentList){
+        List<PaymentDto> paymentDtoList = new LinkedList<>();
+        for (Payment payment : paymentList) {
+            User user = payment.getFromUser();
+            PaymentDto paymentDto = modelMapper.map(payment, PaymentDto.class);
+            paymentDto.setFromUserDto(modelMapper.map(user, UserDto.class));
+            paymentDtoList.add(paymentDto);
+        }
+        return paymentDtoList;
     }
 
 }
