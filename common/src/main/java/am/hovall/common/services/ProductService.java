@@ -9,4 +9,13 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
+    Product save(Product product);
+
+    Product findById(long id);
+
+    List<Product> findAllByProductCategory(long id);
+
+    List<Product> findAllByBrand(long id);
+
+
 }
