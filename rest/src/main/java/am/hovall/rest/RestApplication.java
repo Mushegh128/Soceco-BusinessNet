@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan({"am.hovall.common.*","am.hovall.rest.*"})
-@EnableJpaRepositories(basePackages = {"am.hovall.common.repositories*"})
-@EntityScan({"am.hovall.common.model.*"})
+@EnableJpaRepositories(basePackages = {"am.hovall.common.repository"})
+@EntityScan({"am.hovall.common.entity"})
 public class RestApplication {
 
     public static void main(String[] args) {

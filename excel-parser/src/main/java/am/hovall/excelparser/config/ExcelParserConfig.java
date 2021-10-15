@@ -1,12 +1,12 @@
 package am.hovall.excelparser.config;
 
-import am.hovall.common.model.entities.Brand;
-import am.hovall.common.model.entities.MadeInCountry;
-import am.hovall.common.model.entities.Product;
-import am.hovall.common.model.entities.ProductCategory;
-import am.hovall.common.repositories.BrandRepository;
-import am.hovall.common.repositories.MadeInCountryRepository;
-import am.hovall.common.repositories.ProductCategoryRepository;
+import am.hovall.common.entity.Brand;
+import am.hovall.common.entity.MadeInCountry;
+import am.hovall.common.entity.Product;
+import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.repository.BrandRepository;
+import am.hovall.common.repository.MadeInCountryRepository;
+import am.hovall.common.repository.ProductCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

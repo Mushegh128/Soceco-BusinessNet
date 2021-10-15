@@ -1,7 +1,7 @@
 package am.hovall.excelparser.service;
 
-import am.hovall.common.model.entities.Product;
-import am.hovall.common.repositories.ProductRepository;
+import am.hovall.common.entity.Product;
+import am.hovall.common.repository.ProductRepository;
 import am.hovall.excelparser.config.ExcelParserConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

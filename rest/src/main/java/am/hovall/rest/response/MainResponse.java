@@ -1,6 +1,6 @@
 package am.hovall.rest.response;
 
-import am.hovall.common.model.dto.ProductDto;
+import am.hovall.common.dto.ProductDto;
 import lombok.Builder;
 import lombok.Setter;
 

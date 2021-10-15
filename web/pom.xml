@@ -6,7 +6,6 @@
         <groupId>am.hovall</groupId>
         <artifactId>prototype</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>web</artifactId>
     <name>web</name>
