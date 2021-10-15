@@ -16,24 +16,25 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/payments")
 public class PaymentEndpoint {
     private final PaymentService paymentService;
     private final ModelMapper modelMapper;
 
-    @PostMapping("/payments")
+    @PostMapping("/")
     public ResponseEntity<PaymentDto> doPayment(@RequestBody PaymentCreateDto paymentCreateDto){
         Payment payment = modelMapper.map(paymentCreateDto, Payment.class);
         Payment savedPayment = paymentService.save(payment);
         return ResponseEntity.ok(modelMapper.map(savedPayment, PaymentDto.class));
     }
 
-    @GetMapping("/payments/company/{id}")
+    @GetMapping("/company/{id}")
     public ResponseEntity<List<PaymentDto>> getAllByCompany(@PathVariable("id") Long id){
         List<Payment> paymentList = paymentService.findAllByCompanyId(id);
             return ResponseEntity.ok(parseToPaymentDto(paymentList));
     }
 
-    @GetMapping("/payments/user/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<List<PaymentDto>> getAllByUser(@PathVariable("id") Long id){
         List<Payment> paymentList = paymentService.findAllByFromUser(id);
         return ResponseEntity.ok(parseToPaymentDto(paymentList));
