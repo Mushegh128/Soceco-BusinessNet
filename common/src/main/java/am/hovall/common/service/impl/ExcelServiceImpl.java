@@ -34,7 +34,7 @@ public class ExcelServiceImpl implements ExcelService {
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
 
-    public boolean hasExcelFormat(MultipartFile file) {
+    private boolean hasExcelFormat(MultipartFile file) {
         String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         return TYPE.equals(file.getContentType());
     }
