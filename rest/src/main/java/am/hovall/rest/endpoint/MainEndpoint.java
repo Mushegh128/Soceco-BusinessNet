@@ -1,9 +1,9 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.dto.CompanyDto;
-import am.hovall.common.dto.ProductDto;
 import am.hovall.common.entity.Company;
 import am.hovall.common.entity.Product;
+import am.hovall.common.response.CompanyResponse;
+import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.OrderService;
 import am.hovall.common.service.ProductService;
 import am.hovall.rest.response.MainResponse;
@@ -27,16 +27,16 @@ public class MainEndpoint {
 
 
     @GetMapping("/main")
-    public ResponseEntity<MainResponse> homePageData(@RequestBody CompanyDto companyDto){
+    public ResponseEntity<MainResponse> homePageData(@RequestBody CompanyResponse companyResponse) {
         List<Product> allProducts = productService.getAllProducts();
-        Double companyTotalDebt = orderService.getCompanyDebt(modelMapper.map(companyDto, Company.class));
-        List<ProductDto> productDtoList = new LinkedList<>();
+        Double companyTotalDebt = orderService.getCompanyDebt(modelMapper.map(companyResponse, Company.class));
+        List<ProductResponse> productResponseList = new LinkedList<>();
         for (Product product : allProducts) {
-            productDtoList.add(modelMapper.map(product, ProductDto.class));
+            productResponseList.add(modelMapper.map(product, ProductResponse.class));
         }
         return ResponseEntity.ok(MainResponse.builder()
                 .companyTotalDebt(companyTotalDebt)
-                .productDtoList(productDtoList)
+                .productResponseList(productResponseList)
                 .build());
     }
 

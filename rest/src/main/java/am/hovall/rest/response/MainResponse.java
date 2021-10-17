@@ -1,6 +1,6 @@
 package am.hovall.rest.response;
 
-import am.hovall.common.dto.ProductDto;
+import am.hovall.common.response.ProductResponse;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -8,6 +8,6 @@ import java.util.List;
 @Setter
 @Builder
 public class MainResponse {
-    private List<ProductDto> productDtoList;
+    private List<ProductResponse> productResponseList;
     private double companyTotalDebt;
 }
