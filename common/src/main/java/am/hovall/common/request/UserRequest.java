@@ -1,9 +1,14 @@
-package am.hovall.common.dto;
+package am.hovall.common.request;
 
-import am.hovall.common.entity.Company;
 import am.hovall.common.entity.Region;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-public class UserRegisterDto {
+@Builder
+@Getter
+@Setter
+public class UserRequest {
 
     private String name;
     private String surname;
@@ -13,6 +18,5 @@ public class UserRegisterDto {
     private boolean isMailVerified;
     private boolean isContractVerified;
     private Region region;
-    private Company company;
-
+    private CompanyRequest companyRequest;
 }

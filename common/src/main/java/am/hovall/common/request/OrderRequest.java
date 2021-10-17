@@ -1,8 +1,5 @@
 package am.hovall.common.request;
 
-import am.hovall.common.dto.CompanyDto;
-import am.hovall.common.dto.UserDto;
-import am.hovall.common.entity.ProductOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderRequest {
-    private UserDto userDto;
-    private CompanyDto companyDto;
+    private UserRequest userRequest;
+    private CompanyRequest companyRequest;
     private double orderCost;
-    private List<ProductOrder> productOrders;
+    private List<ProductOrderRequest> productOrderRequests;
 }
