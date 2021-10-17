@@ -5,10 +5,7 @@ import am.hovall.common.entity.*;
 import am.hovall.common.mapper.config.BaseMapper;
 import am.hovall.common.request.OrderRequest;
 import am.hovall.common.request.ProductOrderRequest;
-import am.hovall.common.response.CompanyResponse;
-import am.hovall.common.response.OrderResponse;
-import am.hovall.common.response.PaymentResponse;
-import am.hovall.common.response.UserResponse;
+import am.hovall.common.response.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,15 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderMapper implements BaseMapper<Order, OrderRequest, OrderResponse> {
     private final ModelMapper mapper;
+    private final ProductOrderMapper productOrderMapper;
 
     @Override
     public Order toEntity(OrderRequest orderRequest) {
-        List<ProductOrderRequest> productOrderRequests = orderRequest.getProductOrderRequests();
         List<ProductOrder> productOrders = new LinkedList<>();
-        for (ProductOrderRequest productOrderRequest : productOrderRequests) {
-            ProductOrder productOrder = mapper.map(productOrderRequest, ProductOrder.class);
-            productOrder.setProduct(mapper.map(productOrderRequest.getProductRequest(), Product.class));
-            productOrders.add(productOrder);
+        for (ProductOrderRequest productOrderRequest : orderRequest.getProductOrderRequests()) {
+            productOrders.add(productOrderMapper.toEntity(productOrderRequest));
         }
         Order order = mapper.map(orderRequest, Order.class);
         order.setProductOrders(productOrders);
@@ -40,10 +35,15 @@ public class OrderMapper implements BaseMapper<Order, OrderRequest, OrderRespons
     @Override
     public OrderResponse toResponse(Order order) {
         List<PaymentResponse> paymentResponseList = new LinkedList<>();
+        List<ProductOrderResponse> productOrderResponseList = new LinkedList<>();
+        for (ProductOrder productOrder : order.getProductOrders()) {
+            productOrderResponseList.add(productOrderMapper.toResponse(productOrder));
+        }
         for (Payment payment : order.getPaymentList()) {
             paymentResponseList.add(mapper.map(payment, PaymentResponse.class));
         }
         OrderResponse orderResponse = mapper.map(order, OrderResponse.class);
+        orderResponse.setProductOrderResponses(productOrderResponseList);
         orderResponse.setCompanyResponse(mapper.map(order.getCompany(), CompanyResponse.class));
         orderResponse.setUserResponse(mapper.map(order.getUser(), UserResponse.class));
         orderResponse.setPaymentResponseList(paymentResponseList);
