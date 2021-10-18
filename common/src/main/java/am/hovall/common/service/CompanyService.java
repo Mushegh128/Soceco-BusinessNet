@@ -8,4 +8,5 @@ public interface CompanyService {
 
     Optional<Company> findById(Long id);
 
+    Company findByRegisterNumber(long registerNumber);
 }
