@@ -5,6 +5,8 @@ import am.hovall.common.entity.Product;
 import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.repository.ProductRepository;
+import am.hovall.common.request.ProductRequest;
+import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ImageManipulatorService;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -30,32 +32,32 @@ public class ProductServiceImpl implements ProductService {
     public String FILES_PATH;
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return null;
     }
 
     @Override
-    public List<Product> findAllByCategory(ProductCategory productCategory) {
+    public List<ProductResponse> findAllByCategory(ProductCategory productCategory) {
         return null;
     }
 
     @Override
-    public List<Product> findAllByBrand(Brand brand) {
+    public List<ProductResponse> findAllByBrand(Brand brand) {
         return null;
     }
 
     @Override
-    public List<Product> findAllByPriceRange(Double startPrice, Double endPrice) {
+    public List<ProductResponse> findAllByPriceRange(Double startPrice, Double endPrice) {
         return null;
     }
 
     @Override
-    public Product add(Product map) {
+    public ProductResponse add(ProductRequest productRequest) {
         return null;
     }
 
     @Override
-    public Product update(Product product) {
+    public ProductResponse update(ProductRequest productRequest) {
         return null;
     }
 
