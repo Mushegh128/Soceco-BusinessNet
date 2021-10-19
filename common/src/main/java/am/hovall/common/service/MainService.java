@@ -1,6 +1,6 @@
-package am.hovall.rest.service;
+package am.hovall.common.service;
 
-import am.hovall.rest.response.MainResponse;
+import am.hovall.common.response.MainResponse;
 
 public interface MainService {
     MainResponse collectMainResponse(long registerNumber);

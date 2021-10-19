@@ -1,10 +1,10 @@
-package am.hovall.rest.response;
+package am.hovall.common.response;
 
-import am.hovall.common.response.ProductResponse;
 import lombok.Builder;
 import lombok.Setter;
 
 import java.util.List;
+
 @Setter
 @Builder
 public class MainResponse {

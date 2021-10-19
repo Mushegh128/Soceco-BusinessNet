@@ -7,5 +7,5 @@ public interface CompanyService {
 
     CompanyResponse findById(Long id);
 
-    CompanyRequest findByRegisterNumber(long registerNumber);
+    CompanyResponse findByRegisterNumber(long registerNumber);
 }

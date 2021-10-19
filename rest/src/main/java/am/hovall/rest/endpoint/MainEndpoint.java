@@ -1,7 +1,7 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.rest.response.MainResponse;
-import am.hovall.rest.service.MainService;
+import am.hovall.common.response.MainResponse;
+import am.hovall.common.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
