@@ -2,4 +2,4 @@
 /common/target
 /common/*.iml
 
-/*.iml
+*.iml
