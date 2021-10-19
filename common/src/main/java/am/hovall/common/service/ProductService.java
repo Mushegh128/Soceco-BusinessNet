@@ -27,5 +27,5 @@ public interface ProductService {
 
     boolean deactivate(Long id);
 
-    void saveImage(MultipartFile file, Product product) throws IOException;
+    void saveImage(MultipartFile file, long id) throws IOException;
 }

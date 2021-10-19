@@ -12,10 +12,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Iterator;
 
 @Service
@@ -62,4 +59,10 @@ public class ImageManipulatorServiceImpl implements ImageManipulatorService {
         compressProductImage(resize, uploadPath, "png");
         return fileName;
     }
+
+    @Override
+    public InputStream returnImage(String imageUrl) throws FileNotFoundException {
+        return new FileInputStream(FILES_PATH + File.separator + imageUrl);
+    }
+
 }
