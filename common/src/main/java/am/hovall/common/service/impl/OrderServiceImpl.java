@@ -1,15 +1,16 @@
 package am.hovall.common.service.impl;
 
+import am.hovall.common.entity.Order;
+import am.hovall.common.entity.OrderStatus;
 import am.hovall.common.exception.OrderNotFoundException;
 import am.hovall.common.mapper.OrderMapper;
-import am.hovall.common.entity.OrderStatus;
-import am.hovall.common.entity.Company;
-import am.hovall.common.entity.Order;
-import am.hovall.common.repository.CompanyRepository;
 import am.hovall.common.repository.OrderRepository;
 import am.hovall.common.request.OrderRequest;
+import am.hovall.common.response.CompanyResponse;
 import am.hovall.common.response.OrderResponse;
+import am.hovall.common.service.CompanyService;
 import am.hovall.common.service.OrderService;
+import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,13 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
     private final OrderMapper orderMapper;
 
     @Override
-    public Double getCompanyDebt(Company company) {
-        return null;
+    public Double getCompanyDebt(long registerNumber) {
+        final CompanyResponse companyResponse = companyService.findByRegisterNumber(registerNumber);
+        return companyResponse.getRating();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Order order) {
+    public OrderResponse updateOrder(OrderRequest orderRequest) {
         return null;
     }
 

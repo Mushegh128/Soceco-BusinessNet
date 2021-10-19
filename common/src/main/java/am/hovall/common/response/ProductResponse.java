@@ -1,17 +1,19 @@
-package am.hovall.common.dto;
+package am.hovall.common.response;
 
 import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.MadeInCountry;
 import am.hovall.common.entity.ProductCategory;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Builder
-public class ProductDto {
+@Getter
+@Setter
+public class ProductResponse {
     private long id;
     private long barcode;
     private String title;
