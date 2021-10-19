@@ -39,7 +39,7 @@ public class ProductEndpoint {
         return ResponseEntity.ok(parseToProductDtoList(productService.findAllByPriceRange(startPrice, endPrice)));
     }
 
-    @PutMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<ProductDto> addProduct(@RequestBody ProductCreateDto productCreateDto){
         Product product = productService.add(modelMapper.map(productCreateDto, Product.class));
         if (product == null){
@@ -48,7 +48,7 @@ public class ProductEndpoint {
         return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductUpdateDto productUpdateDto){
         Product product = productService.update(modelMapper.map(productUpdateDto, Product.class));
         if (product == null){

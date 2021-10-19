@@ -23,13 +23,13 @@ public class UserEndpoint {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-    @PutMapping("/")
+    @PostMapping()
     public ResponseEntity<UserDto> registration(@RequestBody UserRegisterDto userRegisterDto){
         User user = userService.registration(modelMapper.map(userRegisterDto, User.class));
         return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
     }
 
-    @PostMapping("/company/{id}")
+    @GetMapping("/company/{id}")
     public ResponseEntity<List<UserDto>> getByCompany(@PathVariable("id") Long id){
         List<User> users = userService.findAllByCompanyId(id);
         if (users == null){
