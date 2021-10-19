@@ -1,12 +1,12 @@
 package am.hovall.common.service.impl;
 
+import am.hovall.common.entity.Order;
+import am.hovall.common.entity.OrderStatus;
 import am.hovall.common.exception.OrderNotFoundException;
 import am.hovall.common.mapper.OrderMapper;
-import am.hovall.common.entity.OrderStatus;
-import am.hovall.common.entity.Company;
-import am.hovall.common.entity.Order;
 import am.hovall.common.repository.CompanyRepository;
 import am.hovall.common.repository.OrderRepository;
+import am.hovall.common.request.CompanyRequest;
 import am.hovall.common.request.OrderRequest;
 import am.hovall.common.response.OrderResponse;
 import am.hovall.common.service.OrderService;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public Double getCompanyDebt(Company company) {
+    public Double getCompanyDebt(CompanyRequest companyRequest) {
         return null;
     }
 
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Order order) {
+    public OrderResponse updateOrder(OrderRequest orderRequest) {
         return null;
     }
 

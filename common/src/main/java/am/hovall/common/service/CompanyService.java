@@ -1,12 +1,11 @@
 package am.hovall.common.service;
 
-import am.hovall.common.entity.Company;
-
-import java.util.Optional;
+import am.hovall.common.request.CompanyRequest;
+import am.hovall.common.response.CompanyResponse;
 
 public interface CompanyService {
 
-    Optional<Company> findById(Long id);
+    CompanyResponse findById(Long id);
 
-    Company findByRegisterNumber(long registerNumber);
+    CompanyRequest findByRegisterNumber(long registerNumber);
 }
