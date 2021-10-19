@@ -20,8 +20,8 @@ public class ProductEndpoint {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> findAll() {
-        return ResponseEntity.ok(parseToProductDtoList(productService.getAllProducts()));
+    public ResponseEntity<List<ProductResponse>> findAll() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/category/{id}")

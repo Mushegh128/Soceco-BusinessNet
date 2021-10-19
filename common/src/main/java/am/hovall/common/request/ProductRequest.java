@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductRequest {
+    private long id;
     private long barcode;
     private String title;
     private String description;

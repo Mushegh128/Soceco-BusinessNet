@@ -4,6 +4,7 @@ import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Product;
 import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.exception.ProductNotFoundException;
+import am.hovall.common.mapper.ProductMapper;
 import am.hovall.common.repository.ProductRepository;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
@@ -20,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,38 +29,55 @@ public class ProductServiceImpl implements ProductService {
 
     private final ImageManipulatorService imageManipulatorService;
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Value("${file.upload.dir}")
     public String FILES_PATH;
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> findAllByCategoryId(long id) {
-        return productRepository.findAllByProductCategoryId(id);
+    public List<ProductResponse> findAllByCategoryId(long id) {
+        return productRepository.findAllByProductCategoryId(id).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> findAllByBrandId(long id) {
-        return productRepository.findAllByBrandId(id);
+    public List<ProductResponse> findAllByBrandId(long id) {
+        return productRepository.findAllByBrandId(id).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> findAllByPriceRange(double startPrice, double endPrice) {
-        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice);
+    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice) {
+        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Product add(Product product) {
-        return productRepository.save(product);
+    public ProductResponse add(ProductRequest productRequest) {
+        final Product product = productMapper.toEntity(productRequest);
+        final Product savedProduct = productRepository.save(product);
+        return productMapper.toResponse(savedProduct);
     }
 
     @Override
-    public Product update(Product product) {
-        return productRepository.save(product);
+    public ProductResponse update(ProductRequest productRequest) {
+        final boolean existsById = productRepository.existsById(productRequest.getId());
+        if (!existsById) {
+            throw new ProductNotFoundException();
+        }
+        final Product product = productMapper.toEntity(productRequest);
+        final Product savedProduct = productRepository.save(product);
+        return productMapper.toResponse(savedProduct);
     }
 
     @Override

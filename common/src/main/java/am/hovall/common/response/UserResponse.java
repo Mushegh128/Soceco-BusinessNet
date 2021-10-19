@@ -1,6 +1,7 @@
 package am.hovall.common.response;
 
 import am.hovall.common.entity.Region;
+import am.hovall.common.entity.Role;
 import lombok.*;
 
 @Data
