@@ -3,10 +3,11 @@ package am.hovall.common.dto;
 import am.hovall.common.entity.Role;
 import am.hovall.common.entity.Company;
 import am.hovall.common.entity.Region;
-import lombok.Builder;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserDto {
     private long id;

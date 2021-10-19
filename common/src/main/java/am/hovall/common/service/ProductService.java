@@ -11,15 +11,15 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-    List<Product> findAllByCategory(ProductCategory productCategory);
+    List<Product> findAllByCategoryId(long id);
 
-    List<Product> findAllByBrand(Brand brand);
+    List<Product> findAllByBrandId(long id);
 
-    List<Product> findAllByPriceRange(Double startPrice, Double endPrice);
+    List<Product> findAllByPriceRange(double startPrice, double endPrice);
 
-    Product add(Product map);
+    Product add(Product product);
 
     Product update(Product product);
 
-    boolean deactivate(Long id);
+    boolean deactivate(long id);
 }

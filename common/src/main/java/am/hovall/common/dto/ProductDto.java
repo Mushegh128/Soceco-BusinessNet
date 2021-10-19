@@ -4,12 +4,13 @@ import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.MadeInCountry;
 import am.hovall.common.entity.ProductCategory;
-import lombok.Builder;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProductDto {
     private long id;
