@@ -58,7 +58,6 @@ public class ExcelServiceImpl implements ExcelService {
                 int rowNumber = 0;
                 while (rows.hasNext()) {
                     Row currentRow = rows.next();
-                    // skip header
                     if (rowNumber == 0) {
                         rowNumber++;
                         continue;
@@ -122,7 +121,7 @@ public class ExcelServiceImpl implements ExcelService {
                 workbook.close();
                 productRepository.saveAll(products);
             } catch (IOException e) {
-                throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+                throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
             }
         }
 
