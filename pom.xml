@@ -22,7 +22,6 @@
         <module>web</module>
         <module>rest</module>
         <module>common</module>
-        <module>excel-parser</module>
     </modules>
 
     <dependencies>
@@ -46,7 +45,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -68,6 +67,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
 

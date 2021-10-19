@@ -1,18 +1,12 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.dto.CompanyDto;
-import am.hovall.common.dto.UserDto;
-import am.hovall.common.dto.UserRegisterDto;
-import am.hovall.common.entity.Company;
-import am.hovall.common.entity.User;
+import am.hovall.common.request.UserRequest;
+import am.hovall.common.response.UserResponse;
 import am.hovall.common.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -20,34 +14,16 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserEndpoint {
 
-    private final ModelMapper modelMapper;
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserDto> registration(@RequestBody UserRegisterDto userRegisterDto){
-        User user = userService.registration(modelMapper.map(userRegisterDto, User.class));
-        return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
+    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.registration(userRequest));
     }
 
     @GetMapping("/company/{id}")
-    public ResponseEntity<List<UserDto>> getByCompany(@PathVariable("id") Long id){
-        List<User> users = userService.findAllByCompanyId(id);
-        if (users == null){
-            ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return ResponseEntity.ok(parseToUserDto(users));
-    }
-
-    private List<UserDto> parseToUserDto(List<User> users){
-        List<UserDto> userDtoList = new LinkedList<>();
-        for (User user : users) {
-            Company company = user.getCompany();
-            CompanyDto companyDto =  modelMapper.map(company, CompanyDto.class);
-            UserDto userDto = modelMapper.map(user, UserDto.class);
-//            userDto.setCompany(companyDto);
-            userDtoList.add(userDto);
-        }
-        return userDtoList;
+    public ResponseEntity<List<UserResponse>> getByCompany(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.findAllByCompanyId(id));
     }
 
 }
