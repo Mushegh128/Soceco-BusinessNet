@@ -1,15 +1,16 @@
 package am.hovall.common.service;
 
-import am.hovall.common.entity.Payment;
+import am.hovall.common.request.PaymentRequest;
+import am.hovall.common.response.PaymentResponse;
 
 import java.util.List;
 
 public interface PaymentService {
 
-    Payment save(Payment payment);
+    PaymentResponse save(PaymentRequest paymentRequest);
 
-    List<Payment> findAllByCompanyId(Long id);
+    List<PaymentResponse> findAllByCompanyId(Long id);
 
-    List<Payment> findAllByFromUser(Long id);
+    List<PaymentResponse> findAllByFromUser(Long id);
 
 }

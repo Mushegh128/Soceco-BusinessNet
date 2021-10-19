@@ -1,11 +1,12 @@
 package am.hovall.common.service;
 
-import am.hovall.common.entity.User;
+import am.hovall.common.request.UserRequest;
+import am.hovall.common.response.UserResponse;
 
 import java.util.List;
 
 public interface UserService {
-    User registration(User user);
+    UserResponse registration(UserRequest userRequest);
 
-    List<User> findAllByCompanyId(Long id);
+    List<UserResponse> findAllByCompanyId(Long id);
 }

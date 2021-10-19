@@ -4,22 +4,24 @@ package am.hovall.common.service;
 import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Product;
 import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.request.ProductRequest;
+import am.hovall.common.response.ProductResponse;
 
 import java.util.List;
 
 public interface ProductService {
 
-    List<Product> getAllProducts();
+    List<ProductResponse> getAllProducts();
 
-    List<Product> findAllByCategory(ProductCategory productCategory);
+    List<ProductResponse> findAllByCategory(ProductCategory productCategory);
 
-    List<Product> findAllByBrand(Brand brand);
+    List<ProductResponse> findAllByBrand(Brand brand);
 
-    List<Product> findAllByPriceRange(Double startPrice, Double endPrice);
+    List<ProductResponse> findAllByPriceRange(Double startPrice, Double endPrice);
 
-    Product add(Product map);
+    ProductResponse add(ProductRequest productRequest);
 
-    Product update(Product product);
+    ProductResponse update(ProductRequest productRequest);
 
     boolean deactivate(Long id);
 }
