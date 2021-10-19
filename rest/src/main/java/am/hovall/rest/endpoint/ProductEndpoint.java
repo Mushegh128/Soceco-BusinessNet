@@ -14,37 +14,43 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/products")
 public class ProductEndpoint {
 
     private final ProductService productService;
 
-    @GetMapping("/products/category")
-    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestBody ProductCategory productCategory) {
-        return ResponseEntity.ok(productService.findAllByCategory(productCategory));
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> findAll() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping("/products/brand")
-    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestBody Brand brand) {
-        return ResponseEntity.ok(productService.findAllByBrand(brand));
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@PathVariable long id) {
+        return ResponseEntity.ok(productService.findAllByCategoryId(id));
     }
 
-    @GetMapping("/products/byRange")
-    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestBody Double startPrice, Double endPrice) {
+    @GetMapping("/brand{id}")
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@PathVariable long id) {
+        return ResponseEntity.ok(productService.findAllByBrandId(id));
+    }
+
+    @GetMapping("/byRange")
+    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice) {
         return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice));
     }
 
-    @PutMapping("/products/add")
+    @PostMapping("/add")
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.add(productRequest));
     }
 
-    @PostMapping("/products/update")
+    @PutMapping("/update")
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.update(productRequest));
     }
 
-    @DeleteMapping("/products/deactivate/{id}")
-    public ResponseEntity deactivate(@PathVariable("id") Long id) {
+    @DeleteMapping("/deactivate/{id}")
+    public ResponseEntity<?> deactivate(@PathVariable("id") Long id) {
         if (productService.deactivate(id)) {
             return ResponseEntity.ok().build();
         }

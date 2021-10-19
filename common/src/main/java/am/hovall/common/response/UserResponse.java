@@ -2,13 +2,12 @@ package am.hovall.common.response;
 
 import am.hovall.common.entity.Region;
 import am.hovall.common.entity.Role;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Getter
-@Setter
 public class UserResponse {
     private long id;
     private String name;

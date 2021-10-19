@@ -11,16 +11,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserEndpoint {
 
     private final UserService userService;
 
-    @PutMapping("/users")
+    @PostMapping()
     public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.registration(userRequest));
     }
 
-    @PostMapping("users/company/{id}")
+    @GetMapping("/company/{id}")
     public ResponseEntity<List<UserResponse>> getByCompany(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.findAllByCompanyId(id));
     }

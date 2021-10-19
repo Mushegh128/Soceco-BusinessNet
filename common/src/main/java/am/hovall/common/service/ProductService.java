@@ -16,17 +16,17 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts();
 
-    List<ProductResponse> findAllByCategory(ProductCategory productCategory);
+    List<ProductResponse> findAllByCategoryId(long id);
 
-    List<ProductResponse> findAllByBrand(Brand brand);
+    List<ProductResponse> findAllByBrandId(long id);
 
-    List<ProductResponse> findAllByPriceRange(Double startPrice, Double endPrice);
+    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice);
 
     ProductResponse add(ProductRequest productRequest);
 
     ProductResponse update(ProductRequest productRequest);
 
-    boolean deactivate(Long id);
+    boolean deactivate(long id);
 
     void saveImage(MultipartFile file, long id) throws IOException;
 }
