@@ -18,28 +18,27 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/products")
 public class ProductEndpoint {
 
     private final ProductService productService;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/category")
+    @GetMapping("/products/category")
     public ResponseEntity<List<ProductDto>> getAllByCategory(@RequestBody ProductCategory productCategory){
         return ResponseEntity.ok(parseToProductDtoList(productService.findAllByCategory(productCategory)));
     }
 
-    @GetMapping("/brand")
+    @GetMapping("/products/brand")
     public ResponseEntity<List<ProductDto>> getAllByBrand(@RequestBody Brand brand){
         return ResponseEntity.ok(parseToProductDtoList(productService.findAllByBrand(brand)));
     }
 
-    @GetMapping("/byRange")
+    @GetMapping("/products/byRange")
     public ResponseEntity<List<ProductDto>> getAllByRange(@RequestBody Double startPrice, Double endPrice){
         return ResponseEntity.ok(parseToProductDtoList(productService.findAllByPriceRange(startPrice, endPrice)));
     }
 
-    @PutMapping("/add")
+    @PutMapping("/products/add")
     public ResponseEntity<ProductDto> addProduct(@RequestBody ProductCreateDto productCreateDto){
         Product product = productService.add(modelMapper.map(productCreateDto, Product.class));
         if (product == null){
@@ -48,7 +47,7 @@ public class ProductEndpoint {
         return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
     }
 
-    @PostMapping("/update")
+    @PostMapping("/products/update")
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductUpdateDto productUpdateDto){
         Product product = productService.update(modelMapper.map(productUpdateDto, Product.class));
         if (product == null){
@@ -57,7 +56,7 @@ public class ProductEndpoint {
         return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
     }
 
-    @DeleteMapping("/deactivate/{id}")
+    @DeleteMapping("/products/deactivate/{id}")
     public ResponseEntity deactivate(@PathVariable("id") Long id){
         if (productService.deactivate(id)){
             return ResponseEntity.ok().build();

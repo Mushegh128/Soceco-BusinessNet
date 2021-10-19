@@ -8,6 +8,7 @@ import am.hovall.common.repository.ProductRepository;
 import am.hovall.common.service.ImageManipulatorService;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
 
     private final ImageManipulatorService imageManipulatorService;
     private final ProductRepository productRepository;
+
+    @Value("${file.upload.dir}")
+    public String FILES_PATH;
 
     @Override
     public List<Product> getAllProducts() {
@@ -72,8 +76,8 @@ public class ProductServiceImpl implements ProductService {
         String picUrl = product.get().getBarcode() + ".jpg";
         String png = product.get().getBarcode() + "_small_pic.png";
         MultipartFile multipartFile = new MockMultipartFile(png, file.getBytes());
-        String smallPicUrl = imageManipulatorService.compressImage(multipartFile, imageManipulatorService.returnFilePath(), png);
-        file.transferTo(new File(imageManipulatorService.returnFilePath() + File.separator + picUrl));
+        String smallPicUrl = imageManipulatorService.compressImage(multipartFile, FILES_PATH, png);
+        file.transferTo(new File(FILES_PATH + File.separator + picUrl));
         product.get().setPicUrl(picUrl);
         product.get().setSmallPicUrl(smallPicUrl);
         productRepository.save(product.get());

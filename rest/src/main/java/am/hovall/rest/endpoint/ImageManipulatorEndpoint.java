@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/image-manipulator")
 public class ImageManipulatorEndpoint {
 
     private final ProductService productService;
@@ -31,10 +32,10 @@ public class ImageManipulatorEndpoint {
         }
     }
 
-    @PostMapping("/product/uploadImage/{id}")
+    @PostMapping("/uploadImage/{productId}")
     public ResponseEntity<?>
     uploadProductImage(@RequestParam("image") MultipartFile file,
-                       @PathVariable("id") long id) throws IOException {
+                       @PathVariable("productId") long id) throws IOException {
         try {
             productService.saveImage(file, id);
             return ResponseEntity.ok().build();

@@ -17,19 +17,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
 public class UserEndpoint {
 
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-    @PutMapping("/")
+    @PutMapping("/users")
     public ResponseEntity<UserDto> registration(@RequestBody UserRegisterDto userRegisterDto){
         User user = userService.registration(modelMapper.map(userRegisterDto, User.class));
         return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
     }
 
-    @PostMapping("/company/{id}")
+    @PostMapping("users/company/{id}")
     public ResponseEntity<List<UserDto>> getByCompany(@PathVariable("id") Long id){
         List<User> users = userService.findAllByCompanyId(id);
         if (users == null){

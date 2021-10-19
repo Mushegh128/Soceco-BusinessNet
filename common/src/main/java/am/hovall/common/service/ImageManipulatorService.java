@@ -9,8 +9,6 @@ import java.io.InputStream;
 
 public interface ImageManipulatorService {
 
-    String returnFilePath();
-
     void compressProductImage(BufferedImage image, String uploadPath, String extension);
 
     String compressImage(MultipartFile file, String uploadDir, String fileName) throws IOException;

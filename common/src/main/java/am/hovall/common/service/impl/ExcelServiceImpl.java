@@ -29,15 +29,11 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class ExcelServiceImpl implements ExcelService {
 
+    private static final String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private final ProductCategoryRepository productCategoryRepository;
     private final MadeInCountryRepository madeInCountryRepository;
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
-
-    private boolean hasExcelFormat(MultipartFile file) {
-        String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        return TYPE.equals(file.getContentType());
-    }
 
     @Override
     public void excelToProduct(MultipartFile[] files) {
@@ -124,6 +120,9 @@ public class ExcelServiceImpl implements ExcelService {
                 throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
             }
         }
+    }
 
+    private boolean hasExcelFormat(MultipartFile file) {
+        return TYPE.equals(file.getContentType());
     }
 }

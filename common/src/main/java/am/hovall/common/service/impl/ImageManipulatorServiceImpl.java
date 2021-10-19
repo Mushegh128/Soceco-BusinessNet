@@ -22,11 +22,6 @@ public class ImageManipulatorServiceImpl implements ImageManipulatorService {
     public String FILES_PATH;
 
     @Override
-    public String returnFilePath() {
-        return FILES_PATH;
-    }
-
-    @Override
     public void compressProductImage(BufferedImage image, String uploadPath, String extension) {
         try {
             File compressedImageFile = new File(uploadPath);
