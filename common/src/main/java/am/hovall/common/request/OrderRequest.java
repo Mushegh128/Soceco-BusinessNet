@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderRequest {
+    private long serialNumber;
     private UserRequest userRequest;
     private CompanyRequest companyRequest;
     private double orderCost;
