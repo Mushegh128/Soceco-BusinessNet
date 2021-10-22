@@ -18,17 +18,17 @@ public class OrderEndpoint {
 
     private final OrderService orderService;
 
-    @PostMapping("/")
+    @GetMapping("/")
     public ResponseEntity<List<OrderResponse>> getOrdersByCompany(@RequestBody long companyId) {
         return ResponseEntity.ok(orderService.findAllByCompanyId(companyId));
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<OrderResponse> addOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderService.save(orderRequest));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderService.updateOrder(orderRequest));
     }
@@ -38,7 +38,7 @@ public class OrderEndpoint {
         return ResponseEntity.ok(orderService.changeOrderStatus(OrderStatus.SOLD_DEBT, serialNumber));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/")
     public ResponseEntity<Boolean> changeOrderStatusToDeleted(@RequestBody long serialNumber) {
         return ResponseEntity.ok(orderService.changeOrderStatus(OrderStatus.DELETED, serialNumber));
     }

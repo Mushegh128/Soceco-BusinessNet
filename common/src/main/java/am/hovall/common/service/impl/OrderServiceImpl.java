@@ -81,12 +81,4 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
         return true;
     }
-
-    @Override
-    public void delete(Long id) {
-        final Order order = orderRepository.findById(id)
-                .orElseThrow(OrderNotFoundException::new);
-        order.setOrderStatus(OrderStatus.DELETED);
-        orderRepository.save(order);
-    }
 }

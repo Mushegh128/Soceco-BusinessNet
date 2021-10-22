@@ -17,6 +17,4 @@ public interface OrderService {
     OrderResponse updateOrder(OrderRequest order);
 
     boolean changeOrderStatus(OrderStatus orderStatus, long serialNumber);
-
-    void delete(Long id);
 }
