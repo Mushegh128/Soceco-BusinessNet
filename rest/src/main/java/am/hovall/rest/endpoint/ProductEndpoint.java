@@ -19,19 +19,19 @@ public class ProductEndpoint {
 
     private final ProductService productService;
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponse>> findAll() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    @GetMapping("/{page}")
+    public ResponseEntity<List<ProductResponse>> findAll(@PathVariable int page) {
+        return ResponseEntity.ok(productService.getAllProducts(page));
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<List<ProductResponse>> getAllByCategory(@PathVariable long id) {
-        return ResponseEntity.ok(productService.findAllByCategoryId(id));
+    @GetMapping("/category/{page}")
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestBody ProductCategory productCategory, @PathVariable int page) {
+        return ResponseEntity.ok(productService.findAllByCategoryId(productCategory.getId(), page));
     }
 
-    @GetMapping("/brand{id}")
-    public ResponseEntity<List<ProductResponse>> getAllByBrand(@PathVariable long id) {
-        return ResponseEntity.ok(productService.findAllByBrandId(id));
+    @GetMapping("/brand{page}")
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestBody Brand brand, @PathVariable int page) {
+        return ResponseEntity.ok(productService.findAllByBrandId(brand.getId(), page));
     }
 
     @GetMapping("/byRange")
