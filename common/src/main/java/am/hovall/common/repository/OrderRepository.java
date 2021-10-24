@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -15,4 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Double findDebtSizeByCompanyId(@Param("id") Long id);
 
     List<Order> findAllByCompany_Id(Long id);
+
+    Optional<Order> findBySerialNumber(long serialNumber);
+
 }

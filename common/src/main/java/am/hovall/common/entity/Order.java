@@ -20,6 +20,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private long serialNumber;
     @ManyToOne
     private User user;
     @ManyToOne
