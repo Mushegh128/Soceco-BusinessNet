@@ -11,4 +11,6 @@ public interface ExcelService {
     void excelToProduct(MultipartFile[] files);
 
     ByteArrayInputStream exportOrdersByStatus(String orderStatus,long id) throws IOException;
+
+    ByteArrayInputStream exportProducts() throws IOException;
 }

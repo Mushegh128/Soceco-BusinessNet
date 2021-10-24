@@ -1,8 +1,6 @@
 package am.hovall.common.service.impl;
 
-import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Product;
-import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.mapper.ProductMapper;
 import am.hovall.common.repository.ProductRepository;
