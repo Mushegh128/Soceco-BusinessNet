@@ -24,12 +24,12 @@ public class ProductEndpoint {
         return ResponseEntity.ok(productService.getAllProducts(page));
     }
 
-    @GetMapping("/category/{page}")
+    @PostMapping("/category/{page}")
     public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestBody ProductCategory productCategory, @PathVariable int page) {
         return ResponseEntity.ok(productService.findAllByCategoryId(productCategory.getId(), page));
     }
 
-    @GetMapping("/brand{page}")
+    @PostMapping("/brand{page}")
     public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestBody Brand brand, @PathVariable int page) {
         return ResponseEntity.ok(productService.findAllByBrandId(brand.getId(), page));
     }
