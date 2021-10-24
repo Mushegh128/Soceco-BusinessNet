@@ -17,6 +17,10 @@ public class Payment {
     private double size;
     private boolean isSynchronized;
     private LocalDateTime createdDateTime;
+    @Enumerated(value = EnumType.STRING)
+    private PaymentStatus paymentStatus;
+    private long companyRegisterNumber;
+    private String serialNumber;
     @ManyToOne
     private User fromUser;
     @ManyToOne

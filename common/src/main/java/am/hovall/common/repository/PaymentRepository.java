@@ -3,8 +3,14 @@ package am.hovall.common.repository;
 import am.hovall.common.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PaymentRepository extends JpaRepository<Payment,Long> {
+import java.util.List;
+import java.util.Optional;
 
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
+    List<Payment> findAllByCompanyRegisterNumber(Long companyRegisterNumber);
 
+    List<Payment> findAllByFromUserId(Long id);
+
+    Optional<Payment> findBySerialNumber(String serialNumber);
 }
