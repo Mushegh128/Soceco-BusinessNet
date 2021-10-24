@@ -17,5 +17,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByCompany_Id(Long id);
 
-    List<Order> findAllByCompanyIdAndOrderStatus(long company_id, OrderStatus orderStatus);
+    List<Order> findAllByCompanyIdAndOrderStatus(long companyId, OrderStatus orderStatus);
 }
