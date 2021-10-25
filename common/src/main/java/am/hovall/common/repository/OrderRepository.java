@@ -1,12 +1,14 @@
 package am.hovall.common.repository;
 
 import am.hovall.common.entity.Order;
+import am.hovall.common.entity.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
@@ -15,4 +17,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Double findDebtSizeByCompanyId(@Param("id") Long id);
 
     List<Order> findAllByCompany_Id(Long id);
+
+    Optional<Order> findBySerialNumber(long serialNumber);
+
+
+    List<Order> findAllByCompanyIdAndOrderStatus(long companyId, OrderStatus orderStatus);
 }

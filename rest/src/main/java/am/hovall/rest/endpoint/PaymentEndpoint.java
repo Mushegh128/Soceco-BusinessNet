@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +21,10 @@ public class PaymentEndpoint {
         return ResponseEntity.ok(paymentService.save(paymentRequest));
     }
 
-    @GetMapping("/company/{id}")
-    public ResponseEntity<List<PaymentResponse>> getAllByCompany(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(paymentService.findAllByCompanyId(id));
+    @GetMapping("/company/{companyRegisterNumber}")
+    public ResponseEntity<List<PaymentResponse>> getAllByCompany(
+            @PathVariable("companyRegisterNumber") Long companyRegisterNumber) {
+        return ResponseEntity.ok(paymentService.findAllByCompanyRegisterNumber(companyRegisterNumber));
     }
 
     @GetMapping("/user/{id}")

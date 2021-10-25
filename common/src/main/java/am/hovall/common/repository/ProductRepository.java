@@ -20,5 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByPriceStartsAndPriceEnds(@Param("startPrice") double startPrice,
                                                    @Param("endPrice") double endPrice);
 
-    Optional<Product> findByBarCode(long barcode);
+
+    Optional<Product> findByBarcode(long barcode);
 }

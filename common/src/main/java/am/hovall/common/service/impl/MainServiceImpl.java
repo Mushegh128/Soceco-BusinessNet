@@ -14,8 +14,8 @@ public class MainServiceImpl implements MainService {
     private final ProductService productService;
 
     @Override
-    public MainResponse collectMainResponse(long registerNumber) {
-        final Double companyDebt = orderService.getCompanyDebt(registerNumber);
+    public MainResponse collectMainResponse(long companyId) {
+        final Double companyDebt = orderService.getCompanyDebt(companyId);
         return MainResponse.builder()
                 .companyTotalDebt(companyDebt)
                 .productResponseList(productService.getAllProducts(1))
