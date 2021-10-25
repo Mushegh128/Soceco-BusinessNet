@@ -24,14 +24,14 @@ public class ProductEndpoint {
         return ResponseEntity.ok(productService.getAllProducts(page));
     }
 
-    @PostMapping("/category/{page}")
-    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestBody ProductCategory productCategory, @PathVariable int page) {
-        return ResponseEntity.ok(productService.findAllByCategoryId(productCategory.getId(), page));
+    @GetMapping("/category/{page}")
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PathVariable int page) {
+        return ResponseEntity.ok(productService.findAllByCategoryId(productCategoryId, page));
     }
 
-    @PostMapping("/brand{page}")
-    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestBody Brand brand, @PathVariable int page) {
-        return ResponseEntity.ok(productService.findAllByBrandId(brand.getId(), page));
+    @GetMapping("/brand{page}")
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PathVariable int page) {
+        return ResponseEntity.ok(productService.findAllByBrandId(id, page));
     }
 
     @GetMapping("/byRange")
