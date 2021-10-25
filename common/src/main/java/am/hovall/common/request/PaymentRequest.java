@@ -10,4 +10,5 @@ import lombok.Setter;
 public class PaymentRequest {
     private double size;
     private UserRequest userRequest;
+    private long companyRegisterNumber;
 }

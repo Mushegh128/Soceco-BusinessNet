@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 public class OrderResponse {
     private long id;
+    private long serialNumber;
     private UserResponse userResponse;
     private CompanyResponse companyResponse;
     private LocalDateTime createdDateTime;
