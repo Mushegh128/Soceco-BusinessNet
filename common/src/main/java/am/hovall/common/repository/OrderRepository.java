@@ -1,6 +1,7 @@
 package am.hovall.common.repository;
 
 import am.hovall.common.entity.Order;
+import am.hovall.common.entity.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findBySerialNumber(long serialNumber);
 
+
+    List<Order> findAllByCompanyIdAndOrderStatus(long companyId, OrderStatus orderStatus);
 }

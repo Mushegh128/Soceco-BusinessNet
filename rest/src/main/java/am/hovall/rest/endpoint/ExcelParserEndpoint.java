@@ -2,6 +2,7 @@ package am.hovall.rest.endpoint;
 
 import am.hovall.common.service.ExcelService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,20 @@ public class ExcelParserEndpoint {
         ByteArrayInputStream inputStream;
         try {
             inputStream = excelService.exportProducts();
+            IOUtils.copy(inputStream, response.getOutputStream());
+            return ResponseEntity.ok().build();
+        } catch (IOException | NullPointerException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/download/orders")
+    public ResponseEntity<?> downloadOrders(@RequestParam String orderStatus,@RequestParam long id, HttpServletResponse response) {
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=orders.xlsx");
+        ByteArrayInputStream inputStream;
+        try {
+            inputStream = excelService.exportOrdersByStatus(orderStatus,id);
             IOUtils.copy(inputStream, response.getOutputStream());
             return ResponseEntity.ok().build();
         } catch (IOException | NullPointerException e) {
