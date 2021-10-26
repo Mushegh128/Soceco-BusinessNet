@@ -19,4 +19,8 @@ public class CompanyType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+
+    public CompanyType(String name) {
+        this.name = name;
+    }
 }
