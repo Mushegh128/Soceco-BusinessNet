@@ -20,7 +20,4 @@ public class CompanyType {
     private long id;
     private String name;
 
-    public CompanyType(String name) {
-        this.name = name;
-    }
 }
