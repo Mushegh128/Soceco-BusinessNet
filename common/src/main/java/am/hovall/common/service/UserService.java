@@ -9,4 +9,6 @@ public interface UserService {
     UserResponse registration(UserRequest userRequest);
 
     List<UserResponse> findAllByCompanyId(Long id);
+
+    void update(UserRequest userRequest, long id);
 }

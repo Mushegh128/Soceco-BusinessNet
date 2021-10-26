@@ -26,4 +26,10 @@ public class UserEndpoint {
         return ResponseEntity.ok(userService.findAllByCompanyId(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
+        userService.update(userRequest, id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
