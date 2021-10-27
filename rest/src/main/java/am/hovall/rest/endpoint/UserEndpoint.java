@@ -32,4 +32,9 @@ public class UserEndpoint {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/verifyEmail")
+    public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") String email, @RequestParam("token") String token) {
+        return ResponseEntity.ok(userService.verifyUser(email, token));
+    }
+
 }

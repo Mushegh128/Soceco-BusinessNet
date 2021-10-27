@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserService {
     UserResponse registration(UserRequest userRequest);
 
+    boolean verifyUser(String email, String token);
+
     List<UserResponse> findAllByCompanyId(Long id);
 
     void update(UserRequest userRequest, long id);
