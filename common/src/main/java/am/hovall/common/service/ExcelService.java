@@ -1,6 +1,5 @@
 package am.hovall.common.service;
 
-import am.hovall.common.entity.OrderStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -8,9 +7,14 @@ import java.io.IOException;
 
 public interface ExcelService {
 
-    void excelToProduct(MultipartFile[] files);
+    void importProducts(MultipartFile[] files) throws Exception;
 
-    ByteArrayInputStream exportOrdersByStatus(String orderStatus,long id) throws IOException;
+    void importCompanies(MultipartFile file) throws Exception;
+
+    ByteArrayInputStream exportOrdersByStatus(String orderStatus, long id) throws IOException;
 
     ByteArrayInputStream exportProducts() throws IOException;
+
+    ByteArrayInputStream exportCompanies() throws IOException;
+
 }
