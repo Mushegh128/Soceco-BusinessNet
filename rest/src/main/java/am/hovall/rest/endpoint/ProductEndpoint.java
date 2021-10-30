@@ -1,11 +1,11 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.entity.Brand;
-import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,8 @@ public class ProductEndpoint {
 
     private final ProductService productService;
 
-    @GetMapping("/{page}")
-    public ResponseEntity<List<ProductResponse>> findAll(@PathVariable int page) {
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> findAll(@PageableDefault Pageable page) {
         return ResponseEntity.ok(productService.getAllProducts(page));
     }
 

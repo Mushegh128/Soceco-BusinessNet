@@ -18,7 +18,7 @@ public class MainServiceImpl implements MainService {
         final Double companyDebt = orderService.getCompanyDebt(companyId);
         return MainResponse.builder()
                 .companyTotalDebt(companyDebt)
-                .productResponseList(productService.getAllProducts(1))
+                .productResponseList(productService.getAllProducts())
                 .build();
     }
 }

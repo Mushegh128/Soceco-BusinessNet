@@ -3,7 +3,6 @@ package am.hovall.rest.endpoint;
 import am.hovall.common.service.ExcelService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/excel")
+@RequestMapping("/excel")
 @RequiredArgsConstructor
 public class ExcelParserEndpoint {
 

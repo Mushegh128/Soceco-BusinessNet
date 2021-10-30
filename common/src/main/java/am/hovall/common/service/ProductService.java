@@ -3,6 +3,7 @@ package am.hovall.common.service;
 
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -10,7 +11,9 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductResponse> getAllProducts(int page);
+    List<ProductResponse> getAllProducts(Pageable page);
+
+    List<ProductResponse> getAllProducts();
 
     List<ProductResponse> findAllByCategoryId(long id, int page);
 

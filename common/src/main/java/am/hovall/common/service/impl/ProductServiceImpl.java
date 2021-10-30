@@ -12,6 +12,7 @@ import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +38,15 @@ public class ProductServiceImpl implements ProductService {
     public int PAGE_SIZE;
 
     @Override
-    public List<ProductResponse> getAllProducts(int page) {
-        return productRepository.findAll(PageRequest.of(page, PAGE_SIZE)).stream()
+    public List<ProductResponse> getAllProducts(Pageable page) {
+        return productRepository.findAll(page).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -66,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse add(ProductRequest productRequest) {
-        if (productRepository.findByBarCode(productRequest.getBarcode()).isPresent()) {
+        if (productRepository.findByBarcode(productRequest.getBarcode()).isPresent()) {
             throw new BarcodeRepeatException();
         }
         final Product product = productMapper.toEntity(productRequest);
