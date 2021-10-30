@@ -47,11 +47,6 @@ public class MailService {
         message.setSubject(subject);
         message.setTo(to);
         message.setText(htmlContent, true);
-//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-//        helper.setTo("test@host.com");
-//        helper.setText("Check out this image!");
-//        FileSystemResource file = new FileSystemResource(new File("E:\\eComerceSocecoTeamWork\\common\\src\\main\\resources\\templates\\email\\images\\image-1.png"));
-//        helper.addAttachment("CoolImage.jpg", file);
         this.javaMailSender.send(mimeMessage);
     }
 

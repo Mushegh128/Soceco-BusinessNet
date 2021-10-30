@@ -1,5 +1,6 @@
 package am.hovall.common.service.impl;
 
+import am.hovall.common.entity.Company;
 import am.hovall.common.entity.User;
 import am.hovall.common.exception.*;
 import am.hovall.common.mapper.UserMapper;
@@ -9,6 +10,7 @@ import am.hovall.common.request.UserRequest;
 import am.hovall.common.response.UserResponse;
 import am.hovall.common.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
@@ -37,12 +40,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registration(UserRequest userRequest) {
-        if (!userRequest.isContractVerified()) throw new UnVerifiedContractException();
-        if (companyRepository.findByRegisterNumber(userRequest.getCompanyRequest().getRegisterNumber()).isEmpty()) {
+        if (!userRequest.isContractVerified()){ throw new UnVerifiedContractException();}
+        Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(userRequest.getCompanyRequest().getRegisterNumber());
+        if (byRegisterNumber.isEmpty()) {
             mailService.send(userRequest.getEmail(), "Ծանուցում", MESSAGE);
             throw new CompanyNotFoundException();
         }
-        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) throw new EmailRepeatingException();
+        Optional<User> byEmail = userRepository.findByEmail(userRequest.getEmail());
+        if (byEmail.isPresent()){ throw new EmailRepeatingException()};
         User user = userMapper.toEntity(userRequest);
         user.setActive(false);
         user.setCreatedDateTime(LocalDateTime.now());
@@ -51,7 +56,7 @@ public class UserServiceImpl implements UserService {
         try {
             mailService.sendHtmlEmail(user.getEmail(), "Welcome", user, HTML_PATH, HTML_NAME);
         } catch (MessagingException e) {
-
+            log.error("email message to" + user.getEmail() + "didn't sent");
         }
         return userMapper.toResponse(user);
     }
@@ -71,9 +76,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> findAllByCompanyId(Long id) {
         List<User> users = userRepository.findALlByCompany_Id(id);
-        if (users.isEmpty()) {
-            throw new CompanyWithoutUserException();
-        }
         return users.stream().map(userMapper::toResponse).collect(Collectors.toList());
     }
 
@@ -81,12 +83,13 @@ public class UserServiceImpl implements UserService {
     public void update(UserRequest userRequest, long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
-            return;
+            throw new UserNotFoundException();
         }
         User user = userOptional.get();
         user.setName(userRequest.getName());
         user.setSurname(userRequest.getSurname());
-        if (userRepository.findByEmail(userRequest.getEmail()).isEmpty()) {
+        Optional<User> byEmail = userRepository.findByEmail(userRequest.getEmail());
+        if (byEmail.isEmpty()) {
             user.setEmail(userRequest.getEmail());
         }
         userRepository.save(user);

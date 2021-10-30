@@ -29,7 +29,7 @@ public class UserEndpoint {
     @PutMapping("/{id}")
     public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
         userService.update(userRequest, id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/verifyEmail")
