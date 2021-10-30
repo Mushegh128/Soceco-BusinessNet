@@ -93,10 +93,6 @@ public class UserServiceImpl implements UserService {
         User user = userOptional.get();
         user.setName(userRequest.getName());
         user.setSurname(userRequest.getSurname());
-        Optional<User> byEmail = userRepository.findByEmail(userRequest.getEmail());
-        if (byEmail.isEmpty()) {
-            user.setEmail(userRequest.getEmail());
-        }
         userRepository.save(user);
     }
 
