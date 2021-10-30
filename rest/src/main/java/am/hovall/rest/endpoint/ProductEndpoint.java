@@ -25,18 +25,18 @@ public class ProductEndpoint {
     }
 
     @GetMapping("/category/{page}")
-    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PathVariable int page) {
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PageableDefault Pageable page) {
         return ResponseEntity.ok(productService.findAllByCategoryId(productCategoryId, page));
     }
 
     @GetMapping("/brand{page}")
-    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PathVariable int page) {
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PageableDefault Pageable page) {
         return ResponseEntity.ok(productService.findAllByBrandId(id, page));
     }
 
     @GetMapping("/byRange")
-    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice) {
-        return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice));
+    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice, @PageableDefault Pageable page) {
+        return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice, page));
     }
 
     @PostMapping("/add")

@@ -13,13 +13,11 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts(Pageable page);
 
-    List<ProductResponse> getAllProducts();
+    List<ProductResponse> findAllByCategoryId(long id, Pageable page);
 
-    List<ProductResponse> findAllByCategoryId(long id, int page);
+    List<ProductResponse> findAllByBrandId(long id, Pageable page);
 
-    List<ProductResponse> findAllByBrandId(long id, int page);
-
-    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice);
+    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable page);
 
     ProductResponse add(ProductRequest productRequest);
 

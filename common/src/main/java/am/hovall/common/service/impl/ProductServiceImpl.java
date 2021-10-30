@@ -45,29 +45,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
+    public List<ProductResponse> findAllByCategoryId(long id, Pageable page) {
+        return productRepository.findAllByProductCategoryId(id, (PageRequest) page).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByCategoryId(long id, int page) {
-        return productRepository.findAllByProductCategoryId(id, PageRequest.of(page, PAGE_SIZE)).stream()
+    public List<ProductResponse> findAllByBrandId(long id, Pageable page) {
+        return productRepository.findAllByBrandId(id, (PageRequest) page).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByBrandId(long id, int page) {
-        return productRepository.findAllByBrandId(id, PageRequest.of(page, PAGE_SIZE)).stream()
-                .map(productMapper::toResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice) {
-        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice).stream()
+    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable page) {
+        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice,page).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
