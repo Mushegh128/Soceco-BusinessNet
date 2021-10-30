@@ -29,6 +29,17 @@ public class UserEndpoint {
         return ResponseEntity.ok(userService.findAllByCompanyId(id));
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
+        userService.update(userRequest, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verifyEmail")
+    public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") String email, @RequestParam("token") String token) {
+        return ResponseEntity.ok(userService.verifyUser(email, token));
+
     @PostMapping("/auth")
     public ResponseEntity<UserAuthResponse> auth(@RequestBody UserAuthRequest userAuthRequest) {
         try {
@@ -36,6 +47,7 @@ public class UserEndpoint {
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+
     }
 
 }
