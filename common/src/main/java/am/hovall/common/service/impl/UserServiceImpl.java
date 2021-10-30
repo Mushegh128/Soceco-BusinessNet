@@ -1,5 +1,6 @@
 package am.hovall.common.service.impl;
 
+
 import am.hovall.common.entity.Company;
 import am.hovall.common.entity.User;
 import am.hovall.common.exception.*;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final MailService mailService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
+
 
     @Value("${file.htmlTemplate.name}")
     private String HTML_NAME;
@@ -71,10 +75,11 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
-    }
+
 
     @Override
     public List<UserResponse> findAllByCompanyId(Long id) {
+
         List<User> users = userRepository.findALlByCompany_Id(id);
         return users.stream().map(userMapper::toResponse).collect(Collectors.toList());
     }
@@ -94,4 +99,22 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
     }
+
+        return null;
+    }
+
+    @Override
+    public UserAuthResponse auth(UserAuthRequest userAuthRequest) throws UserNotFoundException {
+        Optional<User> byEmail = userRepository.findByEmail(userAuthRequest.getEmail());
+        if (byEmail.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        User user = byEmail.get();
+        if (passwordEncoder.matches(userAuthRequest.getPassword(), user.getPassword())) {
+            return new UserAuthResponse(jwtTokenUtil.generateToken(user.getEmail()),
+                    mapper.toResponse(user));
+        }
+        throw new UserNotFoundException();
+    }
+
 }
