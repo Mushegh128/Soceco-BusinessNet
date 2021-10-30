@@ -18,7 +18,6 @@ import java.util.*;
 
 import static org.apache.poi.ss.usermodel.IndexedColors.GREY_25_PERCENT;
 
-
 @Service
 @RequiredArgsConstructor
 public class ExcelServiceImpl implements ExcelService {
@@ -29,16 +28,17 @@ public class ExcelServiceImpl implements ExcelService {
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final CompanyRepository companyRepository;
+    private final CompanyTypeRepository companyTypeRepository;
+    private final PresSellerRepository presSellerRepository;
+    private final DebtRepository debtRepository;
+
 
     @Override
-    public void excelToProduct(MultipartFile[] files) {
+    public void importProducts(MultipartFile[] files) throws Exception {
         for (MultipartFile file : files) {
-            if (!hasExcelFormat(file)) {
-                try {
-                    throw new FileUploadException();
-                } catch (FileUploadException e) {
-                    e.printStackTrace();
-                }
+            if (hasExcelFormat(file)) {
+                throw new FileUploadException();
             }
             try {
                 Workbook workbook = new XSSFWorkbook(file.getInputStream());
@@ -139,9 +139,107 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
+    public void importCompanies(MultipartFile file) throws Exception {
+        if (hasExcelFormat(file)) {
+            throw new FileUploadException();
+        }
+        try {
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
+
+            Iterator<Row> rows = sheet.iterator();
+            List<Company> companies = new ArrayList<>();
+
+            int rowNumber = 0;
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
+                }
+                Iterator<Cell> cellsInRow = currentRow.iterator();
+                Company company = new Company();
+                int cellIdx = 0;
+                while (cellsInRow.hasNext()) {
+                    Cell currentCell = cellsInRow.next();
+                    switch (cellIdx) {
+                        case 0:
+                            long barcodeFromFile = (long) currentCell.getNumericCellValue();
+                            Optional<Company> byBarcode = companyRepository.findByBarcode(barcodeFromFile);
+                            if (byBarcode.isPresent()) {
+                                company = byBarcode.get();
+                            } else {
+                                company.setBarcode(barcodeFromFile);
+                            }
+                            break;
+                        case 1:
+                            company.setName(currentCell.getStringCellValue());
+                            break;
+                        case 2:
+                            company.setAddress(currentCell.getStringCellValue());
+                            break;
+                        case 3:
+                            long regNumber = (long) currentCell.getNumericCellValue();
+                            Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(regNumber);
+                            if (byRegisterNumber.isPresent()) {
+                                if (company.getId() != 0 && company.getRegisterNumber() != regNumber) {
+                                    break;
+                                }
+                            } else {
+                                company.setRegisterNumber(regNumber);
+                            }
+                            break;
+                        case 4:
+                            company.setPhoneNumber(currentCell.getStringCellValue());
+                            break;
+                        case 5:
+                            long companyTypeIdFromExcel = (long) currentCell.getNumericCellValue();
+                            if (companyTypeIdFromExcel == 0) {
+                                break;
+                            }
+                            Optional<CompanyType> companyTypeByName = companyTypeRepository.findById(companyTypeIdFromExcel);
+                            if (companyTypeByName.isPresent()) {
+                                company.setCompanyType(companyTypeByName.get());
+                            }
+                            break;
+                        case 6:
+                            long presSellerIdFromExcel = (long) currentCell.getNumericCellValue();
+                            if (presSellerIdFromExcel == 0) {
+                                break;
+                            }
+                            Optional<PresSeller> optionalPresSeller = presSellerRepository.findById(presSellerIdFromExcel);
+                            if (optionalPresSeller.isPresent()) {
+                                company.setPresSeller(optionalPresSeller.get());
+                            }
+                            break;
+                        case 7:
+                            long debtIdFromExcel = (long) currentCell.getNumericCellValue();
+                            if (debtIdFromExcel == 0) {
+                                break;
+                            }
+                            Optional<Debt> optionalDebt = debtRepository.findById(debtIdFromExcel);
+                            if (optionalDebt.isPresent()) {
+                                company.setDebt(optionalDebt.get());
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    cellIdx++;
+                }
+                companies.add(company);
+            }
+            workbook.close();
+            companyRepository.saveAll(companies);
+        } catch (IOException e) {
+            throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
+        }
+    }
+
+    @Override
     public ByteArrayInputStream exportOrdersByStatus(String orderStatus, long id) throws IOException {
         List<Order> orderList = orderRepository.findAllByCompanyIdAndOrderStatus(id, OrderStatus.valueOf(orderStatus));
-        if (orderList == null) {
+        if (orderList.isEmpty()) {
             throw new NullPointerException();
         }
         Workbook workbook = new XSSFWorkbook();
@@ -259,103 +357,181 @@ public class ExcelServiceImpl implements ExcelService {
     @Override
     public ByteArrayInputStream exportProducts() throws IOException {
         List<Product> productList = productRepository.findAll();
-        if (productList == null) {
+        if (productList.isEmpty()) {
             throw new NullPointerException();
         }
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Products");
 
-        CellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setFillBackgroundColor(GREY_25_PERCENT.getIndex());
-        cellStyle.setFillPattern(FillPatternType.BIG_SPOTS);
-
-        Row productsHeaderRow = sheet.createRow(0);
-        productsHeaderRow.setRowStyle(cellStyle);
+        Row productsHeaderRow = sheet.createRow(sheet.getLastRowNum());
+        productsHeaderRow.setRowStyle(returnHeaderColor(workbook));
 
         Cell headerRowCell = productsHeaderRow.createCell(0);
-        headerRowCell.setCellValue("ID");
-        headerRowCell = productsHeaderRow.createCell(1);
         headerRowCell.setCellValue("Շտրիխկոդ");
-        headerRowCell = productsHeaderRow.createCell(2);
+        headerRowCell = productsHeaderRow.createCell(1);
         headerRowCell.setCellValue("Անվանում");
-        headerRowCell = productsHeaderRow.createCell(3);
+        headerRowCell = productsHeaderRow.createCell(2);
         headerRowCell.setCellValue("Նկարագրություն");
-        headerRowCell = productsHeaderRow.createCell(4);
+        headerRowCell = productsHeaderRow.createCell(3);
         headerRowCell.setCellValue("Գին");
-        headerRowCell = productsHeaderRow.createCell(5);
+        headerRowCell = productsHeaderRow.createCell(4);
         headerRowCell.setCellValue("Քաշ/քանակ");
-        headerRowCell = productsHeaderRow.createCell(6);
+        headerRowCell = productsHeaderRow.createCell(5);
         headerRowCell.setCellValue("Արտադրման Երկիր");
-        headerRowCell = productsHeaderRow.createCell(7);
+        headerRowCell = productsHeaderRow.createCell(6);
         headerRowCell.setCellValue("Կատեգորիա");
-        headerRowCell = productsHeaderRow.createCell(8);
+        headerRowCell = productsHeaderRow.createCell(7);
         headerRowCell.setCellValue("Ապրանքանիշը");
-        headerRowCell = productsHeaderRow.createCell(9);
+        headerRowCell = productsHeaderRow.createCell(8);
         headerRowCell.setCellValue("Արտադրման ամսաթիվը");
 
-        int count = 1;
         for (Product product : productList) {
             Row productDataRow = sheet.createRow(sheet.getLastRowNum() + 1);
             Cell productDataCell = productDataRow.createCell(0);
-            productDataCell.setCellValue(count);
-            productDataCell = productDataRow.createCell(1);
             productDataCell.setCellValue(product.getBarcode());
-            productDataCell = productDataRow.createCell(2);
+            productDataCell = productDataRow.createCell(1);
             if (product.getTitle() != null) {
                 productDataCell.setCellValue(product.getTitle());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(3);
+            productDataCell = productDataRow.createCell(2);
             if (product.getDescription() != null) {
                 productDataCell.setCellValue(product.getDescription());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(4);
+            productDataCell = productDataRow.createCell(3);
             if (product.getProductCategory() != null) {
                 productDataCell.setCellValue(product.getPrice());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(5);
+            productDataCell = productDataRow.createCell(4);
             if (product.getWeight() != 0) {
                 productDataCell.setCellValue(product.getWeight());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(6);
+            productDataCell = productDataRow.createCell(5);
             if (product.getMadeInCountry() != null) {
                 productDataCell.setCellValue(product.getMadeInCountry().getTitle());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(7);
+            productDataCell = productDataRow.createCell(6);
             if (product.getProductCategory() != null) {
                 productDataCell.setCellValue(product.getProductCategory().getTitle());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(8);
+            productDataCell = productDataRow.createCell(7);
             if (product.getBrand() != null) {
                 productDataCell.setCellValue(product.getBrand().getTitle());
             } else {
                 productDataCell.setBlank();
             }
-            productDataCell = productDataRow.createCell(9);
+            productDataCell = productDataRow.createCell(8);
             if (product.getCreatedDateTime() != null) {
                 productDataCell.setCellValue(product.getCreatedDateTime().toString());
             } else {
                 productDataCell.setBlank();
             }
-            count += 1;
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         return new ByteArrayInputStream(outputStream.toByteArray());
     }
 
+    @Override
+    public ByteArrayInputStream exportCompanies() throws IOException {
+        List<Company> companyList = companyRepository.findAll();
+        if (companyList == null) {
+            throw new NullPointerException();
+        }
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Companies");
+
+        Row companiesHeaderRow = sheet.createRow(0);
+        companiesHeaderRow.setRowStyle(returnHeaderColor(workbook));
+
+        Cell companiesHeaderRowCell = companiesHeaderRow.createCell(0);
+        companiesHeaderRowCell.setCellValue("Շտրիխկոդ");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(1);
+        companiesHeaderRowCell.setCellValue("Անվանում");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(2);
+        companiesHeaderRowCell.setCellValue("Հասցե");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(3);
+        companiesHeaderRowCell.setCellValue("ՀՎՀՀ");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(4);
+        companiesHeaderRowCell.setCellValue("Հեռախոսահամար");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(5);
+        companiesHeaderRowCell.setCellValue("Տիպ");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(6);
+        companiesHeaderRowCell.setCellValue("Շ․Զ․Պ");
+        companiesHeaderRowCell = companiesHeaderRow.createCell(7);
+        companiesHeaderRowCell.setCellValue("Պարտք");
+
+        for (Company company : companyList) {
+            Row companyDataRow = sheet.createRow(sheet.getLastRowNum() + 1);
+            Cell productDataCell = companyDataRow.createCell(0);
+            productDataCell.setCellValue(company.getBarcode());
+            productDataCell = companyDataRow.createCell(1);
+            if (company.getName() != null) {
+                productDataCell.setCellValue(company.getName());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(2);
+            if (company.getAddress() != null) {
+                productDataCell.setCellValue(company.getAddress());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(3);
+            if (company.getRegisterNumber() != 0) {
+                productDataCell.setCellValue(company.getRegisterNumber());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(4);
+            if (company.getPhoneNumber() != null) {
+                productDataCell.setCellValue(company.getPhoneNumber());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(5);
+            if (company.getCompanyType() != null) {
+                productDataCell.setCellValue(company.getCompanyType().getId());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(6);
+            if (company.getPresSeller() != null) {
+                productDataCell.setCellValue(company.getPresSeller().getId());
+            } else {
+                productDataCell.setBlank();
+            }
+            productDataCell = companyDataRow.createCell(7);
+            if (company.getDebt() != null) {
+                productDataCell.setCellValue(company.getDebt().getId());
+            } else {
+                productDataCell.setBlank();
+            }
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        workbook.write(outputStream);
+        return new ByteArrayInputStream(outputStream.toByteArray());
+    }
+
+    private CellStyle returnHeaderColor(Workbook workbook) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFillBackgroundColor(GREY_25_PERCENT.getIndex());
+        cellStyle.setFillPattern(FillPatternType.BIG_SPOTS);
+        return cellStyle;
+    }
+
     private boolean hasExcelFormat(MultipartFile file) {
-        return TYPE.equals(file.getContentType());
+        return !TYPE.equals(file.getContentType());
     }
 }

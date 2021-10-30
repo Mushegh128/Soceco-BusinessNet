@@ -19,19 +19,28 @@ public class ExcelParserEndpoint {
 
     private final ExcelService excelService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam MultipartFile[] files) {
+    @PostMapping("/upload/products")
+    public ResponseEntity<?> uploadProducts(@RequestParam MultipartFile[] files) {
         try {
-            excelService.excelToProduct(files);
+            excelService.importProducts(files);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GetMapping("/download/products")
-    public ResponseEntity<?> exportProducts(HttpServletResponse response) {
-        response.setContentType("application/octet-stream");
+    @PostMapping("/upload/companies")
+    public ResponseEntity<?> uploadCompanies(@RequestParam MultipartFile file) {
+        try {
+            excelService.importCompanies(file);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value = "/download/products", produces = "application/octet-stream")
+    public ResponseEntity<?> downloadProducts(HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=products.xlsx");
         ByteArrayInputStream inputStream;
         try {
@@ -43,13 +52,12 @@ public class ExcelParserEndpoint {
         }
     }
 
-    @GetMapping("/download/orders")
-    public ResponseEntity<?> downloadOrders(@RequestParam String orderStatus,@RequestParam long id, HttpServletResponse response) {
-        response.setContentType("application/octet-stream");
+    @GetMapping(value = "/download/orders", produces = "application/octet-stream")
+    public ResponseEntity<?> downloadOrders(@RequestParam String orderStatus, @RequestParam long id, HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=orders.xlsx");
         ByteArrayInputStream inputStream;
         try {
-            inputStream = excelService.exportOrdersByStatus(orderStatus,id);
+            inputStream = excelService.exportOrdersByStatus(orderStatus, id);
             IOUtils.copy(inputStream, response.getOutputStream());
             return ResponseEntity.ok().build();
         } catch (IOException | NullPointerException e) {
@@ -57,4 +65,16 @@ public class ExcelParserEndpoint {
         }
     }
 
+    @GetMapping(value = "/download/companies", produces = "application/octet-stream")
+    public ResponseEntity<?> downloadCompanies(HttpServletResponse response) {
+        response.setHeader("Content-Disposition", "attachment; filename=companies.xlsx");
+        ByteArrayInputStream inputStream;
+        try {
+            inputStream = excelService.exportCompanies();
+            IOUtils.copy(inputStream, response.getOutputStream());
+            return ResponseEntity.ok().build();
+        } catch (IOException | NullPointerException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
