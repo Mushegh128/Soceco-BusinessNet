@@ -89,7 +89,6 @@ public class JwtTokenUtil {
 
         final String username = getUsernameFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
-        //final Date expiration = getExpirationDateFromToken(token);
         return (
                 username.equals(email)
                         && !isTokenExpired(token));
