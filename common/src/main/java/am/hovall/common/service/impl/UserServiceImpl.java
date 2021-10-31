@@ -7,12 +7,16 @@ import am.hovall.common.exception.*;
 import am.hovall.common.mapper.UserMapper;
 import am.hovall.common.repository.CompanyRepository;
 import am.hovall.common.repository.UserRepository;
+import am.hovall.common.request.UserAuthRequest;
 import am.hovall.common.request.UserRequest;
+import am.hovall.common.response.UserAuthResponse;
 import am.hovall.common.response.UserResponse;
 import am.hovall.common.service.UserService;
+import am.hovall.common.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -44,14 +48,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse registration(UserRequest userRequest) {
-        if (!userRequest.isContractVerified()){ throw new UnVerifiedContractException();}
+        if (!userRequest.isContractVerified()) {
+            throw new UnVerifiedContractException();
+        }
         Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(userRequest.getCompanyRequest().getRegisterNumber());
         if (byRegisterNumber.isEmpty()) {
             mailService.send(userRequest.getEmail(), "Ծանուցում", MESSAGE);
             throw new CompanyNotFoundException();
         }
         Optional<User> byEmail = userRepository.findByEmail(userRequest.getEmail());
-        if (byEmail.isPresent()){ throw new EmailRepeatingException()};
+        if (byEmail.isPresent()) {
+            throw new EmailRepeatingException();
+        }
+        ;
         User user = userMapper.toEntity(userRequest);
         user.setActive(false);
         user.setCreatedDateTime(LocalDateTime.now());
@@ -75,11 +84,11 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
 
 
     @Override
     public List<UserResponse> findAllByCompanyId(Long id) {
-
         List<User> users = userRepository.findALlByCompany_Id(id);
         return users.stream().map(userMapper::toResponse).collect(Collectors.toList());
     }
@@ -96,8 +105,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-        return null;
-    }
 
     @Override
     public UserAuthResponse auth(UserAuthRequest userAuthRequest) throws UserNotFoundException {
@@ -108,7 +115,7 @@ public class UserServiceImpl implements UserService {
         User user = byEmail.get();
         if (passwordEncoder.matches(userAuthRequest.getPassword(), user.getPassword())) {
             return new UserAuthResponse(jwtTokenUtil.generateToken(user.getEmail()),
-                    mapper.toResponse(user));
+                    userMapper.toResponse(user));
         }
         throw new UserNotFoundException();
     }
