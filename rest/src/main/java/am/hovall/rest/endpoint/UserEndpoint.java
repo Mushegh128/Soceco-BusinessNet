@@ -39,15 +39,15 @@ public class UserEndpoint {
     @GetMapping("/verifyEmail")
     public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") String email, @RequestParam("token") String token) {
         return ResponseEntity.ok(userService.verifyUser(email, token));
-
-    @PostMapping("/auth")
-    public ResponseEntity<UserAuthResponse> auth(@RequestBody UserAuthRequest userAuthRequest) {
-        try {
-            return ResponseEntity.ok(userService.auth(userAuthRequest));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-
     }
 
-}
+        @PostMapping("/auth")
+        public ResponseEntity<UserAuthResponse> auth (@RequestBody UserAuthRequest userAuthRequest){
+            try {
+                return ResponseEntity.ok(userService.auth(userAuthRequest));
+            } catch (UserNotFoundException e) {
+                return ResponseEntity.notFound().build();
+            }
+
+        }
+    }
