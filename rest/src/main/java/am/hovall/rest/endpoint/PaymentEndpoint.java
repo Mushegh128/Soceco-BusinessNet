@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/payments")
@@ -17,7 +17,7 @@ public class PaymentEndpoint {
 
 
     @PostMapping
-    public ResponseEntity<PaymentResponse> doPayment(@RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<PaymentResponse> doPayment(@RequestBody @Valid PaymentRequest paymentRequest) {
         return ResponseEntity.ok(paymentService.save(paymentRequest));
     }
 

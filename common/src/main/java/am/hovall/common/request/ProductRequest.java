@@ -7,17 +7,28 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Getter
 @Setter
 public class ProductRequest {
     private long id;
-    private long barcode;
+    @NotNull
+    private Long barcode;
+    @NotBlank
     private String title;
     private String description;
-    private double price;
-    private double weight;
+    @NotNull
+    @DecimalMin(value = "0.1")
+    private Double price;
+    @DecimalMin(value = "0.001")
+    private Double weight;
     private MadeInCountry madeInCountry;
+    @NotNull
     private ProductCategory productCategory;
+    @NotNull
     private Brand brand;
 }

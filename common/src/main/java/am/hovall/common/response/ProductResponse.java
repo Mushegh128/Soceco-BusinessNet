@@ -6,6 +6,9 @@ import am.hovall.common.entity.MadeInCountry;
 import am.hovall.common.entity.ProductCategory;
 import lombok.*;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,17 +16,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ProductResponse {
-    private long id;
-    private long barcode;
+    @NonNull
+    private Long id;
+    @NotNull
+    private Long barcode;
+    @NotBlank
     private String title;
     private String description;
-    private double price;
-    private double weight;
-    private double cashback;
+    @NotNull
+    @DecimalMin(value = "0.0")
+    private Double price;
+    @DecimalMin(value = "0.0")
+    private Double weight;
     private LocalDateTime createdDateTime;
     private boolean isActive;
     private MadeInCountry maidInCountry;
     private Discount discount;
+    @NotNull
     private ProductCategory productCategory;
+    @NotNull
     private Brand brand;
 }

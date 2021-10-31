@@ -1,7 +1,5 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.entity.Brand;
-import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
@@ -10,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -35,17 +36,18 @@ public class ProductEndpoint {
     }
 
     @GetMapping("/byRange")
-    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice) {
+    public ResponseEntity<List<ProductResponse>> getAllByRange(
+            @RequestParam @DecimalMin(value = "0.0") double startPrice, @DecimalMin("0.0") double endPrice) {
         return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice));
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductRequest productRequest) {
         return ResponseEntity.ok(productService.add(productRequest));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody @Valid ProductRequest productRequest) {
         return ResponseEntity.ok(productService.update(productRequest));
     }
 

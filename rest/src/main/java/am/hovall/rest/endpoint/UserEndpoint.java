@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,7 @@ public class UserEndpoint {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> registration(@RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.ok(userService.registration(userRequest));
     }
 
@@ -31,23 +33,23 @@ public class UserEndpoint {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
+    public ResponseEntity update(@RequestBody @Valid UserRequest userRequest, @PathVariable("id") long id) {
         userService.update(userRequest, id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/verifyEmail")
-    public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") String email, @RequestParam("token") String token) {
+    public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") @Email String email, @RequestParam("token") String token) {
         return ResponseEntity.ok(userService.verifyUser(email, token));
     }
 
-        @PostMapping("/auth")
-        public ResponseEntity<UserAuthResponse> auth (@RequestBody UserAuthRequest userAuthRequest){
-            try {
-                return ResponseEntity.ok(userService.auth(userAuthRequest));
-            } catch (UserNotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
-
+    @PostMapping("/auth")
+    public ResponseEntity<UserAuthResponse> auth(@RequestBody @Valid UserAuthRequest userAuthRequest) {
+        try {
+            return ResponseEntity.ok(userService.auth(userAuthRequest));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
+
     }
+}
