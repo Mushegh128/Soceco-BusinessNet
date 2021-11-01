@@ -24,12 +24,12 @@ public class ProductEndpoint {
         return ResponseEntity.ok(productService.getAllProducts(page));
     }
 
-    @GetMapping("/category/{page}")
+    @GetMapping("/category")
     public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PageableDefault Pageable page) {
         return ResponseEntity.ok(productService.findAllByCategoryId(productCategoryId, page));
     }
 
-    @GetMapping("/brand{page}")
+    @GetMapping("/brand")
     public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PageableDefault Pageable page) {
         return ResponseEntity.ok(productService.findAllByBrandId(id, page));
     }

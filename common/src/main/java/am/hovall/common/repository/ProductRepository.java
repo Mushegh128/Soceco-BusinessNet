@@ -13,13 +13,13 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
-    List<Product> findAllByProductCategoryId(long id, PageRequest pageRequest);
+    List<Product> findAllByProductCategoryId(long id, Pageable pageable);
 
-    List<Product> findAllByBrandId(long id, PageRequest pageRequest);
+    List<Product> findAllByBrandId(long id, Pageable pageable);
 
     @Query(value = "select * FROM product where price>=:startPrice and price<=:endPrice", nativeQuery = true)
     List<Product> findAllByPriceStartsAndPriceEnds(@Param("startPrice") double startPrice,
-                                                   @Param("endPrice") double endPrice, Pageable page);
+                                                   @Param("endPrice") double endPrice, Pageable pageable);
 
 
     Optional<Product> findByBarcode(long barcode);

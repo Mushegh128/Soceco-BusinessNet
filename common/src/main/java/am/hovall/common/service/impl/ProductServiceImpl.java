@@ -34,33 +34,31 @@ public class ProductServiceImpl implements ProductService {
 
     @Value("${file.upload.dir}")
     public String FILES_PATH;
-    @Value("${product.data.page_size}")
-    public int PAGE_SIZE;
 
     @Override
-    public List<ProductResponse> getAllProducts(Pageable page) {
-        return productRepository.findAll(page).stream()
+    public List<ProductResponse> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByCategoryId(long id, Pageable page) {
-        return productRepository.findAllByProductCategoryId(id, (PageRequest) page).stream()
+    public List<ProductResponse> findAllByCategoryId(long id, Pageable pageable) {
+        return productRepository.findAllByProductCategoryId(id,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByBrandId(long id, Pageable page) {
-        return productRepository.findAllByBrandId(id, (PageRequest) page).stream()
+    public List<ProductResponse> findAllByBrandId(long id, Pageable pageable) {
+        return productRepository.findAllByBrandId(id,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable page) {
-        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice,page).stream()
+    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable pageable) {
+        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
