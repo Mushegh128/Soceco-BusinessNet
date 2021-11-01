@@ -238,6 +238,10 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public ByteArrayInputStream exportOrdersByStatus(String orderStatus, long id) throws IOException {
+        boolean orderStatusIsNotPresent = Arrays.stream(OrderStatus.values()).anyMatch(status -> true);
+        if (!orderStatusIsNotPresent) {
+            throw new NullPointerException();
+        }
         List<Order> orderList = orderRepository.findAllByCompanyIdAndOrderStatus(id, OrderStatus.valueOf(orderStatus));
         if (orderList.isEmpty()) {
             throw new NullPointerException();
@@ -275,20 +279,33 @@ public class ExcelServiceImpl implements ExcelService {
                     cell = addressRow.createCell(0);
                     cell.setCellValue("Ընկերության հասցեն");
                     cell = addressRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getAddress());
+                    if (order.getCompany().getName() != null) {
+                        cell.setCellValue(order.getCompany().getAddress());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row regNumberRow = sheet.createRow(3);
                     regNumberRow.setRowStyle(cellStyle);
                     cell = regNumberRow.createCell(0);
                     cell.setCellValue("Ընկերության ՀՎՀՀ");
                     cell = regNumberRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getRegisterNumber());
+                    if (order.getCompany().getRegisterNumber() != 0) {
+                        cell.setCellValue(order.getCompany().getRegisterNumber());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row presSellerRow = sheet.createRow(4);
                     cell = presSellerRow.createCell(0);
                     cell.setCellValue("Շուկայի Մենեջեր");
                     cell = presSellerRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getPresSeller().getName());
+                    PresSeller presSeller = order.getCompany().getPresSeller();
+                    if (presSeller != null) {
+                        cell.setCellValue(order.getCompany().getAddress());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row orderedDateRow = sheet.createRow(5);
                     cell = orderedDateRow.createCell(0);
@@ -363,7 +380,7 @@ public class ExcelServiceImpl implements ExcelService {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Products");
 
-        Row productsHeaderRow = sheet.createRow(sheet.getLastRowNum());
+        Row productsHeaderRow = sheet.createRow(sheet.getLastRowNum() + 1);
         productsHeaderRow.setRowStyle(returnHeaderColor(workbook));
 
         Cell headerRowCell = productsHeaderRow.createCell(0);
