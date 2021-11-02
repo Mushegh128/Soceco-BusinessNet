@@ -21,8 +21,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadProducts() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("files", "products.xlsx", TYPE,
-                new ClassPathResource("products.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("files", "excelFilesForTest/products.xlsx", TYPE,
+                new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/products")
                         .file(file)
@@ -33,8 +33,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadProducts_wrong_file_type() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("files", "products.xlsx", TYPE + "1",
-                new ClassPathResource("products.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("files", "excelFilesForTest/products.xlsx", TYPE + "1",
+                new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/products")
                         .file(file)
@@ -45,8 +45,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadProducts_if_file_is_empty() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("files", "emptyProducts.xlsx", TYPE + "1",
-                new ClassPathResource("emptyProducts.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("files", "excelFilesForTest/emptyProducts.xlsx", TYPE + "1",
+                new ClassPathResource("excelFilesForTest/emptyProducts.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/products")
                         .file(file)
@@ -57,8 +57,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadCompanies() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "companies.xlsx", TYPE,
-                new ClassPathResource("companies.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("file", "excelFilesForTest/companies.xlsx", TYPE,
+                new ClassPathResource("excelFilesForTest/companies.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/companies")
                         .file(file)
@@ -69,8 +69,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadCompanies_wrong_file_type() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "companies.xlsx", TYPE + "1",
-                new ClassPathResource("companies.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("file", "excelFilesForTest/companies.xlsx", TYPE + "1",
+                new ClassPathResource("excelFilesForTest/companies.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/companies")
                         .file(file)
@@ -81,8 +81,8 @@ class ExcelParserEndpointTest {
 
     @Test
     void uploadCompanies_if_file_is_empty() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "emptyCompanies.xlsx", TYPE + "1",
-                new ClassPathResource("emptyCompanies.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("file", "excelFilesForTest/emptyCompanies.xlsx", TYPE + "1",
+                new ClassPathResource("excelFilesForTest/emptyCompanies.xlsx").getInputStream());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/excel/upload/companies")
                         .file(file)

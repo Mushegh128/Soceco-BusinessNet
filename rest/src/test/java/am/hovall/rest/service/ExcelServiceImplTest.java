@@ -11,8 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ExcelServiceImplTest {
@@ -25,32 +24,32 @@ public class ExcelServiceImplTest {
 
     @Test
     void importProducts() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("products", "products.xlsx", TYPE,
-                new ClassPathResource("products.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("products", "excelFilesForTest/products.xlsx", TYPE,
+                new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
         MockMultipartFile[] files = new MockMultipartFile[]{file};
-        excelService.importProducts(files);
+        verify(mock, times(0)).importProducts(files);
     }
 
     @Test
     void importProducts_if_file_type_is_wrong() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("products", "products.xlsx", TYPE + "t",
-                new ClassPathResource("products.xlsx").getInputStream());
+        MockMultipartFile file = new MockMultipartFile("products", "excelFilesForTest/products.xlsx", TYPE + "t",
+                new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
         MockMultipartFile[] files = new MockMultipartFile[]{file};
-        doThrow(new Exception()).when(mock).importProducts(files);
+        doThrow(new NullPointerException()).when(mock).importProducts(files);
     }
 
     @Test
     void importCompanies() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("companies", "companies.xlsx", TYPE,
-                new ClassPathResource("companies.xlsx").getInputStream());
-        excelService.importCompanies(file);
+        MockMultipartFile file = new MockMultipartFile("companies", "excelFilesForTest/companies.xlsx", TYPE,
+                new ClassPathResource("excelFilesForTest/companies.xlsx").getInputStream());
+        verify(mock, times(0)).importCompanies(file);
     }
 
     @Test
     void importCompanies_if_file_type_is_wrong() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("companies", "companies.xlsx", TYPE + "t",
-                new ClassPathResource("companies.xlsx").getInputStream());
-        doThrow(new Exception()).when(mock).importCompanies(file);
+        MockMultipartFile file = new MockMultipartFile("companies", "excelFilesForTest/companies.xlsx", TYPE + "t",
+                new ClassPathResource("excelFilesForTest/companies.xlsx").getInputStream());
+        doThrow(new NullPointerException()).when(mock).importCompanies(file);
 
     }
 
