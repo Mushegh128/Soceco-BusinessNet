@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductResponse> getAllProducts(Pageable page);
+    List<ProductResponse> getAllProducts(Pageable pageable);
 
-    List<ProductResponse> findAllByCategoryId(long id, Pageable page);
+    List<ProductResponse> findAllByCategoryId(long id, Pageable pageable);
 
-    List<ProductResponse> findAllByBrandId(long id, Pageable page);
+    List<ProductResponse> findAllByBrandId(long id, Pageable pageable);
 
-    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable page);
+    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable pageable);
 
     ProductResponse add(ProductRequest productRequest);
 
