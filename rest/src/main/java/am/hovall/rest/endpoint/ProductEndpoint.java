@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import java.util.List;
 
@@ -42,12 +41,12 @@ public class ProductEndpoint {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.add(productRequest));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity.ok(productService.update(productRequest));
     }
 

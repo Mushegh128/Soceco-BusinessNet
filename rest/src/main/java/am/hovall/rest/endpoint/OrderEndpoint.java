@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,12 +24,12 @@ public class OrderEndpoint {
     }
 
     @PostMapping("/")
-    public ResponseEntity<OrderResponse> addOrder(@RequestBody @Valid OrderRequest orderRequest) {
+    public ResponseEntity<OrderResponse> addOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderService.save(orderRequest));
     }
 
     @PutMapping("/")
-    public ResponseEntity<OrderResponse> updateOrder(@RequestBody @Valid OrderRequest orderRequest) {
+    public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity.ok(orderService.updateOrder(orderRequest));
     }
 

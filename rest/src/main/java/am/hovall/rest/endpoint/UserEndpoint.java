@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class UserEndpoint {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> registration(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.registration(userRequest));
     }
 
@@ -33,7 +32,7 @@ public class UserEndpoint {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@RequestBody @Valid UserRequest userRequest, @PathVariable("id") long id) {
+    public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
         userService.update(userRequest, id);
         return ResponseEntity.ok().build();
     }
@@ -44,7 +43,7 @@ public class UserEndpoint {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<UserAuthResponse> auth(@RequestBody @Valid UserAuthRequest userAuthRequest) {
+    public ResponseEntity<UserAuthResponse> auth(@RequestBody UserAuthRequest userAuthRequest) {
         try {
             return ResponseEntity.ok(userService.auth(userAuthRequest));
         } catch (UserNotFoundException e) {
