@@ -33,108 +33,106 @@ public class ExcelServiceImpl implements ExcelService {
     private final PresSellerRepository presSellerRepository;
     private final DebtRepository debtRepository;
 
-
     @Override
-    public void importProducts(MultipartFile[] files) throws Exception {
-        for (MultipartFile file : files) {
-            if (hasExcelFormat(file)) {
-                throw new FileUploadException();
-            }
-            try {
-                Workbook workbook = new XSSFWorkbook(file.getInputStream());
-                Sheet sheet = workbook.getSheetAt(0);
+    public void importProducts(MultipartFile file) throws Exception {
 
-                Iterator<Row> rows = sheet.iterator();
-                List<Product> products = new ArrayList<>();
+        if (hasExcelFormat(file)) {
+            throw new FileUploadException();
+        }
+        try {
+            Workbook workbook = new XSSFWorkbook(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
 
-                int rowNumber = 0;
-                while (rows.hasNext()) {
-                    Row currentRow = rows.next();
-                    if (rowNumber == 0) {
-                        rowNumber++;
-                        continue;
-                    }
-                    Iterator<Cell> cellsInRow = currentRow.iterator();
-                    Product product = new Product();
-                    product.setActive(true);
-                    int cellIdx = 0;
-                    while (cellsInRow.hasNext()) {
-                        Cell currentCell = cellsInRow.next();
-                        switch (cellIdx) {
-                            case 0:
-                                long barcodeFromFile = (long) currentCell.getNumericCellValue();
-                                Optional<Product> byBarcode = productRepository.findByBarcode(barcodeFromFile);
-                                if (byBarcode.isPresent()) {
-                                    product = byBarcode.get();
-                                }
-                                product.setBarcode(barcodeFromFile);
-                                break;
-                            case 1:
-                                product.setTitle(currentCell.getStringCellValue());
-                                break;
-                            case 2:
-                                product.setDescription(currentCell.getStringCellValue());
-                                break;
-                            case 3:
-                                product.setPrice(currentCell.getNumericCellValue());
-                                break;
-                            case 4:
-                                product.setWeight(currentCell.getNumericCellValue());
-                                break;
-                            case 5:
-                                String madeInCountry = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
-                                if (madeInCountry.isEmpty() || madeInCountry.isBlank()) {
-                                    break;
-                                }
-                                MadeInCountry countryByTitle = madeInCountryRepository.findByTitle(madeInCountry);
-                                if (countryByTitle != null) {
-                                    product.setMadeInCountry(countryByTitle);
-                                } else {
-                                    MadeInCountry savedCountry = madeInCountryRepository.save(new MadeInCountry(madeInCountry));
-                                    product.setMadeInCountry(savedCountry);
-                                }
-                                break;
-                            case 6:
-                                String productCategory = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
-                                if (productCategory.isEmpty() || productCategory.isBlank()) {
-                                    break;
-                                }
-                                ProductCategory byTitle = productCategoryRepository.findByTitle(productCategory);
-                                if (byTitle != null) {
-                                    product.setProductCategory(byTitle);
-                                } else {
-                                    ProductCategory savedProduct = productCategoryRepository.save(new ProductCategory(productCategory));
-                                    product.setProductCategory(savedProduct);
-                                }
-                                break;
-                            case 7:
-                                String brand = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
-                                if (brand.isEmpty() || brand.isBlank()) {
-                                    break;
-                                }
-                                Brand brandFromDb = brandRepository.findByTitle(brand);
-                                if (brandFromDb != null) {
-                                    product.setBrand(brandFromDb);
-                                } else {
-                                    Brand savedBrand = brandRepository.save(new Brand(brand));
-                                    product.setBrand(savedBrand);
-                                }
-                                break;
-                            case 8:
-                                product.setCreatedDateTime(LocalDateTime.parse(currentCell.getStringCellValue()));
-                                break;
-                            default:
-                                break;
-                        }
-                        cellIdx++;
-                    }
-                    products.add(product);
+            Iterator<Row> rows = sheet.iterator();
+            List<Product> products = new ArrayList<>();
+
+            int rowNumber = 0;
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue;
                 }
-                workbook.close();
-                productRepository.saveAll(products);
-            } catch (IOException e) {
-                throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
+                Iterator<Cell> cellsInRow = currentRow.iterator();
+                Product product = new Product();
+                product.setActive(true);
+                int cellIdx = 0;
+                while (cellsInRow.hasNext()) {
+                    Cell currentCell = cellsInRow.next();
+                    switch (cellIdx) {
+                        case 0:
+                            long barcodeFromFile = (long) currentCell.getNumericCellValue();
+                            Optional<Product> byBarcode = productRepository.findByBarcode(barcodeFromFile);
+                            if (byBarcode.isPresent()) {
+                                product = byBarcode.get();
+                            }
+                            product.setBarcode(barcodeFromFile);
+                            break;
+                        case 1:
+                            product.setTitle(currentCell.getStringCellValue());
+                            break;
+                        case 2:
+                            product.setDescription(currentCell.getStringCellValue());
+                            break;
+                        case 3:
+                            product.setPrice(currentCell.getNumericCellValue());
+                            break;
+                        case 4:
+                            product.setWeight(currentCell.getNumericCellValue());
+                            break;
+                        case 5:
+                            String madeInCountry = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
+                            if (madeInCountry.isEmpty() || madeInCountry.isBlank()) {
+                                break;
+                            }
+                            MadeInCountry countryByTitle = madeInCountryRepository.findByTitle(madeInCountry);
+                            if (countryByTitle != null) {
+                                product.setMadeInCountry(countryByTitle);
+                            } else {
+                                MadeInCountry savedCountry = madeInCountryRepository.save(new MadeInCountry(madeInCountry));
+                                product.setMadeInCountry(savedCountry);
+                            }
+                            break;
+                        case 6:
+                            String productCategory = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
+                            if (productCategory.isEmpty() || productCategory.isBlank()) {
+                                break;
+                            }
+                            ProductCategory byTitle = productCategoryRepository.findByTitle(productCategory);
+                            if (byTitle != null) {
+                                product.setProductCategory(byTitle);
+                            } else {
+                                ProductCategory savedProduct = productCategoryRepository.save(new ProductCategory(productCategory));
+                                product.setProductCategory(savedProduct);
+                            }
+                            break;
+                        case 7:
+                            String brand = currentCell.getStringCellValue().toLowerCase(Locale.ROOT);
+                            if (brand.isEmpty() || brand.isBlank()) {
+                                break;
+                            }
+                            Brand brandFromDb = brandRepository.findByTitle(brand);
+                            if (brandFromDb != null) {
+                                product.setBrand(brandFromDb);
+                            } else {
+                                Brand savedBrand = brandRepository.save(new Brand(brand));
+                                product.setBrand(savedBrand);
+                            }
+                            break;
+                        case 8:
+                            product.setCreatedDateTime(LocalDateTime.parse(currentCell.getStringCellValue()));
+                            break;
+                        default:
+                            break;
+                    }
+                    cellIdx++;
+                }
+                products.add(product);
             }
+            workbook.close();
+            productRepository.saveAll(products);
+        } catch (IOException e) {
+            throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
         }
     }
 
@@ -446,7 +444,7 @@ public class ExcelServiceImpl implements ExcelService {
     @Override
     public ByteArrayInputStream exportCompanies() throws IOException {
         List<Company> companyList = companyRepository.findAll();
-        if (companyList == null) {
+        if (companyList.isEmpty()) {
             throw new NullPointerException();
         }
         Workbook workbook = new XSSFWorkbook();
