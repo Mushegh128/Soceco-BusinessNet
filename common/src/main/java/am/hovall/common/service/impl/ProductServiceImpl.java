@@ -1,6 +1,7 @@
 package am.hovall.common.service.impl;
 
 import am.hovall.common.entity.Product;
+import am.hovall.common.exception.BarcodeRepeatException;
 import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.mapper.ProductMapper;
 import am.hovall.common.repository.ProductRepository;
@@ -10,6 +11,7 @@ import am.hovall.common.service.ImageManipulatorService;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,35 +35,38 @@ public class ProductServiceImpl implements ProductService {
     public String FILES_PATH;
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
+    public List<ProductResponse> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByCategoryId(long id) {
-        return productRepository.findAllByProductCategoryId(id).stream()
+    public List<ProductResponse> findAllByCategoryId(long id, Pageable pageable) {
+        return productRepository.findAllByProductCategoryId(id,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByBrandId(long id) {
-        return productRepository.findAllByBrandId(id).stream()
+    public List<ProductResponse> findAllByBrandId(long id, Pageable pageable) {
+        return productRepository.findAllByBrandId(id,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice) {
-        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice).stream()
+    public List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable pageable) {
+        return productRepository.findAllByPriceStartsAndPriceEnds(startPrice, endPrice,pageable).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ProductResponse add(ProductRequest productRequest) {
+        if (productRepository.findByBarcode(productRequest.getBarcode()).isPresent()) {
+            throw new BarcodeRepeatException();
+        }
         final Product product = productMapper.toEntity(productRequest);
         final Product savedProduct = productRepository.save(product);
         return productMapper.toResponse(savedProduct);
@@ -84,27 +89,30 @@ public class ProductServiceImpl implements ProductService {
         if (byId.isEmpty()) {
             return false;
         }
-        byId.get().setActive(false);
-        productRepository.save(byId.get());
+        Product product = byId.get();
+        product.setBarcode(-product.getBarcode());
+        product.setActive(false);
+        productRepository.save(product);
         return true;
     }
 
     @Override
     public void saveImage(MultipartFile file, long id) throws IOException, ProductNotFoundException {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
             throw new ProductNotFoundException();
         }
         if (file == null) {
             throw new FileNotFoundException();
         }
-        String picUrl = product.get().getBarcode() + ".jpg";
-        String png = product.get().getBarcode() + "_small_pic.png";
+        Product product = productOptional.get();
+        String picUrl = product.getBarcode() + ".jpg";
+        String png = product.getBarcode() + "_small_pic.png";
         MultipartFile multipartFile = new MockMultipartFile(png, file.getBytes());
         String smallPicUrl = imageManipulatorService.compressImage(multipartFile, FILES_PATH, png);
         file.transferTo(new File(FILES_PATH + File.separator + picUrl));
-        product.get().setPicUrl(picUrl);
-        product.get().setSmallPicUrl(smallPicUrl);
-        productRepository.save(product.get());
+        product.setPicUrl(picUrl);
+        product.setSmallPicUrl(smallPicUrl);
+        productRepository.save(product);
     }
 }

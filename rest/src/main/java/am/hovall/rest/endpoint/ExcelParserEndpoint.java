@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/excel")
+@RequestMapping("/excel")
 @RequiredArgsConstructor
 public class ExcelParserEndpoint {
 
