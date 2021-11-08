@@ -13,16 +13,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/excel")
+@RequestMapping("/excel")
 @RequiredArgsConstructor
 public class ExcelParserEndpoint {
 
     private final ExcelService excelService;
 
     @PostMapping("/upload/products")
-    public ResponseEntity<?> uploadProducts(@RequestParam MultipartFile[] files) {
+    public ResponseEntity<?> uploadProducts(@RequestBody MultipartFile file) {
         try {
-            excelService.importProducts(files);
+            excelService.importProducts(file);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

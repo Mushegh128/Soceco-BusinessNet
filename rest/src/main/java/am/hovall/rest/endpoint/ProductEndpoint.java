@@ -4,6 +4,8 @@ import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +22,24 @@ public class ProductEndpoint {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> findAll() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<ProductResponse>> findAll(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<List<ProductResponse>> getAllByCategory(@PathVariable long id) {
-        return ResponseEntity.ok(productService.findAllByCategoryId(id));
+    @GetMapping("/category")
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByCategoryId(productCategoryId, pageable));
     }
 
-    @GetMapping("/brand{id}")
-    public ResponseEntity<List<ProductResponse>> getAllByBrand(@PathVariable long id) {
-        return ResponseEntity.ok(productService.findAllByBrandId(id));
+    @GetMapping("/brand")
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByBrandId(id, pageable));
     }
 
     @GetMapping("/byRange")
-    public ResponseEntity<List<ProductResponse>> getAllByRange(
-            @RequestParam @DecimalMin(value = "0.0") double startPrice, @DecimalMin("0.0") double endPrice) {
-        return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice));
+    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice, pageable));
+
     }
 
     @PostMapping("/add")
