@@ -238,6 +238,10 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Override
     public ByteArrayInputStream exportOrdersByStatus(String orderStatus, long id) throws IOException {
+        boolean orderStatusIsNotPresent = Arrays.stream(OrderStatus.values()).anyMatch(status -> status.name().equals(orderStatus));
+        if (!orderStatusIsNotPresent) {
+            throw new NullPointerException();
+        }
         List<Order> orderList = orderRepository.findAllByCompanyIdAndOrderStatus(id, OrderStatus.valueOf(orderStatus));
         if (orderList.isEmpty()) {
             throw new NullPointerException();
@@ -269,26 +273,42 @@ public class ExcelServiceImpl implements ExcelService {
                     cell = nameRow.createCell(0);
                     cell.setCellValue("Ընկերության անունը");
                     cell = nameRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getName());
-
+                    if (order.getCompany().getName() != null) {
+                        cell.setCellValue(order.getCompany().getName());
+                    } else {
+                        cell.setBlank();
+                    }
                     Row addressRow = sheet.createRow(2);
                     cell = addressRow.createCell(0);
                     cell.setCellValue("Ընկերության հասցեն");
                     cell = addressRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getAddress());
+                    if (order.getCompany().getAddress() != null) {
+                        cell.setCellValue(order.getCompany().getAddress());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row regNumberRow = sheet.createRow(3);
                     regNumberRow.setRowStyle(cellStyle);
                     cell = regNumberRow.createCell(0);
                     cell.setCellValue("Ընկերության ՀՎՀՀ");
                     cell = regNumberRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getRegisterNumber());
+                    if (order.getCompany().getRegisterNumber() != 0) {
+                        cell.setCellValue(order.getCompany().getRegisterNumber());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row presSellerRow = sheet.createRow(4);
                     cell = presSellerRow.createCell(0);
                     cell.setCellValue("Շուկայի Մենեջեր");
                     cell = presSellerRow.createCell(3);
-                    cell.setCellValue(order.getCompany().getPresSeller().getName());
+                    PresSeller presSeller = order.getCompany().getPresSeller();
+                    if (presSeller != null) {
+                        cell.setCellValue(order.getCompany().getPresSeller().getName());
+                    } else {
+                        cell.setBlank();
+                    }
 
                     Row orderedDateRow = sheet.createRow(5);
                     cell = orderedDateRow.createCell(0);
@@ -363,7 +383,7 @@ public class ExcelServiceImpl implements ExcelService {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Products");
 
-        Row productsHeaderRow = sheet.createRow(sheet.getLastRowNum());
+        Row productsHeaderRow = sheet.createRow(sheet.getLastRowNum() + 1);
         productsHeaderRow.setRowStyle(returnHeaderColor(workbook));
 
         Cell headerRowCell = productsHeaderRow.createCell(0);
@@ -388,49 +408,58 @@ public class ExcelServiceImpl implements ExcelService {
         for (Product product : productList) {
             Row productDataRow = sheet.createRow(sheet.getLastRowNum() + 1);
             Cell productDataCell = productDataRow.createCell(0);
+
             productDataCell.setCellValue(product.getBarcode());
             productDataCell = productDataRow.createCell(1);
+
             if (product.getTitle() != null) {
                 productDataCell.setCellValue(product.getTitle());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(2);
             if (product.getDescription() != null) {
                 productDataCell.setCellValue(product.getDescription());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(3);
-            if (product.getProductCategory() != null) {
+            if (product.getPrice() != 0) {
                 productDataCell.setCellValue(product.getPrice());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(4);
             if (product.getWeight() != 0) {
                 productDataCell.setCellValue(product.getWeight());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(5);
             if (product.getMadeInCountry() != null) {
                 productDataCell.setCellValue(product.getMadeInCountry().getTitle());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(6);
             if (product.getProductCategory() != null) {
                 productDataCell.setCellValue(product.getProductCategory().getTitle());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(7);
             if (product.getBrand() != null) {
                 productDataCell.setCellValue(product.getBrand().getTitle());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = productDataRow.createCell(8);
             if (product.getCreatedDateTime() != null) {
                 productDataCell.setCellValue(product.getCreatedDateTime().toString());
@@ -477,47 +506,55 @@ public class ExcelServiceImpl implements ExcelService {
             Cell productDataCell = companyDataRow.createCell(0);
             productDataCell.setCellValue(company.getBarcode());
             productDataCell = companyDataRow.createCell(1);
+
             if (company.getName() != null) {
                 productDataCell.setCellValue(company.getName());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(2);
             if (company.getAddress() != null) {
                 productDataCell.setCellValue(company.getAddress());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(3);
             if (company.getRegisterNumber() != 0) {
                 productDataCell.setCellValue(company.getRegisterNumber());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(4);
             if (company.getPhoneNumber() != null) {
                 productDataCell.setCellValue(company.getPhoneNumber());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(5);
             if (company.getCompanyType() != null) {
                 productDataCell.setCellValue(company.getCompanyType().getId());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(6);
             if (company.getPresSeller() != null) {
                 productDataCell.setCellValue(company.getPresSeller().getId());
             } else {
                 productDataCell.setBlank();
             }
+
             productDataCell = companyDataRow.createCell(7);
             if (company.getDebt() != null) {
                 productDataCell.setCellValue(company.getDebt().getId());
             } else {
                 productDataCell.setBlank();
             }
+
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
