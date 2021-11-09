@@ -81,4 +81,22 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
         return true;
     }
+
+    @Override
+    public List<OrderResponse> findAll() {
+        List<Order> orderList = orderRepository.findAll();
+        return orderList.stream().map(orderMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse findById(long id) {
+        Order order = orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
+        return orderMapper.toResponse(order);
+    }
+
+    @Override
+    public List<OrderResponse> findByStatus(OrderStatus orderStatus) {
+        List<Order> orderList = orderRepository.findByOrderStatus(orderStatus);
+        return orderList.stream().map(orderMapper::toResponse).collect(Collectors.toList());
+    }
 }

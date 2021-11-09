@@ -62,4 +62,10 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentStatus(paymentStatus);
         return paymentMapper.toResponse(paymentRepository.save(payment));
     }
+
+    @Override
+    public List<PaymentResponse> findByStatus(PaymentStatus paymentStatus) {
+        List<Payment> paymentList = paymentRepository.findByPaymentStatus(paymentStatus);
+        return paymentList.stream().map(paymentMapper::toResponse).collect(Collectors.toList());
+    }
 }

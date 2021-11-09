@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Company</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+    <table>
+        <tr>
+            <th>Կոդ</th>
+            <th>Անվանում</th>
+            <th>Գործունեության Հասցե</th>
+            <th>ՀՎՀՀ</th>
+            <th>Հեռախոսահամար</th>
+            <th>Շ.Զ.Պ.</th>
+            <th>Տեսակ</th>
+            <th>Զեղչ</th>
+        </tr>
+        <tr>
+            <td th:text="${company.barcode}"></td>
+            <td th:text="${company.name}"></td>
+            <td th:text="${company.address}"></td>
+            <td th:text="${company.registerNumber}"></td>
+            <td th:text="${company?.phoneNumber}"></td>
+            <td th:text="${company.getPresSeller()?.name}"></td>
+            <td th:text="${company.getCompanyType()?.name}"></td>
+            <td th:text="${company.getDiscount()?.size}"></td>
+    </table>
+</div>
+</body>
+</html>

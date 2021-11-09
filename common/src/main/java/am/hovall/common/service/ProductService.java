@@ -1,12 +1,8 @@
 package am.hovall.common.service;
 
 
-import am.hovall.common.entity.Brand;
-import am.hovall.common.entity.Product;
-import am.hovall.common.entity.ProductCategory;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
-import am.hovall.common.exception.ProductNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,4 +25,6 @@ public interface ProductService {
     boolean deactivate(long id);
 
     void saveImage(MultipartFile file, long id) throws IOException;
+
+    ProductResponse findById(Long id);
 }

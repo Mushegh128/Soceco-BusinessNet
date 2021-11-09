@@ -16,4 +16,5 @@ public interface PaymentService {
 
     PaymentResponse setPaymentStatusBySerialNumber(PaymentStatus paymentStatus, String serialNumber);
 
+    List<PaymentResponse> findByStatus(PaymentStatus created);
 }

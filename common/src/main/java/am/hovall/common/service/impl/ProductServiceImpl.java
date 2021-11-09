@@ -107,4 +107,10 @@ public class ProductServiceImpl implements ProductService {
         product.get().setSmallPicUrl(smallPicUrl);
         productRepository.save(product.get());
     }
+
+    @Override
+    public ProductResponse findById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        return productMapper.toResponse(product);
+    }
 }
