@@ -1,16 +1,15 @@
 package am.hovall.common.response;
 
 import am.hovall.common.entity.OrderStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Getter
-@Setter
 public class OrderResponse {
     private long id;
     private long serialNumber;

@@ -11,6 +11,10 @@ import am.hovall.common.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +25,58 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+
+
+    @Override
+    public List<OrderResponse> findAllByUserIdAndCompanyId(long userId, long companyId) throws OrderNotFoundException {
+        return orderRepository.findAllByUserIdAndCompanyId(userId, companyId).stream()
+                .map(orderMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> findAllUnSynchronized() throws OrderNotFoundException {
+        return orderRepository.findAllUnSynchronized().stream()
+                .map(orderMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponse> findAllByOrderStatus(OrderStatus orderStatus) {
+        for (OrderStatus value : OrderStatus.values()) {
+            if (value.name().equals(orderStatus.name())) {
+                List<Order> allByOrderStatus = orderRepository.findAllByOrderStatus(OrderStatus.valueOf(String.valueOf(orderStatus)));
+                return allByOrderStatus.stream().
+                        map(orderMapper::toResponse).
+                        collect(Collectors.toList());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<OrderResponse> findAllByDateRange(String start, String end) throws OrderNotFoundException {
+        List<Order> orders = orderRepository.findAll();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime startDateTime = LocalDateTime.parse(start,formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(end,formatter);
+        for (Order order : orders) {
+            if (order.getCreatedDateTime().isAfter(startDateTime) && order.getSaleDateTime().isBefore(endDateTime)) {
+                return orderRepository.findAllByOrderCreatedDateTimeRange(startDateTime, endDateTime).stream()
+                        .map(orderMapper::toResponse)
+                        .collect(Collectors.toList());
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public OrderResponse findBySerialNumber(long serialNumber) throws OrderNotFoundException {
+        Order order = orderRepository.findBySerialNumber(serialNumber)
+                .orElseThrow(OrderNotFoundException::new);
+        return orderMapper.toResponse(order);
+    }
 
     @Override
     public Double getCompanyDebt(long companyId) {
