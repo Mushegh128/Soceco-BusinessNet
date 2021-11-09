@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class PaymentResponse {
-    private long id;
-    private double size;
-    private long companyRegisterNumber;
+    private Long id;
+    private Double size;
+    private Long companyRegisterNumber;
     private String serialNumber;
     private LocalDateTime createdDateTime;
     private UserResponse userResponse;
