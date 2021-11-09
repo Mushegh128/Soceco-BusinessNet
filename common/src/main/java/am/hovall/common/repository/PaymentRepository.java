@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    List<Payment> findAllByCompanyRegisterNumber(Long companyRegisterNumber);
+    List<Payment> findAllByCompanyRegisterNumber(String companyRegisterNumber);
 
     List<Payment> findAllByFromUserId(Long id);
 

@@ -14,7 +14,7 @@ public class CompanyRequest {
     private long id;
     private String name;
     private String address;
-    private long registerNumber;
+    private String registerNumber;
     private String logoUrl;
     private double level;
     private double rating;
