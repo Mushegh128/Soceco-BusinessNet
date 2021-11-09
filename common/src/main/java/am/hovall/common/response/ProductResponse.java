@@ -4,7 +4,10 @@ import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.MadeInCountry;
 import am.hovall.common.entity.ProductCategory;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -13,13 +16,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ProductResponse {
-    private long id;
-    private long barcode;
+    private Long id;
+    private Long barcode;
     private String title;
     private String description;
-    private double price;
-    private double weight;
-    private double cashback;
+    private Double price;
+    private Double weight;
     private LocalDateTime createdDateTime;
     private boolean isActive;
     private MadeInCountry maidInCountry;

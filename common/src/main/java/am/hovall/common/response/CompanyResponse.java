@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompanyResponse {
-    private long id;
+    private Long id;
     private String name;
     private String address;
     private String logoUrl;
