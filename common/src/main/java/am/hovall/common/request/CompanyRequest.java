@@ -21,7 +21,6 @@ public class CompanyRequest {
     private String name;
     @NotBlank
     private String address;
-    private String registerNumber;
     @NotNull @Digits(integer = 8, fraction = 0)
     private String registerNumber;
     private String logoUrl;
