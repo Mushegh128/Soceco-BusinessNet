@@ -2,6 +2,7 @@ package am.hovall.rest.endpoint;
 
 import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
@@ -27,6 +28,25 @@ public class ProductEndpoint {
     @GetMapping("/category/{id}")
     public ResponseEntity<List<ProductResponse>> getAllByCategory(@PathVariable long id) {
         return ResponseEntity.ok(productService.findAllByCategoryId(id));
+    }
+
+    @GetMapping("/unSynchronized")
+    public ResponseEntity<List<ProductResponse>> findAllUnSynchronized() {
+        try {
+
+            return ResponseEntity.ok(productService.findAllUnSynchronized());
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{barcode}")
+    public ResponseEntity<List<ProductResponse>> getAllByBarcode(@PathVariable long barcode) {
+        try {
+            return ResponseEntity.ok(productService.getAllProductsByBarcode(barcode));
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/brand{id}")

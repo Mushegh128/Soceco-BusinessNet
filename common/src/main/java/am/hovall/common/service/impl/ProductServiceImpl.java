@@ -1,5 +1,6 @@
 package am.hovall.common.service.impl;
 
+import am.hovall.common.entity.Order;
 import am.hovall.common.entity.Product;
 import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.mapper.ProductMapper;
@@ -37,6 +38,22 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll().stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> findAllUnSynchronized() throws ProductNotFoundException {
+        return productRepository.findAllUnSynchronized().
+                stream().
+                map(productMapper::toResponse).
+                collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductsByBarcode(long barcode) throws ProductNotFoundException {
+        return productRepository.findAllByBarcode(barcode).
+                stream().
+                map(productMapper::toResponse).
+                collect(Collectors.toList());
     }
 
     @Override

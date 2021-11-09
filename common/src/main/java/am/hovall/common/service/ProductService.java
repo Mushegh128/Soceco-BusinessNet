@@ -4,6 +4,7 @@ package am.hovall.common.service;
 import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.Product;
 import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.exception.OrderNotFoundException;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.exception.ProductNotFoundException;
@@ -15,6 +16,10 @@ import java.util.List;
 public interface ProductService {
 
     List<ProductResponse> getAllProducts();
+
+    List<ProductResponse> findAllUnSynchronized() throws ProductNotFoundException;
+
+    List<ProductResponse> getAllProductsByBarcode(long barcode) throws ProductNotFoundException;
 
     List<ProductResponse> findAllByCategoryId(long id);
 
