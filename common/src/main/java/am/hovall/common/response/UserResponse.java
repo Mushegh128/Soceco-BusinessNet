@@ -2,7 +2,10 @@ package am.hovall.common.response;
 
 import am.hovall.common.entity.Region;
 import am.hovall.common.entity.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

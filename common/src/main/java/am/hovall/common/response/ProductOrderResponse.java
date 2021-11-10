@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ProductOrderResponse {
-
-    private long id;
+    private Long id;
     private ProductResponse productResponse;
     private int count;
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Digits;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,14 +13,15 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderResponse {
-    private long id;
-    private long serialNumber;
+    private Long id;
+    @Digits(integer = 8, fraction = 0)
+    private Long serialNumber;
     private UserResponse userResponse;
     private CompanyResponse companyResponse;
     private LocalDateTime createdDateTime;
     private LocalDateTime saleDateTime;
-    private double orderCost;
-    private double debtSize;
+    private Double orderCost;
+    private Double debtSize;
     private OrderStatus orderStatus;
     private List<ProductOrderResponse> productOrderResponses;
     private List<PaymentResponse> paymentResponseList;
