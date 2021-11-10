@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.DecimalMin;
 import java.util.List;
 
 
@@ -24,6 +23,16 @@ public class ProductEndpoint {
     @GetMapping
     public ResponseEntity<List<ProductResponse>> findAll(@PageableDefault Pageable pageable) {
         return ResponseEntity.ok(productService.getAllProducts(pageable));
+    }
+
+    @GetMapping("/unSynchronized")
+    public ResponseEntity<List<ProductResponse>> findAllUnSynchronized() {
+        return ResponseEntity.ok(productService.findAllUnSynchronized());
+    }
+
+    @GetMapping("/{barcode}")
+    public ResponseEntity<List<ProductResponse>> getAllByBarcode(@PathVariable long barcode) {
+        return ResponseEntity.ok(productService.getAllProductsByBarcode(barcode));
     }
 
     @GetMapping("/category")
