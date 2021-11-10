@@ -33,7 +33,7 @@ public class Order {
     private double debtSize;
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
             name = "order_product_order",
             joinColumns = {@JoinColumn(name = "order_id")},

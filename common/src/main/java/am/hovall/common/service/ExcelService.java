@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface ExcelService {
 
-    void importProducts(MultipartFile[] files) throws Exception;
+    void importProducts(MultipartFile file) throws Exception;
 
     void importCompanies(MultipartFile file) throws Exception;
 
