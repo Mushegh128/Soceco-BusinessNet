@@ -1,21 +1,21 @@
 package am.hovall.common.service;
 
-import am.hovall.common.entity.PresSeller;
+import am.hovall.common.request.PresSellerRequest;
+import am.hovall.common.response.PresSellerResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PresSellerService {
 
-    List<PresSeller> findAll();
+    List<PresSellerResponse> findAll();
 
-    void save(PresSeller presSeller);
+    void save(PresSellerRequest presSellerRequest);
 
-    Optional<PresSeller> findByEmail(String email);
+    PresSellerResponse findByEmail(String email);
 
-    Optional<PresSeller> findByName(String name);
+    PresSellerResponse findByName(String name);
 
-    Optional<PresSeller> findByPhoneNumber(String phoneNumber);
+    PresSellerResponse findByPhoneNumber(String phoneNumber);
 
-    Optional<PresSeller> findById(Long id);
+    PresSellerResponse findById(Long id);
 }

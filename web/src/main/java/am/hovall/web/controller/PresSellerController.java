@@ -1,7 +1,6 @@
 package am.hovall.web.controller;
 
-import am.hovall.common.entity.PresSeller;
-import am.hovall.common.exception.UserNotFoundException;
+import am.hovall.common.request.PresSellerRequest;
 import am.hovall.common.service.CompanyService;
 import am.hovall.common.service.PresSellerService;
 import lombok.RequiredArgsConstructor;
@@ -18,26 +17,26 @@ public class PresSellerController {
     private final CompanyService companyService;
 
     @GetMapping
-    public String presSellers(ModelMap modelMap){
+    public String presSellers(ModelMap modelMap) {
         modelMap.addAttribute("presSellers", presSellerService.findAll());
         return "presSellers";
     }
 
     @GetMapping("/modify/")
-    public String seller(@RequestParam("id") Long id, ModelMap modelMap){
-        modelMap.addAttribute("seller", presSellerService.findById(id).orElseThrow(UserNotFoundException::new));
+    public String seller(@RequestParam("id") Long id, ModelMap modelMap) {
+        modelMap.addAttribute("seller", presSellerService.findById(id));
         modelMap.addAttribute("companies", companyService.findAllByPresSellerId(id));
         return "seller";
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute PresSeller presSeller){
-        presSellerService.save(presSeller);
+    public String add(@ModelAttribute PresSellerRequest presSellerRequest) {
+        presSellerService.save(presSellerRequest);
         return "redirect:/seller";
     }
 
     @GetMapping("/add")
-    public String add(){
+    public String add() {
         return "addSeller";
     }
 
