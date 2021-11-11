@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.DecimalMin;
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -37,6 +39,7 @@ public class ProductEndpoint {
     @GetMapping("/byRange")
     public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice, @PageableDefault Pageable pageable) {
         return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice, pageable));
+
     }
 
     @PostMapping("/add")
