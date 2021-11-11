@@ -24,7 +24,7 @@
             <td th:text="${orderResponse.getSaleDateTime()}"></td>
             <td th:text="${orderResponse.getOrderCost()}"></td>
             <td>
-                <form action="#" th:action="@{/orders/${orderResponse.serialNumber}" method="post">մշակել</form>
+                <form action="#" th:action="@{/orders/${orderResponse.serialNumber}}" method="post">մշակել</form>
             </td>
         </tr>
     </table>
