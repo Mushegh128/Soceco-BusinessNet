@@ -5,6 +5,7 @@ import am.hovall.common.service.MainService;
 import am.hovall.common.service.OrderService;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,7 @@ public class MainServiceImpl implements MainService {
         final Double companyDebt = orderService.getCompanyDebt(companyId);
         return MainResponse.builder()
                 .companyTotalDebt(companyDebt)
-                .productResponseList(productService.getAllProducts())
+                .productResponseList(productService.getAllProducts(Pageable.unpaged()))
                 .build();
     }
 }

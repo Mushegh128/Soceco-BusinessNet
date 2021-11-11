@@ -20,6 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findBySerialNumber(long serialNumber);
 
-
     List<Order> findAllByCompanyIdAndOrderStatus(long companyId, OrderStatus orderStatus);
+
+    List<Order> findByOrderStatus(OrderStatus orderStatus);
 }

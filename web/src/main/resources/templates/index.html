@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body style="background-image: url('image/body.jpg')">
+<div>
+    <div>
+        <div th:include="/fragments/header"></div>
+    </div>
+    <img src="/image/body02.jpg" width="100%" height="100%">
+    <h2>Նոր Պատվերներ</h2>
+    <div style="width: 70%">
+        <table>
+            <tr>
+                <th>Կարգավիճակ</th>
+                <th>Պատվիրատու Գործընկեր</th>
+                <th>Անձ</th>
+                <th>Ստեղծման ամսաթիվ</th>
+                <th>Վաճառքի ամսաթիվ</th>
+                <th>Արժեք / հհ դրամ</th>
+            </tr>
+            <tr th:each="orderResponse: ${orders}">
+                <td th:text="${orderResponse.getOrderStatus()}"></td>
+                <td th:text="${orderResponse.getCompanyResponse().name}"></td>
+                <td th:text="${orderResponse.getUserResponse().name}"></td>
+                <td th:text="${orderResponse.getCreatedDateTime()}"></td>
+                <td th:text="${orderResponse.getSaleDateTime()}"></td>
+                <td th:text="${orderResponse.getOrderCost()}"></td>
+                <td>
+                    <form action="#" th:action="@{/orders/${orderResponse.serialNumber}" method="post">մշակել</form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <h2>Նոր Վճարման Հայտարարագրեր</h2>
+    <div style="width: 70%">
+        <table>
+            <tr>
+                <th>Սերիա համար</th>
+                <th>Պատվիրատու Գործընկեր/ ՀՎՀՀ</th>
+                <th>Անձ</th>
+                <th>Ստեղծման ամսաթիվ</th>
+                <th>Կարգավիճակ</th>
+                <th>Արժեք / հհ դրամ</th>
+            </tr>
+            <tr th:each="pay: ${payment}">
+                <td th:text="${pay.getSerialNumber()}"></td>
+                <td th:text="${pay.getCompanyRegisterNumber()}"></td>
+                <td th:text="${pay.getUserResponse().name}"></td>
+                <td th:text="${pay.getCreatedDateTime()}"></td>
+                <td th:text="${pay.getPaymentStatus()}"></td>
+                <td th:text="${pay.getSize()}"></td>
+                <!--                <td>-->
+                <!--                    <form action="#" th:action="@{/orders/${orderResponse.serialNumber}" method="post">մշակել</form>-->
+                <!--                </td>-->
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</script>
+</html>
