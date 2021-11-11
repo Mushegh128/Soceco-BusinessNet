@@ -24,6 +24,7 @@
             <td th:text="${seller.email}"></td>
             <td th:text="${seller.rating}"></td>
             <td th:if="${seller.active}" th:text="Այո">Ոչ</td>
+            <td th:if="${!seller.active}" th:text="Ոչ">Այո</td>
             <td>
                 <a th:href="@{/seller/modify/(id=${seller.id})}">Խմբագրել</a>
             </td>

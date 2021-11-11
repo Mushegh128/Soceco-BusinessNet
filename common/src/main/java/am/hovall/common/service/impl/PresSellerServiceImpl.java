@@ -32,8 +32,8 @@ public class PresSellerServiceImpl implements PresSellerService {
 
     @Override
     public void save(PresSellerRequest presSellerRequest) {
-        if (findByEmail(presSellerRequest.getEmail()) != null &&
-                findByPhoneNumber(presSellerRequest.getPhoneNumber()) != null) {
+        if (presSellerRepository.findByEmail(presSellerRequest.getEmail()).isEmpty() &&
+                presSellerRepository.findByPhoneNumber(presSellerRequest.getPhoneNumber()).isEmpty()) {
             presSellerRepository.save(mapper.toEntity(presSellerRequest));
         }
     }

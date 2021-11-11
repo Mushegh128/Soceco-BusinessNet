@@ -4,6 +4,7 @@ import am.hovall.common.service.ExcelService;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,7 +25,7 @@ public class ProductController {
 
     @GetMapping
     public String getAllProducts(ModelMap modelMap){
-        modelMap.addAttribute("products", productService.getAllProducts());
+        modelMap.addAttribute("products", productService.getAllProducts(Pageable.unpaged()));
         return "product";
     }
 
