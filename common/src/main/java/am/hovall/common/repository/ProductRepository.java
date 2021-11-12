@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByProductCategoryId(long id, Pageable pageable);
 
+    List<Product> findAllByBarcode(long id);
+
     List<Product> findAllByBrandId(long id, Pageable pageable);
 
     @Query(value = "select * FROM product where price>=:startPrice and price<=:endPrice", nativeQuery = true)
@@ -23,4 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     Optional<Product> findByBarcode(long barcode);
+
+    @Query(value = "SELECT * from product where is_synchronized = false", nativeQuery = true)
+    List<Product> findAllUnSynchronized();
 }
