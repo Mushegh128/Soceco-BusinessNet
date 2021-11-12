@@ -10,6 +10,7 @@ import am.hovall.common.repository.CompanyRepository;
 import am.hovall.common.repository.OrderRepository;
 import am.hovall.common.repository.PaymentRepository;
 import am.hovall.common.request.PaymentRequest;
+import am.hovall.common.request.PaymentsSearchRequest;
 import am.hovall.common.response.PaymentResponse;
 import am.hovall.common.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,21 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = paymentRepository.findBySerialNumber(serialNumber).orElseThrow(BadSerialNumberException::new);
         payment.setPaymentStatus(paymentStatus);
         return paymentMapper.toResponse(paymentRepository.save(payment));
+    }
+
+    @Override
+    public List<PaymentResponse> findByStatus(PaymentStatus paymentStatus) {
+        List<Payment> paymentList = paymentRepository.findByPaymentStatus(paymentStatus);
+        return paymentList.stream().map(paymentMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaymentResponse> search(PaymentsSearchRequest paymentsSearchRequest) {
+        List<Payment> payments= paymentRepository.search(
+                paymentsSearchRequest.getRegisterNumber(),
+                paymentsSearchRequest.getStatus(),
+                paymentsSearchRequest.getStartLocalDateTime(),
+                paymentsSearchRequest.getEndLocalDateTime());
+        return payments.stream().map(paymentMapper::toResponse).collect(Collectors.toList());
     }
 }

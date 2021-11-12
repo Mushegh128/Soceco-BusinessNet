@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>PresSeller</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+    <a th:href="@{/seller/add}">Ավելացնել</a>
+    <table>
+        <tr>
+            <th>Անուն</th>
+            <th>Ազգանուն</th>
+            <th>Հոռախոսահամար</th>
+            <th>Էլ. Հասցե</th>
+            <th>Ռեյտինգ</th>
+            <th>Ակտիվ է</th>
+        </tr>
+        <tr th:each="seller: ${presSellers}">
+            <td th:text="${seller.name}"></td>
+            <td th:text="${seller.surname}"></td>
+            <td th:text="${seller.phoneNumber}"></td>
+            <td th:text="${seller.email}"></td>
+            <td th:text="${seller.rating}"></td>
+            <td th:if="${seller.active}" th:text="Այո">Ոչ</td>
+            <td th:if="${!seller.active}" th:text="Ոչ">Այո</td>
+            <td>
+                <a th:href="@{/seller/modify/(id=${seller.id})}">Խմբագրել</a>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

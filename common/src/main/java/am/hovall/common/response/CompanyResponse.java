@@ -3,17 +3,20 @@ package am.hovall.common.response;
 import am.hovall.common.entity.CompanyType;
 import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.PresSeller;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CompanyResponse {
-    private Long id;
+    private long id;
+    private long barcode;
     private String name;
     private String address;
+    private long registerNumber;
+    private String phoneNumber;
     private String logoUrl;
     private double level;
     private double rating;

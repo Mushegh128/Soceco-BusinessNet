@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+    <form action="#" th:action="@{/products/add}" style="border: solid 1px">
+        <input name="add" type="submit" value="Ավելացնել">
+    </form>
+    <form action="#" th:action="@{/products/import}" method="post" enctype="multipart/form-data" style="border: solid 1px">
+        <form:label path="file">Ներբեռնել Excel</form:label>
+        <input type="file" id="files" name="import" multiple>
+        <input type="submit">
+    </form>
+    <a href="/products/export">Արտահանել Excel</a>
+
+    <table>
+        <tr>
+            <th>Շտրիխկեդ</th>
+            <th>Անվանում</th>
+            <th>Չափման Միավոր/քաշ</th>
+            <th>Վաճառքի Գին</th>
+            <th>Ենթատեսակ</th>
+            <th>Բրենդ</th>
+            <th>Արտադրված է</th>
+        </tr>
+        <tr th:each="product: ${products}">
+            <td th:text="${product.getBarcode()}"></td>
+            <td th:text="${product.getTitle()}"></td>
+            <td th:text="${product.getWeight()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getProductCategory()}"></td>
+            <td th:text="${product.getBrand()}"></td>
+            <td th:text="${product.getMaidInCountry()}"></td>
+            <td>
+                <a href="#" th:href="@{/products/modify/(id=${product.id})}">Խմբագրել</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

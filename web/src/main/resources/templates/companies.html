@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Companies</title>
+</head>
+<body>
+<div>
+  <div th:include="/fragments/header"></div>
+</div>
+<div>
+  <form action="#" th:action="@{/company/add}" style="border: solid 1px">
+    <input name="add" type="submit" value="Ավելացնել">
+  </form>
+  <form action="#" th:action="@{/company/import}" method="post" enctype="multipart/form-data" style="border: solid 1px">
+    <form:label path="file">Ներբեռնել Excel</form:label>
+    <input type="file" id="files" name="import" multiple>
+    <input type="submit">
+  </form>
+  <form action="#" th:action="@{/company/export}" style="border: solid 1px">
+    <input name="export" type="submit" value="Արտահանել Excel">
+  </form>
+
+  <table style="border: solid 1px">
+    <tr>
+      <th>Կոդ</th>
+      <th>Անվանում</th>
+      <th>ՀՎՀՀ</th>
+      <th>Հասցե</th>
+    </tr>
+    <tr th:each="company: ${companies}">
+      <td th:text="${company.getBarcode()}"></td>
+      <td th:text="${company.getName()}"></td>
+      <td th:text="${company.getRegisterNumber()}"></td>
+      <td th:text="${company.address}"></td>
+      <td>
+      <td>
+        <a href="#" th:href="@{/company/modify/(id=${company.id})}">Խմբագրել</a>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
