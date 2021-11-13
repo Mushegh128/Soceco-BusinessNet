@@ -42,6 +42,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponse> findAllUnSynchronized() {
+        return productRepository.findAllUnSynchronized().stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductsByBarcode(long barcode) {
+        return productRepository.findAllByBarcode(barcode).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProductResponse> findAllByCategoryId(long id, Pageable pageable) {
         return productRepository.findAllByProductCategoryId(id,pageable).stream()
                 .map(productMapper::toResponse)
@@ -114,5 +128,11 @@ public class ProductServiceImpl implements ProductService {
         product.setPicUrl(picUrl);
         product.setSmallPicUrl(smallPicUrl);
         productRepository.save(product);
+    }
+
+    @Override
+    public ProductResponse findById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        return productMapper.toResponse(product);
     }
 }

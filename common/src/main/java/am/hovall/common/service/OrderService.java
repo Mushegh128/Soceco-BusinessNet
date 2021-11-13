@@ -29,4 +29,10 @@ public interface OrderService {
     OrderResponse updateOrder(OrderRequest order);
 
     boolean changeOrderStatus(OrderStatus orderStatus, long serialNumber);
+
+    List<OrderResponse> findAll();
+
+    OrderResponse findById(long id);
+
+    List<OrderResponse> findByStatus(OrderStatus ordered);
 }

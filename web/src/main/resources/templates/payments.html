@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payments</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+    <form action="#" th:action="@{/payments/search}" method="post" th:object="${paymentsSearchRequest}">
+        <input type="text"  th:field="${paymentsSearchRequest.registerNumber}" placeholder="ՀՎՀՀ">
+        <input type="datetime-local"  th:field="${paymentsSearchRequest.startLocalDateTime}" placeholder="Սկիզբ">
+        <input type="datetime-local" th:field="${paymentsSearchRequest.endLocalDateTime}" placeholder="Վերջ">
+        <select th:field="${paymentsSearchRequest.status}">
+            <option value="CREATED">Պատվիրված</option>
+            <option value="CONFIRMED">Հաստատված</option>
+            <option value="DENIED">Հերքած</option>
+        </select>
+        <input type="submit" value="փնտրել">
+    </form>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>Ստեղծման Ամսաթիվ</th>
+            <th>Գործընկեր</th>
+            <th>ՀՎՀՀ</th>
+            <th>Ներկայացնողի Անուն</th>
+            <th>Ներկայացնողի Ազգանուն</th>
+            <th>Վճարման Չափ</th>
+            <th>Կարգավիճակ</th>
+            <th>Հաստատել</th>
+            <th>Հերքել</th>
+        </tr>
+        <tr th:each="payment: ${payments}">
+            <td th:text="${payment.getCreatedDateTime()}"></td>
+            <td th:text="${payment.getUserResponse().getCompanyResponse().name}"></td>
+            <td th:text="${payment.getCompanyRegisterNumber()}">
+                <a href="#" th:href="@{/payments/${payment.getCompanyRegisterNumber()}}"></a>
+            </td>
+            <td th:text="${payment.getUserResponse().name}">
+                <a href="#" th:href="@{/payments/user/${payment.getUserResponse().id}}"></a>
+            </td>
+            <td th:text="${payment.getUserResponse().surname}"></td>
+            <td th:text="${payment.size}"></td>
+            <td th:text="${payment.getPaymentStatus().name()}"></td>
+            <td>
+                <button action="#" th:action="@{/payments/${payment.serialNumber}/1}" method="post">Հաստատել</button>
+            </td>
+            <td>
+                <button action="#" th:action="@{/payments/${payment.serialNumber}/0}" method="post">Հերքել</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

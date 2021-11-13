@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+  <table>
+    <tr>
+      <th>Շտրիխկեդ</th>
+      <th>Անվանում</th>
+      <th>Չափման Միավոր/քաշ</th>
+      <th>Վաճառքի Գին</th>
+      <th>Ենթատեսակ</th>
+      <th>Բրենդ</th>
+      <th>Արտադրված է</th>
+    </tr>
+    <tr>
+      <td th:text="${product.getBarcode()}"></td>
+      <td th:text="${product.getTitle()}"></td>
+      <td th:text="${product.getWeight()}"></td>
+      <td th:text="${product.getPrice()}"></td>
+      <td th:text="${product.getProductCategory()}"></td>
+      <td th:text="${product.getBrand()}"></td>
+      <td th:text="${product.getMaidInCountry()}"></td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

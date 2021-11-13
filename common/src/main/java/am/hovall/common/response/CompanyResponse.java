@@ -9,10 +9,17 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CompanyResponse {
-    private Long id;
+    private long id;
+    private long barcode;
     private String name;
     private String address;
+    private long registerNumber;
+    private String phoneNumber;
     private String logoUrl;
     private double level;
     private double rating;

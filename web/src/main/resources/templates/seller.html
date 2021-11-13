@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+
+<div>
+    <table>
+        <tr>
+            <th>Անուն</th>
+            <th>Ազգանուն</th>
+            <th>Հոռախոսահամար</th>
+            <th>Էլ. Հասցե</th>
+            <th>Ռեյտինգ</th>
+            <th>Ակտիվ է</th>
+        </tr>
+        <tr>
+            <td th:text="${seller.name}"></td>
+            <td th:text="${seller.surname}"></td>
+            <td th:text="${seller.phoneNumber}"></td>
+            <td th:text="${seller.email}"></td>
+            <td th:text="${seller.rating}"></td>
+            <td th:if="${seller.active}" th:text="Այո">Ոչ</td>
+    </table>
+    <table style="border: solid 1px">
+        <tr>
+            <th>Կոդ</th>
+            <th>Անվանում</th>
+            <th>ՀՎՀՀ</th>
+            <th>Հասցե</th>
+            <th>տեսակ</th>
+            <th>Աստիճան</th>
+            <th>Ակտիվություն</th>
+        </tr>
+        <tr th:each="company: ${companies}">
+            <td th:text="${company.getBarcode()}"></td>
+            <td th:text="${company.getName()}"></td>
+            <td th:text="${company.getRegisterNumber()}"></td>
+            <td th:text="${company.address}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

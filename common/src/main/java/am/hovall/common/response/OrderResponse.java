@@ -24,4 +24,10 @@ public class OrderResponse {
     private OrderStatus orderStatus;
     private List<ProductOrderResponse> productOrderResponses;
     private List<PaymentResponse> paymentResponseList;
+
+    public double getOrderCost() {
+        productOrderResponses.forEach(productOrderResponse -> orderCost +=
+                productOrderResponse.getCount() * productOrderResponse.getProductResponse().getPrice());
+        return orderCost;
+    }
 }
