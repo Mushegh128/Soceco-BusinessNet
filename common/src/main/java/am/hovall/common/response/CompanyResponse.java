@@ -5,7 +5,10 @@ import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.PresSeller;
 import lombok.*;
 
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
