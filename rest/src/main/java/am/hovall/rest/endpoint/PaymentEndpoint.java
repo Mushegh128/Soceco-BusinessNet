@@ -22,7 +22,7 @@ public class PaymentEndpoint {
 
     @GetMapping("/company/{companyRegisterNumber}")
     public ResponseEntity<List<PaymentResponse>> getAllByCompany(
-            @PathVariable("companyRegisterNumber") Long companyRegisterNumber) {
+            @PathVariable("companyRegisterNumber") String companyRegisterNumber) {
         return ResponseEntity.ok(paymentService.findAllByCompanyRegisterNumber(companyRegisterNumber));
     }
 

@@ -10,9 +10,10 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
 
     Optional<Company> findByBarcode(long barcode);
 
-    Optional<Company> findByRegisterNumber(long regNumber);
+    Optional<Company> findByRegisterNumber(String regNumber);
 
     List<Company> findAll();
 
     List<Company> findAllByPresSeller_Id(Long id);
+
 }
