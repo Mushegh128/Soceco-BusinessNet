@@ -13,6 +13,10 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts(Pageable pageable);
 
+    List<ProductResponse> findAllUnSynchronized();
+
+    List<ProductResponse> getAllProductsByBarcode(long barcode);
+
     List<ProductResponse> findAllByCategoryId(long id, Pageable pageable);
 
     List<ProductResponse> findAllByBrandId(long id, Pageable pageable);
