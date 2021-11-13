@@ -11,8 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class CompanyResponse {
     private long id;
     private long barcode;
