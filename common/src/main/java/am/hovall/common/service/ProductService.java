@@ -31,5 +31,7 @@ public interface ProductService {
 
     void saveImage(MultipartFile file, long id) throws IOException;
 
+    void saveProductsImages(List<MultipartFile> images);
+
     ProductResponse findById(Long id);
 }
