@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script th:href="@{../static/sortTable.js}" type="text/javascript"></script>
+    <link th:href="@{../static/addProductForm.css}" type="text/css"/>
+</head>
+<body >
+<div th:include="/fragments/header"></div>
+<div id="newProduct">
+
+    <form id="asd" th:action="@{/productGroup/}" th:method="post" style="display: none">
+
+        <label>Անվանում</label>
+        <label>
+            <input type="text" name="title" placeholder="Անվանում" required>
+        </label><br>
+        <input type="reset" value="Մաքրել"/>
+        <button type="submit">Ավելացնել</button>
+    </form>
+
+    <h5>
+        <button id="closeWindow" onclick="asd(1)" style="display: none">Փակել պատուհանը</button>
+    </h5>
+    <h5>
+        <button id="openWindow" onclick="asd(2)">Նոր խումբ</button>
+    </h5>
+</div>
+<div >
+
+    <table border="1" id="myTable">
+        <tr>
+            <th onclick="sortTable(0)">Անվանում</th>
+            <th>Խումբ</th>
+        </tr>
+        <tr id="editable_data" th:each="productGroup: ${productGroups}">
+            <td th:id="${productGroup.id}" th:text="${productGroup.title}" contenteditable="true"></td>
+            <td>
+                <a href="#" th:href="@{/productGroup/delete/(id=${productGroup.id})}">Ջնջել</a>
+            </td>
+            <td>
+                <a href="#"
+                   th:data-id="|${productGroup.id}|"
+                   onclick="myFunction(this.getAttribute('data-id'))">Փոփոխել</a>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+<script type="text/javascript">
+
+    function myFunction(id) {
+        let title = document.getElementById(id).innerText;
+        $.ajax({
+            type: "POST",
+            url: "/productGroup/modify/",
+            data: {groupId: id, groupTitle: title},
+        });
+    }
+
+</script>
+<script>
+    function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+
+</script>
+</body>
+</html>

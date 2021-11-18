@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script th:src="@{../static/sortTable.js}"></script>
+    <link th:href="@{../static/addProductForm.css}" type="text/css"/>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div id="newProduct">
+
+    <form id="asd" th:action="@{/brand/}" th:method="post" style="display: none">
+
+        <label>Անվանում</label>
+        <label>
+            <input type="text" name="title" placeholder="Անվանում" required>
+        </label><br>
+        <input type="reset" value="Մաքրել"/>
+        <button type="submit">Ավելացնել</button>
+    </form>
+
+    <h5>
+        <button id="closeWindow" onclick="asd(1)" style="display: none">Փակել պատուհանը</button>
+    </h5>
+    <h5>
+        <button id="openWindow" onclick="asd(2)">Նոր բրենդ</button>
+    </h5>
+</div>
+<div>
+
+    <table border="1" id="myTable">
+        <tr>
+            <th onclick="sortTable(0)">Անվանում</th>
+        </tr>
+        <tr id="editable_data" th:each="brand : ${brands}">
+            <td th:id="${brand.id}" th:text="${brand.title}" contenteditable="true"></td>
+            <td>
+                <a href="#" th:href="@{/brand/delete/(id=${brand.id})}">Ջնջել</a>
+            </td>
+            <td>
+                <a href="#"
+                   th:data-id="|${brand.id}|"
+                   onclick="myFunction(this.getAttribute('data-id'))">Փոփոխել</a>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+<script type="text/javascript">
+    function myFunction(id) {
+        let title = document.getElementById(id).innerText;
+        $.ajax({
+            type: "POST",
+            url: "/brand/modify/",
+            data: {brandId: id, brandTitle: title},
+        });
+    }
+</script>
+<script>
+    function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+
+</script>
+</body>
+</html>
