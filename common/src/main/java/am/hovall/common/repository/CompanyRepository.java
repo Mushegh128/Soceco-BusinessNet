@@ -15,4 +15,5 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     List<Company> findAll();
 
     List<Company> findAllByPresSeller_Id(Long id);
+
 }

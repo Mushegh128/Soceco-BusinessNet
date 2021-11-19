@@ -46,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentResponse> findAllByCompanyRegisterNumber(Long companyRegisterNumber) {
+    public List<PaymentResponse> findAllByCompanyRegisterNumber(String companyRegisterNumber) {
         return paymentRepository.findAllByCompanyRegisterNumber(companyRegisterNumber)
                 .stream().map(paymentMapper::toResponse).collect(Collectors.toList());
     }

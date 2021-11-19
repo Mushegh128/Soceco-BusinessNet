@@ -11,7 +11,7 @@ public interface PaymentService {
 
     PaymentResponse save(PaymentRequest paymentRequest);
 
-    List<PaymentResponse> findAllByCompanyRegisterNumber(Long id);
+    List<PaymentResponse> findAllByCompanyRegisterNumber(String id);
 
     List<PaymentResponse> findAllByFromUser(Long id);
 

@@ -26,7 +26,6 @@ public class ExcelServiceImplTest {
     void importProducts() throws Exception {
         MockMultipartFile file = new MockMultipartFile("products", "excelFilesForTest/products.xlsx", TYPE,
                 new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
-        MockMultipartFile[] files = new MockMultipartFile[]{file};
         verify(mock, times(0)).importProducts(file);
     }
 
@@ -34,7 +33,6 @@ public class ExcelServiceImplTest {
     void importProducts_if_file_type_is_wrong() throws Exception {
         MockMultipartFile file = new MockMultipartFile("products", "excelFilesForTest/products.xlsx", TYPE + "t",
                 new ClassPathResource("excelFilesForTest/products.xlsx").getInputStream());
-        MockMultipartFile[] files = new MockMultipartFile[]{file};
         doThrow(new NullPointerException()).when(mock).importProducts(file);
     }
 

@@ -17,6 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderMapper implements BaseMapper<Order, OrderRequest, OrderResponse> {
     private final ModelMapper mapper;
+    private final CompanyMapper companyMapper;
+    private final UserMapper userMapper;
+    private final PaymentMapper paymentMapper;
     private final ProductOrderMapper productOrderMapper;
 
     @Override
@@ -27,8 +30,8 @@ public class OrderMapper implements BaseMapper<Order, OrderRequest, OrderRespons
         }
         Order order = mapper.map(orderRequest, Order.class);
         order.setProductOrders(productOrders);
-        order.setCompany(mapper.map(orderRequest.getCompanyRequest(), Company.class));
-        order.setUser(mapper.map(orderRequest.getUserRequest(), User.class));
+        order.setCompany(companyMapper.toEntity(orderRequest.getCompanyRequest()));
+        order.setUser(userMapper.toEntity(orderRequest.getUserRequest()));
         return order;
     }
 
@@ -40,12 +43,12 @@ public class OrderMapper implements BaseMapper<Order, OrderRequest, OrderRespons
             productOrderResponseList.add(productOrderMapper.toResponse(productOrder));
         }
         for (Payment payment : order.getPaymentList()) {
-            paymentResponseList.add(mapper.map(payment, PaymentResponse.class));
+            paymentResponseList.add(paymentMapper.toResponse(payment));
         }
         OrderResponse orderResponse = mapper.map(order, OrderResponse.class);
         orderResponse.setProductOrderResponses(productOrderResponseList);
-        orderResponse.setCompanyResponse(mapper.map(order.getCompany(), CompanyResponse.class));
-        orderResponse.setUserResponse(mapper.map(order.getUser(), UserResponse.class));
+        orderResponse.setCompanyResponse(companyMapper.toResponse(order.getCompany()));
+        orderResponse.setUserResponse(userMapper.toResponse(order.getUser()));
         orderResponse.setPaymentResponseList(paymentResponseList);
         return orderResponse;
     }

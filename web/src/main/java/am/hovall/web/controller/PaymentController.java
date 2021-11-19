@@ -34,7 +34,7 @@ public class PaymentController {
 
     @GetMapping("/{registerNumber}")
     public String byCompany(@PathVariable("registerNumber") String registerNumber, ModelMap modelMap){
-        modelMap.addAttribute("payments", paymentService.findAllByCompanyRegisterNumber(Long.parseLong(registerNumber)));
+        modelMap.addAttribute("payments", paymentService.findAllByCompanyRegisterNumber(registerNumber));
         return "payments";
     }
 
