@@ -13,6 +13,10 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts(Pageable pageable);
 
+    List<ProductResponse> findAllUnSynchronized();
+
+    List<ProductResponse> getAllProductsByBarcode(long barcode);
+
     List<ProductResponse> findAllByCategoryId(long id, Pageable pageable);
 
     List<ProductResponse> findAllByBrandId(long id, Pageable pageable);
@@ -26,6 +30,8 @@ public interface ProductService {
     boolean deactivate(long id);
 
     void saveImage(MultipartFile file, long id) throws IOException;
+
+    void saveProductsImages(List<MultipartFile> images);
 
     ProductResponse findById(Long id);
 }

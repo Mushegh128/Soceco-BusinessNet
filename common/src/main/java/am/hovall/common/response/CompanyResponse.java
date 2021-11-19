@@ -5,11 +5,12 @@ import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.PresSeller;
 import lombok.*;
 
+@Data
 @Builder
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class CompanyResponse {
     private long id;
     private long barcode;

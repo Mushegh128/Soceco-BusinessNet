@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable).stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> findAllUnSynchronized() {
+        return productRepository.findAllUnSynchronized().stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductsByBarcode(long barcode) {
+        return productRepository.findAllByBarcode(barcode).stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -114,6 +129,22 @@ public class ProductServiceImpl implements ProductService {
         product.setPicUrl(picUrl);
         product.setSmallPicUrl(smallPicUrl);
         productRepository.save(product);
+    }
+
+    @Override
+    public void saveProductsImages(List<MultipartFile> images) {
+        List<Product> products = productRepository.findAll();
+        images.forEach(image ->
+                products.forEach(product -> {
+                    if (Objects.requireNonNull(image.getOriginalFilename()).contains(String.valueOf(product.getBarcode()))) {
+                        try {
+                            saveImage(image, product.getId());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+        );
     }
 
     @Override

@@ -3,17 +3,15 @@ package am.hovall.common.request;
 import am.hovall.common.entity.Brand;
 import am.hovall.common.entity.MadeInCountry;
 import am.hovall.common.entity.ProductCategory;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Builder
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductRequest {
     private long id;
     @NotNull

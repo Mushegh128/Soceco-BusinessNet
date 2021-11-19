@@ -177,14 +177,21 @@ public class ExcelServiceImpl implements ExcelService {
                             company.setAddress(currentCell.getStringCellValue());
                             break;
                         case 3:
-                            String regNumber = currentCell.getStringCellValue();
-                            Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(regNumber);
-                            if (byRegisterNumber.isPresent()) {
-                                if (company.getId() != 0 && company.getRegisterNumber() != regNumber) {
-                                    break;
-                                }
-                            } else {
+                        } else {
+                            DataFormat fmt = workbook.createDataFormat();
+                            CellStyle cellStyle = workbook.createCellStyle();
+                            cellStyle.setDataFormat(fmt.getFormat("@"));
+                            currentCell.setCellStyle(cellStyle);
+                            String regNumber;
+                            CellType type = currentCell.getCellType();
+                            if (type == CellType.NUMERIC) {
+                                regNumber = String.valueOf(currentCell.getNumericCellValue());
                                 company.setRegisterNumber(regNumber);
+                            } else {
+                                regNumber = currentCell.getStringCellValue();
+                                if (regNumber.matches("^[0-9]+$")) {
+                                    company.setRegisterNumber(regNumber);
+                                }
                             }
                             break;
                         case 4:
