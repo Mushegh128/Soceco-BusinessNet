@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootApplication
+
 @ComponentScan({"am.hovall.common.*","am.hovall.rest.*"})
 @EnableJpaRepositories(basePackages = {"am.hovall.common.repository"})
 @EntityScan({"am.hovall.common.entity"})
+@SpringBootApplication
 public class RestApplication {
 
     public static void main(String[] args) {

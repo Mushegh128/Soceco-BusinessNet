@@ -61,29 +61,7 @@
 <div class="colorlib-loader"></div>
 
 <div id="page">
-    <nav class="colorlib-nav" role="navigation">
-        <div class="top-menu">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-2">
-                        <div id="colorlib-logo"><a href="/">Store</a></div>
-                    </div>
-                    <div class="col-xs-10 text-right menu-1">
-                        <ul>
-                            <li><a href="/">Home</a></li>
-                            <li class="has-dropdown active">
-                                <a href="/shop">Shop</a>
-                            </li>
-                            <li><a href="/about">About</a></li>
-                            <li th:if="${user==null}"><a href="/login">Login</a></li>
-                            <li th:if="${user==null}"><a href="/register">Register</a></li>
-                            <li><a href="/cart"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div th:include="/fragments/header"></div>
     <aside id="colorlib-hero" class="breadcrumbs">
         <div class="flexslider">
             <ul class="slides">
@@ -114,7 +92,8 @@
                             <div class="col-md-5">
                                 <div class="product-entry">
                                     <div class="product-img">
-                                        <img th:src="@{/getImage(picUrl=${product.picUrl})}"
+                                        <img th:if="${product.picUrl != ''}"
+                                             th:src="@{/getImage(picUrl=${product.picUrl})}"
                                              style="max-width:275px; min-width: 275px">
                                         <p class="tag"><span class="sale">Sale</span></p>
                                     </div>
@@ -125,9 +104,9 @@
                             <div class="col-md-7">
                                 <div class="desc">
                                     <div class="color-wrap">
-                                        <p class="color-desc" >
+                                        <p class="color-desc">
                                             Name:
-                                        <span th:text="${product.name}" style="color: #FFC300;"></span>
+                                            <span th:text="${product.title}" style="color: #FFC300;"></span>
                                         </p>
                                     </div>
                                     <div class="color-wrap">
@@ -150,14 +129,14 @@
                                     <div class="color-wrap">
                                         <p class="color-desc">
                                             Color:
-                                            <a th:text="${product.color}"></a>
+                                            <a th:text="${product.productCategory}"></a>
 
                                         </p>
                                     </div>
                                     <div class="size-wrap">
                                         <p class="size-desc">
                                             Size:
-                                            <a th:text="${product.size.name()}"></a>
+                                            <a th:text="${product.getBarcode()}"></a>
 
                                         </p>
                                     </div>
@@ -357,39 +336,39 @@
         </div>
     </div>
 
-    <div class="colorlib-shop">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 text-center colorlib-heading">
-                    <h2><span>Similar Products</span></h2>
-                    <p>We love to tell our successful far far away, behind the word mountains, far from the countries
-                        Vokalia and Consonantia, there live the blind texts.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div th:each="prod:${last4Products}" class="col-md-3 text-center">
-                    <div class="product-entry">
-                        <div class="product-img">
-                            <a th:href="@{/currentProduct(id=${prod.id})}"><img
-                                    th:src="@{/getImage(picUrl=${prod.picUrl})}"></a>
-                            <p class="tag"><span class="new">New</span></p>
-                            <div class="cart">
-                                <p>
-                                    <span class="addtocart"><a href="#"><i class="icon-shopping-cart"></i></a></span>
-                                    <span><a th:href="@{/currentProduct(id=${prod.id})}"><i
-                                            class="icon-eye"></i></a></span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="desc">
-                            <h3 th:text="${prod.name}"><a th:href="@{/currentProduct(id=${prod.id})}"></a></h3>
-                            <p class="price"><span th:text="${prod.price}"></span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!--    <div class="colorlib-shop">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-md-6 col-md-offset-3 text-center colorlib-heading">-->
+    <!--                    <h2><span>Similar Products</span></h2>-->
+    <!--                    <p>We love to tell our successful far far away, behind the word mountains, far from the countries-->
+    <!--                        Vokalia and Consonantia, there live the blind texts.</p>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="row">-->
+    <!--                <div th:each="prod:${last4Products}" class="col-md-3 text-center">-->
+    <!--                    <div class="product-entry">-->
+    <!--                        <div class="product-img">-->
+    <!--                            <a th:href="@{/currentProduct(id=${prod.id})}"><img-->
+    <!--                                    th:src="@{/getImage(picUrl=${prod.picUrl})}"></a>-->
+    <!--                            <p class="tag"><span class="new">New</span></p>-->
+    <!--                            <div class="cart">-->
+    <!--                                <p>-->
+    <!--                                    <span class="addtocart"><a href="#"><i class="icon-shopping-cart"></i></a></span>-->
+    <!--                                    <span><a th:href="@{/currentProduct(id=${prod.id})}"><i-->
+    <!--                                            class="icon-eye"></i></a></span>-->
+    <!--                                </p>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                        <div class="desc">-->
+    <!--                            <h3 th:text="${prod.name}"><a th:href="@{/currentProduct(id=${prod.id})}"></a></h3>-->
+    <!--                            <p class="price"><span th:text="${prod.price}"></span></p>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
     <div id="colorlib-subscribe">
         <div class="overlay"></div>
