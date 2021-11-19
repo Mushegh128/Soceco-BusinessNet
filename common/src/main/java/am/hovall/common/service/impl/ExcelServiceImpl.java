@@ -177,7 +177,7 @@ public class ExcelServiceImpl implements ExcelService {
                             company.setAddress(currentCell.getStringCellValue());
                             break;
                         case 3:
-                            long regNumber = (long) currentCell.getNumericCellValue();
+                            String regNumber = currentCell.getStringCellValue();
                             Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(regNumber);
                             if (byRegisterNumber.isPresent()) {
                                 if (company.getId() != 0 && company.getRegisterNumber() != regNumber) {
@@ -291,7 +291,7 @@ public class ExcelServiceImpl implements ExcelService {
                     cell = regNumberRow.createCell(0);
                     cell.setCellValue("Ընկերության ՀՎՀՀ");
                     cell = regNumberRow.createCell(3);
-                    if (order.getCompany().getRegisterNumber() != 0) {
+                    if (order.getCompany().getRegisterNumber() != null) {
                         cell.setCellValue(order.getCompany().getRegisterNumber());
                     } else {
                         cell.setBlank();
@@ -519,7 +519,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
 
             productDataCell = companyDataRow.createCell(3);
-            if (company.getRegisterNumber() != 0) {
+            if (company.getRegisterNumber() != null) {
                 productDataCell.setCellValue(company.getRegisterNumber());
             } else {
                 productDataCell.setBlank();

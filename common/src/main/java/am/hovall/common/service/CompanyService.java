@@ -8,7 +8,7 @@ public interface CompanyService {
 
     CompanyResponse findById(Long id);
 
-    CompanyResponse findByRegisterNumber(long registerNumber);
+    CompanyResponse findByRegisterNumber(String registerNumber);
 
     List<CompanyResponse> findAll();
 

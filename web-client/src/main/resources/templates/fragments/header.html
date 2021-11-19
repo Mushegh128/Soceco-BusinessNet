@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Online-Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
+
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content=""/>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="css/animate.css">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="css/icomoon.css">
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <!-- Flexslider  -->
+    <link rel="stylesheet" href="css/flexslider.css">
+
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <!-- Flaticons  -->
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+    <!-- Theme style  -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Modernizr JS -->
+    <script src="js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<div class="colorlib-loader"></div>
+
+<div id="page">
+    <nav class="colorlib-nav" role="navigation">
+        <div class="top-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <div id="colorlib-logo"><a href="/"><h2 class="btn btn-primary">SocEco</h2></a></div>
+                    </div>
+                    <div class="col-xs-10 text-right menu-1">
+                        <ul>
+                            <li class="has-dropdown">
+                                <a th:if="${user != null}" href="/shop" class="btn btn-primary">Ապրանքատեսականի</a>
+                                <!--                                <ul class="dropdown">-->
+                                <!--                                    <li></li>-->
+                                <!--                                </ul>-->
+                            </li>
+                            <li><a href="/about" class="btn btn-primary">Մեր Մասին</a></li>
+                            <li th:if="${user==null}"><a href="#" th:href="@{/user/login}" class="btn btn-primary">Մուտք</a></li>
+                            <li th:if="${user==null}"><a href="/user/register" class="btn btn-primary">Գրանցվել</a></li>
+                            <li th:if="${user!=null}"><a href="/logout" class="btn btn-primary">ԵԼՔ</a></li>
+                                Page</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+    </body>
+</html>

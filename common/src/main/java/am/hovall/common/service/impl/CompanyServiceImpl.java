@@ -27,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyResponse findByRegisterNumber(long registerNumber) {
+    public CompanyResponse findByRegisterNumber(String registerNumber) {
         Company company = companyRepository.findByRegisterNumber(registerNumber).orElseThrow(CompanyNotFoundException::new);
         return companyMapper.toResponse(company);
     }

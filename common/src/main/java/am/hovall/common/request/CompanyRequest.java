@@ -22,7 +22,7 @@ public class CompanyRequest {
     @NotBlank
     private String address;
     @NotNull @Digits(integer = 8, fraction = 0)
-    private Long registerNumber;
+    private String registerNumber;
     private String logoUrl;
     private double level;
     private double rating;

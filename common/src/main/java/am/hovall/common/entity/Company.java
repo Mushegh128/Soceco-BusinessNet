@@ -22,7 +22,7 @@ public class Company {
     private long barcode;
     private String name;
     private String address;
-    private long registerNumber;
+    private String registerNumber;
     private String bankingAccount;
     private String phoneNumber;
     private String logoUrl;

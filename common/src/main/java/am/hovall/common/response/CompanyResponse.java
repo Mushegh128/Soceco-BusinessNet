@@ -15,7 +15,7 @@ public class CompanyResponse {
     private long barcode;
     private String name;
     private String address;
-    private long registerNumber;
+    private String registerNumber;
     private String phoneNumber;
     private String logoUrl;
     private double level;
