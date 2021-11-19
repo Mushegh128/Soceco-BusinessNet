@@ -3,6 +3,7 @@ package am.hovall.common.service.impl;
 import am.hovall.common.entity.PresSeller;
 import am.hovall.common.exception.EmailNotFoundException;
 import am.hovall.common.exception.PhoneNumberNotFoundException;
+import am.hovall.common.exception.PreSellerNotFoundException;
 import am.hovall.common.mapper.PresSellerMapper;
 import am.hovall.common.repository.PresSellerRepository;
 import am.hovall.common.request.PresSellerRequest;
@@ -28,6 +29,16 @@ public class PresSellerServiceImpl implements PresSellerService {
     public List<PresSellerResponse> findAll() {
         List<PresSeller> presSellers = presSellerRepository.findAll();
         return presSellers.stream().map(mapper::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public void update(PresSellerRequest presSellerRequest) throws PreSellerNotFoundException {
+        PresSeller byId = presSellerRepository.getById(presSellerRequest.getId());
+        if (byId == null) {
+            throw new PreSellerNotFoundException();
+        }
+        presSellerRepository.save(mapper.toEntity(presSellerRequest));
+
     }
 
     @Override
