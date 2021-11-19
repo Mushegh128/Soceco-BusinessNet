@@ -7,6 +7,30 @@
 <body>
 <div th:include="/fragments/header"></div>
 <div>
+    <div id="newProduct">
+
+        <form id="asd" th:action="@{/company/add}" th:method="post"  style="display: none">
+            <label>անուն</label>
+            <label>
+                <input type="text" id="name" th:field="${company.name}" placeholder="Name">
+            </label><br>
+
+
+
+    <script> function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+    </script>
+</div>
+<div>
     <table>
         <tr>
             <th>Կոդ</th>
