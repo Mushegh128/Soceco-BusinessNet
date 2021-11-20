@@ -28,19 +28,24 @@
 
     <form action="/company/modify/" method="post">
         <input type="hidden" name="id" th:value="${company.id}">
-        <input type="hidden" name="presSeller.id" th:value="${company.presSeller.getId()}">
-        Անուն <input type="text" th:placeholder="${company.name}" name="name" th:value="${company.name}"><br>
-        Հասցե<input type="text" th:placeholder="${company.address}" name="address" th:value="${company.address}"><br>
-        Գրանցման համար<input type="text" th:placeholder="${company.registerNumber}" name="registerNumber"
-                             th:value="${company.registerNumber}"><br>
-        <select name="discount">
-            <option th:each="discount:${discounts}" th:value="${discount.id}" th:text="${discount.size}">
-            </option>
+        
+        Անուն ։ <input type="text" th:placeholder="${company.name}" name="name" th:value="${company.name}"><br>
+        Հասցե ։ <input type="text" th:placeholder="${company.address}" name="address" th:value="${company.address}"><br>
+        Գրանցման համար ։ <input type="text" th:placeholder="${company.registerNumber}" name="registerNumber"
+                                th:value="${company.registerNumber}"><br>
+        Զեղչ։ <select name="discount">
+        <option th:each="discount:${discounts}" th:value="${discount.id}" th:text="${discount.size}">
+        </option>
+    </select>
+        ընկերքության անվանում ։ <select name="companyType">
+        <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType.name}">
+        </option>
+    </select>
         </select>
-        <select name="companyType">
-            <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType.name}">
-            </option>
-        </select>
+        Շ.Զ.Պ ։ <select name="presSeller">
+        <option th:each="presSeller : ${presSellers}" th:value="${presSeller.id}" th:text="${presSeller.name}">
+        </option>
+    </select>
         <input type="submit" value="փոփոխել">
     </form>
 </div>

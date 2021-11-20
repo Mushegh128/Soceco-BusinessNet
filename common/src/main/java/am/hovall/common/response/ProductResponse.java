@@ -26,7 +26,6 @@ public class ProductResponse {
     private String picUrl;
     private LocalDateTime createdDateTime;
     private boolean isActive;
-    private String picUrl;
     private MadeInCountry madeInCountry;
     private Discount discount;
     private ProductCategory productCategory;

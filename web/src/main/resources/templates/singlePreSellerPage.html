@@ -45,7 +45,7 @@
             <td th:text="${company.address}"></td>
             <td th:text="${company.companyType.name}"></td>
             <td th:text="${company.rating}"></td>
-            <td><a href="#" th:href="@{/company/deactivatePresSeller/(id=${company.getId()})}"> Deactivate </a></td>
+            <td><a href="#" th:href="@{/preSeller/deactivatePresSeller/(id=${company.getId()})}"> Deactivate </a></td>
 
         </tr>
     </table>

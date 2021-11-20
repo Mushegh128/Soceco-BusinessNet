@@ -177,23 +177,23 @@ public class ExcelServiceImpl implements ExcelService {
                             company.setAddress(currentCell.getStringCellValue());
                             break;
                         case 3:
+                        DataFormat fmt = workbook.createDataFormat();
+                        CellStyle cellStyle = workbook.createCellStyle();
+                        cellStyle.setDataFormat(fmt.getFormat("@"));
+                        currentCell.setCellStyle(cellStyle);
+                        String regNumber;
+                        CellType type = currentCell.getCellType();
+                        if (type == CellType.NUMERIC) {
+                            regNumber = String.valueOf(currentCell.getNumericCellValue());
+                            company.setRegisterNumber(regNumber);
                         } else {
-                            DataFormat fmt = workbook.createDataFormat();
-                            CellStyle cellStyle = workbook.createCellStyle();
-                            cellStyle.setDataFormat(fmt.getFormat("@"));
-                            currentCell.setCellStyle(cellStyle);
-                            String regNumber;
-                            CellType type = currentCell.getCellType();
-                            if (type == CellType.NUMERIC) {
-                                regNumber = String.valueOf(currentCell.getNumericCellValue());
+                            regNumber = currentCell.getStringCellValue();
+                            if (regNumber.matches("^[0-9]+$")) {
                                 company.setRegisterNumber(regNumber);
-                            } else {
-                                regNumber = currentCell.getStringCellValue();
-                                if (regNumber.matches("^[0-9]+$")) {
-                                    company.setRegisterNumber(regNumber);
-                                }
                             }
-                            break;
+                        }
+                        
+                        break;
                         case 4:
                             company.setPhoneNumber(currentCell.getStringCellValue());
                             break;
@@ -240,6 +240,7 @@ public class ExcelServiceImpl implements ExcelService {
             throw new RuntimeException("failed to parse Excel file: " + e.getMessage());
         }
     }
+
 
     @Override
     public ByteArrayInputStream exportOrdersByStatus(String orderStatus, long id) throws IOException {
