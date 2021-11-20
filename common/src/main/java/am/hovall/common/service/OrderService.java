@@ -5,7 +5,6 @@ import am.hovall.common.exception.OrderNotFoundException;
 import am.hovall.common.request.OrderRequest;
 import am.hovall.common.response.OrderResponse;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
@@ -35,4 +34,6 @@ public interface OrderService {
     OrderResponse findById(long id);
 
     List<OrderResponse> findByStatus(OrderStatus ordered);
+
+    void deleteOrderedProductFromOrder(Long productOrderId,Long serialNumber);
 }
