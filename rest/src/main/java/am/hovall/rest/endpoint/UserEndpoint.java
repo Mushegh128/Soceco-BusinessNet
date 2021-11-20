@@ -21,8 +21,9 @@ public class UserEndpoint {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.registration(userRequest));
+    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest,
+                                                     @RequestParam("registerNumber") String registerNumber) {
+        return ResponseEntity.ok(userService.registration(userRequest, registerNumber));
     }
 
     @GetMapping("/company/{id}")

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Page</title>
+</head>
+<body style="background: #C586E3;
+background: -webkit-linear-gradient(top left, #C586E3, #85E3E3);
+background: -moz-linear-gradient(top left, #C586E3, #85E3E3);
+background: linear-gradient(top left, #C586E3, #85E3E3);
+">
+
+
+<div style="    width: 1199px;
+    margin: auto">
+
+
+    <p style="position: relative"><a href="/"
+                                     style="background: #000;color: #fff;padding: 13px;font-size: 31px;text-decoration: none;">Home</a>
+        | <a href="/shop" style=" background: #000;color: #fff; padding: 13px;font-size: 31px; text-decoration: none;">Shop</a>
+        | <a href="about" style="background: #000;color: #fff;padding: 13px;font-size: 31px;text-decoration: none;">About</a>
+        <a href="/logout"
+           style="position: absolute;right: 0;background: #9932CC;font-size: 31px;padding: 3px 21px 11px 21px;color: #fff;border-radius: 10px;">LOgout</a>
+    </p>
+
+    <hr>
+    <table border="1" style="    float: right;">
+        <tr>
+            <th>picture</th>
+            <th>name</th>
+            <th>description</th>
+            <th>price</th>
+            <th>size</th>
+            <th>count</th>
+            <th>date</th>
+            <th>clothesType</th>
+            <th>category</th>
+            <th>shipping</th>
+            <th>color</th>
+            <th>delete</th>
+
+        </tr>
+
+
+        <tr th:each="prod:${products}">
+            <td><img th:src="@{/getImage(picUrl=${prod.picUrl})}" style="width: 80px"></td>
+            <td th:text="${prod.name}"></td>
+            <td th:text="${prod.description}"></td>
+            <td th:text="${prod.price}"></td>
+            <td th:text="${prod.size.name()}"></td>
+            <td th:text="${prod.count}"></td>
+            <td th:text="${prod.date}"></td>
+            <td th:text="${prod.clothesType.name()}"></td>
+            <td th:text="${prod.category.name()}"></td>
+            <td th:text="${prod.shipping.name()}"></td>
+            <td th:text="${prod.color}"></td>
+            <td><a th:href="@{/deleteProduct(id=${prod.id})}">Delete</a></td>
+        </tr>
+
+
+    </table>
+
+    <div>
+
+        <form action="/addProduct" method="POST" enctype="multipart/form-data">
+            <p><b>Name</b></p>
+            <input type="text" name="name" style="padding: 10px">
+            <p><b>Description</b></p>
+            <input type="text" name="description" style="padding: 10px">
+            <p><b>Price</b></p>
+            <input type="text" name="price" style="padding: 10px">
+            <p><b>Count</b></p>
+            <input type="number" name="count" style="padding: 10px">
+            <br><br> <br>
+            <select name="size">
+                <option th:each="size:${sizes}" th:text="${size.name()}" th:value="${size.name()}"></option>
+            </select>
+
+
+            <select name="clothesType">
+                <option th:each="clothesType: ${clothesTypes}" th:text="${clothesType.name()}"
+                        th:value="${clothesType.name()}"></option>
+            </select>
+
+
+            <select name="category">
+                <option th:each="category:${categories}" th:value="${category.name()}"
+                        th:text="${category.name()}"></option>
+
+            </select>
+
+            <select name="shipping">
+                <option th:each="shp: ${shipping}" th:value="${shp.name()}" th:text="${shp.name()}"></option>
+            </select>
+
+
+            <p><b>Color</b></p>
+            <input type="text " name="color" style="padding: 10px">
+            <br>
+            <br>
+            <input type="file" name="picture"><br>
+            <input type="submit" value="Add product"
+                   style="padding: 12px 20px 12px 20px;border-radius: 18px; background: #32CD32;border: none;margin-top: 20px;">
+
+        </form>
+    </div>
+
+    <hr>
+
+    <div style="width: 100%;">
+
+        <table border="1" style="    position: relative;top: 30px;right: 108px;">
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="message:${allMessages}">
+                <td th:text="${message.name}"></td>
+                <td th:text="${message.surname}"></td>
+                <td th:text="${message.email}"></td>
+                <td th:text="${message.subject}"></td>
+                <td th:text="${message.text}"></td>
+                <td><a th:href="@{/deleteMessage(id=${message.id})}">Delete</a></td>
+            </tr>
+
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
+
+

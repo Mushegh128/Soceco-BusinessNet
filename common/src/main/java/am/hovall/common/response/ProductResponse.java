@@ -22,6 +22,8 @@ public class ProductResponse {
     private String description;
     private Double price;
     private Double weight;
+    private String smallPicUrl;
+    private String picUrl;
     private LocalDateTime createdDateTime;
     private boolean isActive;
     private String picUrl;
