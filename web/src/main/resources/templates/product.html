@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
-    <link th:href="@{../static/addProductForm.css}" type="text/css"/>
+    <link th:href="@{../static/product.css}" type="text/css"/>
+    <script th:src="@{../static/sortTable.js}"></script>
 </head>
 <body>
 <div th:include="/fragments/header"></div>
@@ -77,8 +78,15 @@
         <input type="file" id="files" name="import" multiple>
         <input type="submit">
     </form>
-    <a href="/products/export">Արտահանել Excel</a>
-
+    <div id="hrefs_div">
+        <button onclick="window.location.href='/products/export'">Արտահանել Excel</button>
+        &nbsp
+        <button onclick="window.location.href='/productCategory'">Ենթատեսակներ</button>
+        &nbsp
+        <button onclick="window.location.href='/brand'">Բրենդներ</button>
+        &nbsp
+        <button onclick="window.location.href='/productGroup'">Խմբեր</button>
+    </div>
     <table border="1" id="myTable">
         <tr>
             <th onclick="sortTable(0)">Շտրիխկոդ</th>
@@ -126,46 +134,6 @@
         }
     }
 
-</script>
-
-
-<script>
-    function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("myTable");
-        switching = true;
-        dir = "asc";
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i + 1].getElementsByTagName("TD")[n];
-                if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                switchcount++;
-            } else {
-                if (switchcount == 0 && dir == "asc") {
-                    dir = "desc";
-                    switching = true;
-                }
-            }
-        }
-    }
 </script>
 </body>
 </html>

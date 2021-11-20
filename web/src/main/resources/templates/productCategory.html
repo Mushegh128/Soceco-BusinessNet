@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script th:src="@{../static/sortTable.js}"></script>
+    <link th:href="@{../static/addProductForm.css}" type="text/css"/>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div id="newProduct">
+
+    <form id="asd" th:action="@{/productCategory/}" th:method="post" style="display: none">
+
+        <label>Անվանում</label>
+        <label>
+            <input type="text" name="title" placeholder="Անվանում" required>
+        </label><br>
+        <label>Խումբ </label>
+        <label>
+            <select name="productGroup.id">
+                <option th:each="group : ${productGroups}" th:value="${group.getId()}"
+                        th:text="${group.getTitle()}"></option>
+            </select>
+        </label>
+        <br>
+        <input type="reset" value="Մաքրել"/>
+        <button type="submit">Ավելացնել</button>
+    </form>
+
+    <h5>
+        <button id="closeWindow" onclick="asd(1)" style="display: none">Փակել պատուհանը</button>
+    </h5>
+    <h5>
+        <button id="openWindow" onclick="asd(2)">Նոր ենթատեսակ</button>
+    </h5>
+</div>
+<div>
+
+    <table border="1" id="myTable">
+        <tr>
+            <th onclick="sortTable(0)">Անվանում</th>
+            <th>Խումբ</th>
+        </tr>
+        <tr id="editable_data" th:each="productCategory: ${productCategories}">
+            <td th:id="${productCategory.id}" th:text="${productCategory.title}" contenteditable="true"></td>
+            <td>
+                <label>
+                    <select th:if="${productCategory.productGroup != null}"
+                            th:id="${productCategory.productGroup?.title}">
+                        <option th:if="${productCategory.productGroup != null}"
+                                th:each="productGroup : ${productGroups}" th:value="${productGroup.getId()}"
+                                th:text="${productGroup.getTitle()}"
+                                th:selected="${productGroup==productCategory.getProductGroup()}"></option>
+                        <option th:if="${productCategory.productGroup == null}" value=""></option>
+                        <option th:if="${productCategory.productGroup == null}"
+                                th:each="productGroup : ${productGroups}" th:value="${productGroup.getId()}"
+                                th:text="${productGroup.getTitle()}"
+                                th:selected="${productGroup==productCategory.getProductGroup()}"></option>
+                    </select>
+                    <select th:if="${productCategory.productGroup == null}" th:id="${'empty_group'+productCategory.id}">
+                        <option value=""></option>
+                        <option th:each="productGroup : ${productGroups}" th:value="${productGroup.getId()}"
+                                th:text="${productGroup.getTitle()}"
+                                th:selected="${productGroup==productCategory.getProductGroup()}"></option>
+                    </select>
+                </label>
+            </td>
+            <td>
+                <a href="#" th:href="@{/productCategory/delete/(id=${productCategory.id})}">Ջնջել</a>
+            </td>
+            <td>
+                <a href="#"
+                   th:data-id="|${productCategory.id}|"
+                   th:data-group-id="|${productCategory.productGroup?.title}|"
+                   onclick="myFunction(this.getAttribute('data-id'),this.getAttribute('data-group-id'))">Փոփոխել</a>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+<script type="text/javascript">
+
+    function myFunction(id, groupId) {
+        let group;
+        let title = document.getElementById(id).innerText;
+        if (groupId != null) {
+            let selected = document.getElementById(groupId);
+            group = selected.options[selected.selectedIndex].text;
+        }
+        if (groupId == null) {
+            let empty_group = document.getElementById("empty_group" + id);
+            group = empty_group.options[empty_group.selectedIndex].text;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/productCategory/modify/",
+            data: {categoryId: id, categoryTitle: title, groupTitle: group},
+        });
+    }
+
+</script>
+<script>
+    function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+
+</script>
+</body>
+</html>
