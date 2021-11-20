@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
     private String MESSAGE;
 
     @Override
-    public UserResponse registration(UserRequest userRequest) {
+    public UserResponse registration(UserRequest userRequest, String registerNumber) {
         if (!userRequest.isContractVerified()) {
             throw new UnVerifiedContractException();
         }
-        Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(userRequest.getCompanyRequest().getRegisterNumber());
+        Optional<Company> byRegisterNumber = companyRepository.findByRegisterNumber(registerNumber);
         if (byRegisterNumber.isEmpty()) {
             mailService.send(userRequest.getEmail(), "Ծանուցում", MESSAGE);
             throw new CompanyNotFoundException();
@@ -60,8 +60,9 @@ public class UserServiceImpl implements UserService {
         if (byEmail.isPresent()) {
             throw new EmailRepeatingException();
         }
-        ;
+
         User user = userMapper.toEntity(userRequest);
+        user.setCompany(byRegisterNumber.get());
         user.setActive(false);
         user.setCreatedDateTime(LocalDateTime.now());
         user.setMailVerifyToken(UUID.randomUUID());

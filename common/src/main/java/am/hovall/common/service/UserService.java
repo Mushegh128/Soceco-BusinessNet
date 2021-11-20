@@ -8,7 +8,7 @@ import am.hovall.common.response.UserResponse;
 import java.util.List;
 
 public interface UserService {
-    UserResponse registration(UserRequest userRequest);
+    UserResponse registration(UserRequest userRequest, String registerNumber);
 
     boolean verifyUser(String email, String token);
 

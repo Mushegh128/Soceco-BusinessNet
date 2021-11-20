@@ -7,27 +7,59 @@
 <body>
 <div th:include="/fragments/header"></div>
 <div>
-    <table>
-        <tr>
-            <th>Կոդ</th>
-            <th>Անվանում</th>
-            <th>Գործունեության Հասցե</th>
-            <th>ՀՎՀՀ</th>
-            <th>Հեռախոսահամար</th>
-            <th>Շ.Զ.Պ.</th>
-            <th>Տեսակ</th>
-            <th>Զեղչ</th>
-        </tr>
-        <tr>
-            <td th:text="${company.barcode}"></td>
-            <td th:text="${company.name}"></td>
-            <td th:text="${company.address}"></td>
-            <td th:text="${company.registerNumber}"></td>
-            <td th:text="${company?.phoneNumber}"></td>
-            <td th:text="${company.getPresSeller()?.name}"></td>
-            <td th:text="${company.getCompanyType()?.name}"></td>
-            <td th:text="${company.getDiscount()?.size}"></td>
-    </table>
+    <div id="newProduct">
+
+        <form id="asd" th:action="@{/company/add}" th:method="post" style="display: none">
+            <label>անուն</label>
+            <label>
+                <input type="text" id="name" th:field="${company.name}" placeholder="Name">
+            </label><br>
+
+
+            <script> function asd(a) {
+                if (a == 1) {
+                    document.getElementById("asd").style.display = "none";
+                    document.getElementById("openWindow").style.display = "block";
+                    document.getElementById("closeWindow").style.display = "none";
+                } else {
+                    document.getElementById("openWindow").style.display = "none";
+                    document.getElementById("closeWindow").style.display = "block";
+                    document.getElementById("asd").style.display = "block";
+                }
+            }
+            </script>
+    </div>
+
+    <h2>Sort By Name</h2>
+    <div>
+        <a th:href="@{/company/sortByNameAsc(action=${'sortByNameAsc'})}">A-Z</a><br>
+        <a th:href="@{/company/sortByNameDesc(action=${'sortByNameDesc'})}">Z-A</a><br>>
+
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>Կոդ</th>
+                <th>Անվանում</th>
+                <th>Գործունեության Հասցե</th>
+                <th>ՀՎՀՀ</th>
+                <th>Հեռախոսահամար</th>
+                <th>Շ.Զ.Պ.</th>
+                <th>Տեսակ</th>
+                <th>Զեղչ</th>
+            </tr>
+            <tr>
+                <td th:text="${company.barcode}"></td>
+                <td th:text="${company.name}"></td>
+                <td th:text="${company.address}"></td>
+                <td th:text="${company.registerNumber}"></td>
+                <td th:text="${company?.phoneNumber}"></td>
+                <td th:text="${company.getPresSeller()?.name}"></td>
+                <td th:text="${company.getCompanyType()?.name}"></td>
+                <td th:text="${company.getDiscount()?.size}"></td>
+        </table>
+    </div>
 </div>
+
 </body>
 </html>

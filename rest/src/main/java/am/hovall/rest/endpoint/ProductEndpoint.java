@@ -1,5 +1,6 @@
 package am.hovall.rest.endpoint;
 
+import am.hovall.common.exception.ProductNotFoundException;
 import am.hovall.common.request.ProductRequest;
 import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
@@ -9,7 +10,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -67,6 +71,28 @@ public class ProductEndpoint {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @PostMapping("/uploadImage/{productId}")
+    public ResponseEntity<?>
+    uploadProductImage(@RequestParam("image") MultipartFile file,
+                       @PathVariable("productId") long id) throws IOException {
+        try {
+            productService.saveImage(file, id);
+            return ResponseEntity.ok().build();
+        } catch (FileNotFoundException | ProductNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PostMapping("/uploadImages")
+    public ResponseEntity<?> uploadProductsImages(@RequestParam List<MultipartFile> images) {
+        try {
+            productService.saveProductsImages(images);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

@@ -20,7 +20,7 @@ public class ExcelParserEndpoint {
     private final ExcelService excelService;
 
     @PostMapping("/upload/products")
-    public ResponseEntity<?> uploadProducts(@RequestBody MultipartFile file) {
+    public ResponseEntity<?> uploadProducts(@RequestParam MultipartFile file) {
         try {
             excelService.importProducts(file);
             return ResponseEntity.status(HttpStatus.OK).build();
