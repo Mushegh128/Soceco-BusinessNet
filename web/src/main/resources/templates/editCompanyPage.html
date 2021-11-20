@@ -38,7 +38,7 @@
             </option>
         </select>
         <select name="companyType">
-            <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType.name}">
+            <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType?.name}">
             </option>
         </select>
         <input type="submit" value="փոփոխել">
