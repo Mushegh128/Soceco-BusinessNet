@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -25,6 +24,33 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyResponse findById(Long id) {
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+        return companyMapper.toResponse(company);
+    }
+
+    @Override
+    public List<CompanyResponse> findByOrderByNameDesc() {
+        List<Company> byOrderByNameDesc = companyRepository.findByOrderByNameDesc();
+        List<CompanyResponse> companyResponses = byOrderByNameDesc.
+                stream().
+                map(companyMapper::toResponse).
+                collect(Collectors.toList());
+        return companyResponses;
+    }
+
+    @Override
+    public List<CompanyResponse> findByOrderByNameAsc() {
+        List<Company> byOrderByNameAsc = companyRepository.findByOrderByNameAsc();
+        List<CompanyResponse> companyResponses
+                = byOrderByNameAsc.
+                stream().
+                map(companyMapper::toResponse).
+                collect(Collectors.toList());
+        return companyResponses;
+    }
+
+    @Override
+    public CompanyResponse findByName(String name) {
+        Company company = companyRepository.findByName(name).orElseThrow(CompanyNotFoundException::new);
         return companyMapper.toResponse(company);
     }
 

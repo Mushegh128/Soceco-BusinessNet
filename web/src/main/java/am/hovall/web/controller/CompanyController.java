@@ -34,6 +34,33 @@ public class CompanyController {
         return "companies";
     }
 
+    @GetMapping("/sortByNameDesc")
+    public String sortCompanyByNameDesc(ModelMap modelMap) {
+        List<CompanyResponse> byOrderByNameDesc = companyService.findByOrderByNameDesc();
+        modelMap.addAttribute("companies", byOrderByNameDesc);
+        return "/companies";
+    }
+
+    @GetMapping("/sortByNameAsc")
+    public String sortCompanyByNameAsc(ModelMap modelMap) {
+        List<CompanyResponse> byOrderByNameAsc = companyService.findByOrderByNameAsc();
+        modelMap.addAttribute("companies", byOrderByNameAsc);
+        return "/companies";
+    }
+
+    @GetMapping("/searchByName")
+    public String searchByName(@Param("name") String name, ModelMap modelMap) {
+        try {
+            CompanyResponse byName = companyService.findByName(name);
+            modelMap.addAttribute("companies", byName);
+        } catch (CompanyNotFoundException e) {
+            return "/companies";
+        }
+
+        return "/companies";
+    }
+
+
     @PostMapping("/import")
     public String addFromExcel(@RequestParam("import") MultipartFile multipartFile) {
         try {
@@ -44,11 +71,7 @@ public class CompanyController {
         return "redirect:/company";
     }
 
-    @GetMapping("/deactivatePresSeller/")
-    public String deactivatePresSeller(@ModelAttribute CompanyRequest companyRequest) {
-        companyService.deactivatePresSeller(companyRequest);
-        return "redirect:/preSeller";
-    }
+
 
     @GetMapping("/modify/")
     public String company(@RequestParam("id") Long id, ModelMap modelMap) {
