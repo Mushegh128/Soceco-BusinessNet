@@ -2,7 +2,6 @@ package am.hovall.common.service.impl;
 
 import am.hovall.common.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

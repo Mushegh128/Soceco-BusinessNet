@@ -177,6 +177,7 @@ public class ExcelServiceImpl implements ExcelService {
                             company.setAddress(currentCell.getStringCellValue());
                             break;
                         case 3:
+                        } else {
                             DataFormat fmt = workbook.createDataFormat();
                             CellStyle cellStyle = workbook.createCellStyle();
                             cellStyle.setDataFormat(fmt.getFormat("@"));

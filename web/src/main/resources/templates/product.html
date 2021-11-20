@@ -3,43 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
+    <link th:href="@{../static/product.css}" type="text/css"/>
+    <script th:src="@{../static/sortTable.js}"></script>
 </head>
 <body>
 <div th:include="/fragments/header"></div>
-<div>
-    <form action="#" th:action="@{/products/add}" style="border: solid 1px">
-        <input name="add" type="submit" value="Ավելացնել">
+<div id="newProduct">
+
+    <form id="asd" th:action="@{/products/add}" th:method="post" th:object="${emptyProduct}" style="display: none"
+          enctype="multipart/form-data">
+        <label for="barcode">Շտրիխկոդ</label>
+        <label>
+            <input type="text" id="barcode" th:field="${emptyProduct.barcode}" placeholder="Barcode" required>
+        </label><br>
+        <label>Անվանում</label>
+        <label>
+            <input type="text" th:field="${emptyProduct.title}" placeholder="Title" required>
+        </label><br>
+        <label>Չափման Միավոր/քաշ</label>
+        <label>
+            <input type="number" th:field="${emptyProduct.weight}" placeholder="Weight" required>
+        </label><br>
+        <label>Նկարագրություն:</label>
+        <label>
+            <input type="text" th:field="${emptyProduct.description}" placeholder="Description" required>
+        </label><br>
+        <label>Գին </label>
+        <label>
+            <input type="number" th:field="${emptyProduct.price}" placeholder="Price" required>
+        </label><br>
+        <label>Արտադրված է</label>
+        <label>
+            <select th:field="*{madeInCountry.id}">
+                <option th:each="madeInCountry : ${madeInCountrys}" th:value="${madeInCountry.getId()}"
+                        th:text="${madeInCountry.getTitle()}"></option>
+            </select>
+        </label>
+
+        <label>Ենթատեսակ </label>
+        <label>
+            <select th:field="*{productCategory.id}">
+                <option th:each="productCategory : ${productCategorys}" th:value="${productCategory.getId()}"
+                        th:text="${productCategory.getTitle()}"></option>
+            </select>
+        </label>
+
+        <label>Բրենդ </label>
+        <label>
+            <select th:field="*{brand.id}">
+                <option th:each="brand : ${brands}" th:value="${brand.getId()}"
+                        th:text="${brand.getTitle()}"></option>
+            </select>
+        </label>
+        <br>
+        <label>Լուսանկար </label>
+        <input type="file" name="image" accept="image/png, image/jpeg , image/jpg"/><br>
+        <input type="reset" value="Մաքրել"/>
+        <button type="submit">Ավելացնել</button>
+        <!--        <p th:if="${#fields.hasErrors('barcode') }" th:errors="*{barcode}">Name</p>-->
     </form>
-    <form action="#" th:action="@{/products/import}" method="post" enctype="multipart/form-data" style="border: solid 1px">
+
+    <h5>
+        <button id="closeWindow" onclick="asd(1)" style="display: none">Փակել պատուհանը</button>
+    </h5>
+    <h5>
+        <button id="openWindow" onclick="asd(2)">Նոր ապրանք</button>
+    </h5>
+</div>
+<div>
+
+    <form action="#" th:action="@{/products/import}" method="post" enctype="multipart/form-data"
+          style="border: solid 1px">
         <form:label path="file">Ներբեռնել Excel</form:label>
         <input type="file" id="files" name="import" multiple>
         <input type="submit">
     </form>
-    <a href="/products/export">Արտահանել Excel</a>
-
-    <table>
+    <div id="hrefs_div">
+        <button onclick="window.location.href='/products/export'">Արտահանել Excel</button>
+        &nbsp
+        <button onclick="window.location.href='/productCategory'">Ենթատեսակներ</button>
+        &nbsp
+        <button onclick="window.location.href='/brand'">Բրենդներ</button>
+        &nbsp
+        <button onclick="window.location.href='/productGroup'">Խմբեր</button>
+    </div>
+    <table border="1" id="myTable">
         <tr>
-            <th>Շտրիխկեդ</th>
-            <th>Անվանում</th>
-            <th>Չափման Միավոր/քաշ</th>
-            <th>Վաճառքի Գին</th>
-            <th>Ենթատեսակ</th>
-            <th>Բրենդ</th>
-            <th>Արտադրված է</th>
+            <th onclick="sortTable(0)">Շտրիխկոդ</th>
+            <th onclick="sortTable(1)">Անվանում</th>
+            <th onclick="sortTable(2)">Չափման Միավոր/քաշ</th>
+            <th onclick="sortTable(3)">Վաճառքի Գին</th>
+            <th onclick="sortTable(4)">Ենթատեսակ</th>
+            <th onclick="sortTable(5)">Բրենդ</th>
+            <th onclick="sortTable(6)">Արտադրված է</th>
+            <th onclick="sortTable(7)">Ակտիվ է</th>
         </tr>
         <tr th:each="product: ${products}">
             <td th:text="${product.getBarcode()}"></td>
             <td th:text="${product.getTitle()}"></td>
             <td th:text="${product.getWeight()}"></td>
             <td th:text="${product.getPrice()}"></td>
-            <td th:text="${product.getProductCategory()}"></td>
-            <td th:text="${product.getBrand()}"></td>
-            <td th:text="${product.getMaidInCountry()}"></td>
+            <td th:text="${product.getProductCategory()?.getTitle()}"></td>
+            <td th:text="${product.getBrand()?.getTitle()}"></td>
+            <td th:text="${product.getMadeInCountry()?.getTitle()}"></td>
+            <td th:if="${product.active}" th:text="Այո">Ոչ</td>
+            <td th:if="${!product.active}" th:text="Ոչ">Այո</td>
             <td>
-                <a href="#" th:href="@{/products/modify/(id=${product.id})}">Խմբագրել</a>
+                <a href="#" th:href="@{/products/modify/{id}(id=${product.id})}">Խմբագրել</a>
+            </td>
+            <td>
+                <a href="#" th:href="@{/products/deactivate/(id=${product.id})}">Ջնջել</a>
             </td>
         </tr>
+
     </table>
+
 </div>
+
+<script>
+
+    function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+
+</script>
 </body>
 </html>

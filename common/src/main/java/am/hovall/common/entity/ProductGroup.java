@@ -18,4 +18,9 @@ public class ProductGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String title;
+
+    public ProductGroup(String title) {
+        this.title = title;
+    }
+
 }

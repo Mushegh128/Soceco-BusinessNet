@@ -22,9 +22,12 @@ public class ProductResponse {
     private String description;
     private Double price;
     private Double weight;
+    private String smallPicUrl;
+    private String picUrl;
     private LocalDateTime createdDateTime;
     private boolean isActive;
-    private MadeInCountry maidInCountry;
+    private String picUrl;
+    private MadeInCountry madeInCountry;
     private Discount discount;
     private ProductCategory productCategory;
     private Brand brand;

@@ -1,6 +1,8 @@
 package am.hovall.web.controller;
 
+
 import am.hovall.common.exception.PreSellerNotFoundException;
+import am.hovall.common.request.CompanyRequest;
 import am.hovall.common.request.PresSellerRequest;
 import am.hovall.common.service.CompanyService;
 import am.hovall.common.service.PresSellerService;
@@ -21,6 +23,12 @@ public class PresSellerController {
     public String presSellers(ModelMap modelMap) {
         modelMap.addAttribute("presSellers", presSellerService.findAll());
         return "presSellers";
+    }
+
+    @GetMapping("/deactivatePresSeller/")
+    public String deactivatePresSeller(@ModelAttribute CompanyRequest companyRequest) {
+        companyService.deactivatePresSeller(companyRequest);
+        return "redirect:/preSeller";
     }
 
     @GetMapping("/modify/")
