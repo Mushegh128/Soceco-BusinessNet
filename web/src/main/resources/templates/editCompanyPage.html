@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>preSeller</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+
+<div>
+    <table style="border: solid 1px">
+        <tr>
+            <th>Կոդ</th>
+            <th>Անվանում</th>
+            <th>ՀՎՀՀ</th>
+            <th>Հասցե</th>
+            <th>տեսակ</th>
+            <th>Աստիճան</th>
+        </tr>
+        <td th:text="${company.getBarcode()}"></td>
+        <td th:text="${company.getName()}"></td>
+        <td th:text="${company.getRegisterNumber()}"></td>
+        <td th:text="${company.address}"></td>
+        <td th:text="${company.companyType.name}"></td>
+        <td th:text="${company.rating}"></td>
+        </tr>
+    </table>
+
+    <form action="/company/modify/" method="post">
+        <input type="hidden" name="id" th:value="${company.id}">
+        <input type="hidden" name="presSeller.id" th:value="${company.presSeller.getId()}">
+        Անուն <input type="text" th:placeholder="${company.name}" name="name" th:value="${company.name}"><br>
+        Հասցե<input type="text" th:placeholder="${company.address}" name="address" th:value="${company.address}"><br>
+        Գրանցման համար<input type="text" th:placeholder="${company.registerNumber}" name="registerNumber"
+                             th:value="${company.registerNumber}"><br>
+        <select name="discount">
+            <option th:each="discount:${discounts}" th:value="${discount.id}" th:text="${discount.size}">
+            </option>
+        </select>
+        <select name="companyType">
+            <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType.name}">
+            </option>
+        </select>
+        <input type="submit" value="փոփոխել">
+    </form>
+</div>
+</body>
+</html>
