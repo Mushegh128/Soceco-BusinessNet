@@ -3,17 +3,16 @@ package am.hovall.common.request;
 import am.hovall.common.entity.CompanyType;
 import am.hovall.common.entity.Discount;
 import am.hovall.common.entity.PresSeller;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Getter
-@Setter
 public class CompanyRequest {
     @NotNull
     private long id;
