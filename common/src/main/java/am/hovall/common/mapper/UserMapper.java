@@ -18,7 +18,9 @@ public class UserMapper implements BaseMapper<User, UserRequest, UserResponse> {
     @Override
     public User toEntity(UserRequest userRequest) {
         User user = mapper.map(userRequest, User.class);
-        user.setCompany(mapper.map(userRequest.getCompanyRequest(), Company.class));
+        if (userRequest.getCompanyRequest() != null) {
+            user.setCompany(mapper.map(userRequest.getCompanyRequest(), Company.class));
+        }
         return user;
     }
 
