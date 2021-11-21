@@ -2,6 +2,7 @@ package am.hovall.common.service.impl;
 
 import am.hovall.common.entity.Order;
 import am.hovall.common.entity.OrderStatus;
+import am.hovall.common.entity.ProductOrder;
 import am.hovall.common.exception.OrderNotFoundException;
 import am.hovall.common.mapper.OrderMapper;
 import am.hovall.common.repository.OrderRepository;
@@ -11,9 +12,7 @@ import am.hovall.common.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -145,5 +144,16 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponse> findByStatus(OrderStatus orderStatus) {
         List<Order> orderList = orderRepository.findByOrderStatus(orderStatus);
         return orderList.stream().map(orderMapper::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteOrderedProductFromOrder(Long productOrderId, Long serialNumber) {
+        Optional<Order> byId = orderRepository.findBySerialNumber(serialNumber);
+        if (byId.isPresent()) {
+            Order order = byId.get();
+            List<ProductOrder> productOrders = order.getProductOrders();
+            productOrders.removeIf(productOrder -> productOrder.getId() == productOrderId);
+            orderRepository.save(order);
+        }
     }
 }
