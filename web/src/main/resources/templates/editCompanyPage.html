@@ -41,6 +41,10 @@
             <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType?.name}">
             </option>
         </select>
+        Շ.Զ.Պ ։ <select name="presSeller">
+        <option th:each="presSeller : ${presSellers}" th:value="${presSeller.id}" th:text="${presSeller.name}">
+        </option>
+    </select>
         <input type="submit" value="փոփոխել">
     </form>
 </div>

@@ -9,9 +9,41 @@
     <div th:include="/fragments/header"></div>
 </div>
 <div>
-    <form action="#" th:action="@{/company/add}" style="border: solid 1px">
-        <input name="add" type="submit" value="Ավելացնել">
-    </form>
+    <!--    <form action="#" th:action="@{/company/add}" style="border: solid 1px">-->
+    <!--        <input name="add" type="submit" value="Ավելացնել">-->
+    <!--    </form>-->
+
+    <div id="newProduct">
+
+        <form id="asd" th:action="@{/company/add}" th:method="post" style="display: none">
+            Անուն ։ <input type="text" placeholder="անուն" name="name"><br>
+            Հասցե ։ <input type="text" placeholder="հասցե" name="address"><br>
+            Գրանցման համար ։ <input type="text" placeholder="գրանցման համար" name="registerNumber"><br>
+            Զեղչ։ <select name="discount">
+            <option th:each="discount:${discounts}" th:value="${discount.id}" th:text="${discount.size}">
+            </option>
+        </select>
+            ընկերքության անվանում ։ <select name="companyType">
+            <option th:each="companyType:${companyTypes}" th:value="${companyType.id}" th:text="${companyType.name}">
+            </option>
+        </select>
+            </select>
+            Շ.Զ.Պ ։ <select name="presSeller">
+            <option th:each="presSeller : ${presSellers}" th:value="${presSeller.id}" th:text="${presSeller.name}">
+            </option>
+        </select><br>
+            <input type="submit" value="ավելացնել">
+        </form>
+
+        <h5>
+            <button id="closeWindow" onclick="asd(1)" style="display: none">Փակել պատուհանը</button>
+        </h5>
+        <h5>
+            <button id="openWindow" onclick="asd(2)">Նոր ընկերություն</button>
+        </h5>
+    </div>
+
+
     <form action="#" th:action="@{/company/import}" method="post" enctype="multipart/form-data"
           style="border: solid 1px">
         <form:label path="file">Ներբեռնել Excel</form:label>
@@ -21,10 +53,13 @@
     <form action="#" th:action="@{/company/export}" style="border: solid 1px">
         <input name="export" type="submit" value="Արտահանել Excel">
     </form>
-    <h5>Sort By Name</h5>
     <div>
-        <a th:href="@{/company/sortByNameAsc(action=${'sortByNameAsc'})}"> A-Z </a><br>
-        <a th:href="@{/company/sortByNameDesc(action=${'sortByNameDesc'})}"> Z-A </a><br>>
+        <li>
+            <ly><a th:href="@{/company/sortByNameAsc(action=${'sortByNameAsc'})}"> Sort from Asc </a><br></ly>
+            <ly><a th:href="@{/company/sortByNameDesc(action=${'sortByNameDesc'})}">  Sort from Desc </a>
+            </ly>
+        </li>
+
     </div>
     <div>
         <form action="/company/searchByName">
@@ -51,5 +86,19 @@
         </tr>
     </table>
 </div>
+<script>
+    function asd(a) {
+        if (a == 1) {
+            document.getElementById("asd").style.display = "none";
+            document.getElementById("openWindow").style.display = "block";
+            document.getElementById("closeWindow").style.display = "none";
+        } else {
+            document.getElementById("openWindow").style.display = "none";
+            document.getElementById("closeWindow").style.display = "block";
+            document.getElementById("asd").style.display = "block";
+        }
+    }
+
+</script>
 </body>
 </html>

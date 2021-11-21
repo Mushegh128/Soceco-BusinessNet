@@ -2,6 +2,7 @@ package am.hovall.web.controller;
 
 import am.hovall.common.entity.CompanyType;
 import am.hovall.common.entity.Discount;
+import am.hovall.common.entity.PresSeller;
 import am.hovall.common.exception.CompanyNotFoundException;
 import am.hovall.common.request.CompanyRequest;
 import am.hovall.common.response.CompanyResponse;
@@ -30,7 +31,15 @@ public class CompanyController {
     @GetMapping
     private String companies(ModelMap modelMap) {
         List<CompanyResponse> companyResponses = companyService.findAll();
-        modelMap.addAttribute("companies", companyResponses);
+        List<CompanyType> companyTypes = companyTypeService.findAll();
+        List<Discount> discounts = discountService.findAll();
+        List<PresSellerResponse> presSellers = presSellerService.findAll();
+        if (companyTypes != null && discounts != null) {
+            modelMap.addAttribute("companyTypes", companyTypes);
+            modelMap.addAttribute("discounts", discounts);
+            modelMap.addAttribute("presSellers", presSellers);
+            modelMap.addAttribute("companies", companyResponses);
+        }
         return "companies";
     }
 
@@ -72,15 +81,16 @@ public class CompanyController {
     }
 
 
-
     @GetMapping("/modify/")
     public String company(@RequestParam("id") Long id, ModelMap modelMap) {
         modelMap.addAttribute("company", companyService.findById(id));
         List<CompanyType> companyTypes = companyTypeService.findAll();
         List<Discount> discounts = discountService.findAll();
+        List<PresSellerResponse> presSellers = presSellerService.findAll();
         if (companyTypes != null && discounts != null) {
             modelMap.addAttribute("companyTypes", companyTypes);
             modelMap.addAttribute("discounts", discounts);
+            modelMap.addAttribute("presSellers", presSellers);
         }
         return "editCompanyPage";
     }
@@ -103,7 +113,15 @@ public class CompanyController {
     }
 
     @GetMapping("/add")
-    public String add() {
+    public String add(ModelMap modelMap) {
+        List<CompanyType> companyTypes = companyTypeService.findAll();
+        List<Discount> discounts = discountService.findAll();
+        List<PresSellerResponse> presSellers = presSellerService.findAll();
+        if (companyTypes != null && discounts != null) {
+            modelMap.addAttribute("companyTypes", companyTypes);
+            modelMap.addAttribute("discounts", discounts);
+            modelMap.addAttribute("presSellers", presSellers);
+        }
         return "company";
     }
 
