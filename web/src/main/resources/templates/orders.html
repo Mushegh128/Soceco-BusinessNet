@@ -7,7 +7,7 @@
 <body>
 <div th:include="/fragments/header"></div>
 <div>
-    <table>
+    <table border="1">
         <tr>
             <th>Կարգավիճակ</th>
             <th>Պատվիրատու Գործընկեր</th>
@@ -15,19 +15,22 @@
             <th>Ստեղծման ամսաթիվ</th>
             <th>Վաճառքի ամսաթիվ</th>
             <th>Արժեք / հհ դրամ</th>
+            <th>Serial</th>
         </tr>
-        <tr th:each="orderResponse: ${orders}">
+        <tr th:each="orderResponse: ${orderedOrders}">
             <td th:text="${orderResponse.getOrderStatus()}"></td>
             <td th:text="${orderResponse.getCompanyResponse().name}"></td>
             <td th:text="${orderResponse.getUserResponse().name}"></td>
             <td th:text="${orderResponse.getCreatedDateTime()}"></td>
             <td th:text="${orderResponse.getSaleDateTime()}"></td>
             <td th:text="${orderResponse.getOrderCost()}"></td>
+            <td th:text="${orderResponse.serialNumber}"></td>
             <td>
-                <form action="#" th:action="@{/orders/${orderResponse.serialNumber}}" method="post">մշակել</form>
+                <a href="#" th:href="@{/orders/modify/(serialNumber=${orderResponse.serialNumber})}" >մշակել</a>
             </td>
         </tr>
     </table>
+    <button onclick="window.location.href('/orders/archive')">Արխիվ</button>
 </div>
 </body>
 </html>

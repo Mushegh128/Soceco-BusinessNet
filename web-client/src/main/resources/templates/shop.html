@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="desc">
                                         <h3><a th:href="@{/currentProduct(id=${product.id})}"
-                                               th:text="${product.name}"></a>
+                                               th:text="${product.title}"></a>
                                         </h3>
                                         <p class="price">
                                         <span><a th:href="@{/currentProduct(id=${product.id})}"
@@ -110,17 +110,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pagination" th:if="${allProducts.totalPages > 0}">
-                                <!--class="active"-->
-                                <li class="disabled"><a href="#">&laquo;</a></li>
-                                <li th:each="pageNumber: ${pageNumbers}"><a
-                                        th:href="@{/shop(size=${allProducts.size}, page=${pageNumber})}"
-                                        th:text="${pageNumber}"
-                                        th:class="${pageNumber==allProducts.number + 1} ? active"></a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
-                        </div>
+<!--                        <div class="col-md-12">-->
+<!--                            <ul class="pagination" th:if="${allProducts.totalPages > 0}">-->
+<!--                                &lt;!&ndash;class="active"&ndash;&gt;-->
+<!--                                <li class="disabled"><a href="#">&laquo;</a></li>-->
+<!--                                <li th:each="pageNumber: ${pageNumbers}"><a-->
+<!--                                        th:href="@{/shop(size=${allProducts.size}, page=${pageNumber})}"-->
+<!--                                        th:text="${pageNumber}"-->
+<!--                                        th:class="${pageNumber==allProducts.number + 1} ? active"></a></li>-->
+<!--                                <li><a href="#">&raquo;</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
                     </div>
                 </div>
                 <div class="col-md-2 col-md-pull-10">

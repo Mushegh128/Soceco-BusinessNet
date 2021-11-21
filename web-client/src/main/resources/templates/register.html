@@ -50,7 +50,7 @@
 <div class="wrapper">
     <div class="inner">
         <img src="images/image-1.png" alt="" class="image-1">
-        <form action="user/register"  method="post" >
+        <form action="/user/register"  method="post" >
             <h3>Ցանկանում եք գրանցվել?</h3>
             <div class="form-holder">
                 <span class="lnr lnr-user"></span>
@@ -69,6 +69,10 @@
                 <input type="password" class="form-control" name='password' placeholder="գաղտնաբառ">
             </div>
             <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="text" class="form-control" name='passportId' placeholder="անձնագրի համար">
+            </div>
+            <div class="form-holder">
                 <span class="lnr lnr-user"></span>
                 <input type="text" class="form-control" name='registerNumber' placeholder="ՀՎՀՀ">
             </div>
@@ -78,7 +82,7 @@
             </div>
             <div class="form-holder">
                 <span class="lnr lnr-user"></span>
-                մարզ: <select name="user.id">-->
+                մարզ: <select name="region">-->
                 <option th:each="region: ${regions}" th:text="${region.name}"
                         th:value="${region.id}"></option>
             </select>

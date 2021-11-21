@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -22,7 +19,7 @@ public class UserController {
     private final RegionService regionService;
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
@@ -32,15 +29,16 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerPage(ModelMap modelMap){
+    public String registerPage(ModelMap modelMap) {
         modelMap.addAttribute("regions", regionService.findAll());
         return "register";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute UserRequest userRequest,@ModelAttribute("registerNumber") String registerNumber){
-    userService.registration(userRequest, registerNumber);
-        return "redirect:/user/login";
+    public String register(@ModelAttribute UserRequest userRequest, @RequestParam("registerNumber") String registerNumber) {
+            userService.registration(userRequest, registerNumber);
+            return "redirect:/user/login";
     }
-
 }
+
+

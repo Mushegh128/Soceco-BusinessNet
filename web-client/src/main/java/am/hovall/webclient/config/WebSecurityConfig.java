@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/accessDenied")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/*", "/about").permitAll()
+                .antMatchers("/user/**", "/about").permitAll()
                 .anyRequest().permitAll();
     }
 

@@ -1,12 +1,10 @@
 package am.hovall.common.response;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductOrderResponse {
     private Long id;
     private ProductResponse productResponse;

@@ -7,16 +7,21 @@
 <body>
 <div th:include="/fragments/header"></div>
 <div th:if="${order.getOrderStatus().ORDERED}">
-    <form action="#" th:action="@{/orders/submit/${order.serialNumber}" method="post">հաստատել</form>
-    <form action="#" th:action="@{/orders/${order.serialNumber}" method="delete">չեղարկել</form>
+    <form action="#" th:action="@{/orders/submit/${order.serialNumber}}" method="post">հաստատել</form>
+    <form action="#" th:action="@{/orders/${order.serialNumber}}" method="delete">չեղարկել</form>
 </div>
 <div th:if="${order.getOrderStatus().DELETED}">
-    <form action="#" th:action="@{/orders/restore/${order.serialNumber}" method="post">վերականգնել</form>
+    <form action="#" th:action="@{/orders/restore/${order.serialNumber}}" method="post">վերականգնել</form>
 </div>
 <div>
     <table>
         <tr>
-            <th></th>
+            <th>Շտրիխկոդ</th>
+            <th>Անվանում</th>
+            <th>Քաշ/քանակ</th>
+            <th>Պատվիրվել է՝ լ/հ</th>
+            <th>միավորի արժեքը</th>
+            <th>Ընդհանուր գումար</th>
         </tr>
         <tr th:each="prdOrder: ${order.getProductOrderResponses()}">
             <td th:text="${prdOrder.getProductResponse().getBarcode()}"></td>
@@ -25,6 +30,7 @@
             <td th:text="${prdOrder.count}"></td>
             <td th:text="${prdOrder.getProductResponse().getPrice() + ' դր'}"></td>
             <td th:text="${(prdOrder.getProductResponse().getPrice() * prdOrder.count) + ' դր'}"></td>
+            <td> <a href="#" th:href="@{/orders/removeOrderedProduct/{productOrderId}/{serialNumber}(productOrderId=${prdOrder.id},serialNumber=${order.serialNumber})}">Delete</a></td>
         </tr>
     </table>
     <h2> Ընդհամենը </h2><span th:text="${order.getOrderCost() + ' դր'}"></span>
