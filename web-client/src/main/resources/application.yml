@@ -1,0 +1,22 @@
+application:
+  properties:
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/hovall_prototype?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  thymeleaf:
+    cache: false
+logging:
+  file:
+    path: E:/enterprise
+    name: web-client.log
+server:
+  port: 8085
+image:
+  upload:
+    dir: C:\\onlineShop\\image

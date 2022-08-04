@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+<div>
+    <table border="1">
+        <tr>
+            <th>Շտրիխկոդ</th>
+            <th>Անվանում</th>
+            <th>Չափման Միավոր/քաշ</th>
+            <th>Վաճառքի Գին</th>
+            <th>Ենթատեսակ</th>
+            <th>Բրենդ</th>
+            <th>Արտադրված է</th>
+        </tr>
+        <tr>
+            <td th:text="${product.getBarcode()}"></td>
+            <td th:text="${product.getTitle()}"></td>
+            <td th:text="${product.getWeight()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getProductCategory()?.getTitle()}"></td>
+            <td th:text="${product.getBrand()?.getTitle()}"></td>
+            <td th:text="${product.getMadeInCountry()?.getTitle()}"></td>
+            <td>
+                <a href="#" th:href="@{/products/deactivate/(id=${product.id})}">Ջնջել</a>
+            </td>
+        </tr>
+    </table>
+    <img id="product_image" th:src="@{/downloadImage/(image=${product.getPicUrl()})}">
+    <form id="product_form" action="/products/modify/" method="post" enctype="multipart/form-data">
+        <input name="id" type="hidden" th:value="${product.getId()}">
+        <label for="barcode">Շտրիխկոդ</label>
+        <label>
+            <input type="text" id="barcode" th:placeholder="${product.barcode}" th:value="${product.barcode}"
+                   name="barcode" required>
+        </label><br>
+        <label>Անվանում</label>
+        <label>
+            <input type="text" th:placeholder="${product.title}" name="title" th:value="${product.title}" required>
+        </label><br>
+        <label>Չափման Միավոր/քաշ</label>
+        <label>
+            <input type="number" th:placeholder="${product.weight}" th:value="${product.weight}" name="weight" required>
+        </label><br>
+        <label>Նկարագրություն:</label>
+        <label>
+            <input type="text" th:placeholder="${product.description}" th:value="${product.description}"
+                   name="description" required>
+        </label><br>
+        <label>Գին </label>
+        <label>
+            <input type="number" th:placeholder="${product.price}" th:value="${product.price}" name="price" required>
+        </label><br>
+
+        <label>Արտադրված է</label>
+        <label>
+            <select id="madeInCountry" name="maidInCountry">
+                <option th:each="madeInCountry : ${madeInCountries}" th:value="${madeInCountry}"
+                        th:text="${madeInCountry.getTitle()}"
+                        th:selected="${madeInCountry==product.getMadeInCountry()}"></option>
+            </select>
+        </label><br>
+
+        <label>Ենթատեսակ </label>
+        <label>
+            <select id="productCategory" name="productCategory">
+                <option th:each="productCategory : ${productCategories}" th:value="${productCategory.getId()}"
+                        th:text="${productCategory.getTitle()}"
+                        th:selected="${productCategory==product.getProductCategory()}"></option>
+            </select>
+        </label><br>
+
+        <label>Բրենդ </label>
+        <label>
+            <select id="brand" name="brand">
+                <option th:each="brand : ${brands}" th:value="${brand.getId()}"
+                        th:text="${brand.getTitle()}" th:selected="${brand==product.getBrand()}"></option>
+            </select>
+        </label><br>
+        <label>Ավելացնել/փոփոխել լուսանկարը </label>
+        <input type="file" name="image" accept="image/png, image/jpeg , image/jpg"/>
+        <br>
+        <input type="reset" value="Մաքրել"/>
+        <button type="submit">Ավելացնել</button>
+        <!--    <p th:if="${#fields.hasErrors('barcode') }" th:errors="*{barcode}">Name</p>-->
+    </form>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var picUrl = /*[[${product.getPicUrl()}]]*/ 'default';
+    if (picUrl !== null) {
+        document.getElementById("product_image").style.marginLeft = "50%";
+        document.getElementById("product_image").style.width = "620px";
+        document.getElementById("product_image").style.height = "320px";
+        document.getElementById("product_form").style.marginTop = "-15%";
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

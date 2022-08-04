@@ -1,13 +1,12 @@
 package am.hovall.common.request;
 
-import am.hovall.common.dto.CompanyDto;
-import am.hovall.common.dto.UserDto;
-import am.hovall.common.entity.ProductOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -15,8 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderRequest {
-    private UserDto userDto;
-    private CompanyDto companyDto;
+    private long serialNumber;
+    @NotNull
+    private UserRequest userRequest;
+    @NotNull
+    private CompanyRequest companyRequest;
     private double orderCost;
-    private List<ProductOrder> productOrders;
+    @NotEmpty
+    private List<ProductOrderRequest> productOrderRequests;
 }

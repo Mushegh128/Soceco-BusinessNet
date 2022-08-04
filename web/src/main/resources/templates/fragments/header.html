@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Header</title>
+</head>
+<style>
+  a{
+    text-shadow: teal;
+    text-decoration-line: overline;
+    color: darkslategray;
+    scroll-snap-type: initial;
+    border-bottom: solid white 1px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  a:visited {
+    color: green;
+  }
+  a:hover {
+    color: #42071b;
+  }
+  a:active {
+    color: blue;
+  }
+  div{
+    color: teal;
+    border-top: solid 7px;
+    border-bottom: solid 7px;
+  }
+</style>
+
+<body>
+<div th:fragment="header">
+  <a href="/">Գլխավոր</a>
+  <a href="/products">Ապրանքատեսականի</a>
+  <a href="/orders">Պատվերներ</a>
+  <a href="/company">Գործընկերներ</a>
+  <a href="/reports">Հաշվետվություններ</a>
+  <a href="/preSeller">Շ.Զ.Պ</a>
+  <a href="/payments">Վճարումներ</a>
+  <a href="/instruments">Գործիքներ</a>
+  <a href="/settings">Կարգավորումներ</a>
+  <a style="text-align: right" href="/logout">ԵԼՔ</a>
+</div>
+</body>
+</html>

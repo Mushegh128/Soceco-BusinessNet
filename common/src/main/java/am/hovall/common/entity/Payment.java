@@ -1,9 +1,6 @@
 package am.hovall.common.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +17,10 @@ public class Payment {
     private double size;
     private boolean isSynchronized;
     private LocalDateTime createdDateTime;
+    @Enumerated(value = EnumType.STRING)
+    private PaymentStatus paymentStatus;
+    private long companyRegisterNumber;
+    private String serialNumber;
     @ManyToOne
     private User fromUser;
     @ManyToOne

@@ -1,25 +1,37 @@
 package am.hovall.common.service;
 
 
-import am.hovall.common.entity.Brand;
-import am.hovall.common.entity.Product;
-import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.request.ProductRequest;
+import am.hovall.common.response.ProductResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
 
-    List<Product> getAllProducts();
+    List<ProductResponse> getAllProducts(Pageable pageable);
 
-    List<Product> findAllByCategory(ProductCategory productCategory);
+    List<ProductResponse> findAllUnSynchronized();
 
-    List<Product> findAllByBrand(Brand brand);
+    List<ProductResponse> getAllProductsByBarcode(long barcode);
 
-    List<Product> findAllByPriceRange(Double startPrice, Double endPrice);
+    List<ProductResponse> findAllByCategoryId(long id, Pageable pageable);
 
-    Product add(Product map);
+    List<ProductResponse> findAllByBrandId(long id, Pageable pageable);
 
-    Product update(Product product);
+    List<ProductResponse> findAllByPriceRange(double startPrice, double endPrice,Pageable pageable);
 
-    boolean deactivate(Long id);
+    ProductResponse add(ProductRequest productRequest);
+
+    ProductResponse update(ProductRequest productRequest);
+
+    boolean deactivate(long id);
+
+    void saveImage(MultipartFile file, long id) throws IOException;
+
+    void saveProductsImages(List<MultipartFile> images);
+
+    ProductResponse findById(Long id);
 }

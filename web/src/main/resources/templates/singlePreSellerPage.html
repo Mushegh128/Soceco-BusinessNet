@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>preSeller</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+
+<div>
+    <table>
+        <tr>
+            <th>Անուն</th>
+            <th>Ազգանուն</th>
+            <th>Հոռախոսահամար</th>
+            <th>Էլ. Հասցե</th>
+            <th>Ռեյտինգ</th>
+            <th>Ակտիվ է</th>
+        </tr>
+        <tr>
+            <td th:text="${preSeller.name}"></td>
+            <td th:text="${preSeller.surname}"></td>
+            <td th:text="${preSeller.phoneNumber}"></td>
+            <td th:text="${preSeller.email}"></td>
+            <td th:text="${preSeller.rating}"></td>
+            <td th:if="${preSeller.active}" th:text="Այո">Ոչ</td>
+            <td>
+                <a href="#" th:href="@{/preSeller/modify/(id=${preSeller.id})}">Խմբագրել</a>
+            </td>
+
+    </table>
+    <table style="border: solid 1px">
+        <tr>
+            <th>Կոդ</th>
+            <th>Անվանում</th>
+            <th>ՀՎՀՀ</th>
+            <th>Հասցե</th>
+            <th>տեսակ</th>
+            <th>Աստիճան</th>
+        </tr>
+        <tr th:each="company: ${companies}">
+            <td th:text="${company.getBarcode()}"></td>
+            <td th:text="${company.getName()}"></td>
+            <td th:text="${company.getRegisterNumber()}"></td>
+            <td th:text="${company?.address}"></td>
+            <td th:text="${company.companyType?.name}"></td>
+            <td th:text="${company?.rating}"></td>
+            <td><a href="#" th:href="@{/company/deactivatePresSeller/(id=${company.getId()})}"> Deactivate </a></td>
+
+        </tr>
+    </table>
+</div>
+</body>
+</html>

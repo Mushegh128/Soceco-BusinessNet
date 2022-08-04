@@ -1,52 +1,55 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.dto.CompanyDto;
-import am.hovall.common.dto.UserDto;
-import am.hovall.common.dto.UserRegisterDto;
-import am.hovall.common.entity.Company;
-import am.hovall.common.entity.User;
+import am.hovall.common.exception.UserNotFoundException;
+import am.hovall.common.request.UserAuthRequest;
+import am.hovall.common.request.UserRequest;
+import am.hovall.common.response.UserAuthResponse;
+import am.hovall.common.response.UserResponse;
 import am.hovall.common.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserEndpoint {
 
-    private final ModelMapper modelMapper;
     private final UserService userService;
 
-    @PutMapping("/users")
-    public ResponseEntity<UserDto> registration(@RequestBody UserRegisterDto userRegisterDto){
-        User user = userService.registration(modelMapper.map(userRegisterDto, User.class));
-        return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
+    @PostMapping()
+    public ResponseEntity<UserResponse> registration(@RequestBody UserRequest userRequest,
+                                                     @RequestParam("registerNumber") String registerNumber) {
+        return ResponseEntity.ok(userService.registration(userRequest, registerNumber));
     }
 
-    @PostMapping("users/company/{id}")
-    public ResponseEntity<List<UserDto>> getByCompany(@PathVariable("id") Long id){
-        List<User> users = userService.findAllByCompanyId(id);
-        if (users == null){
-            ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @GetMapping("/company/{id}")
+    public ResponseEntity<List<UserResponse>> getByCompany(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.findAllByCompanyId(id));
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody UserRequest userRequest, @PathVariable("id") long id) {
+        userService.update(userRequest, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verifyEmail")
+    public ResponseEntity<Boolean> verifyEmail(@RequestParam("email") @Email String email, @RequestParam("token") String token) {
+        return ResponseEntity.ok(userService.verifyUser(email, token));
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<UserAuthResponse> auth(@RequestBody UserAuthRequest userAuthRequest) {
+        try {
+            return ResponseEntity.ok(userService.auth(userAuthRequest));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(parseToUserDto(users));
-    }
 
-    private List<UserDto> parseToUserDto(List<User> users){
-        List<UserDto> userDtoList = new LinkedList<>();
-        for (User user : users) {
-            Company company = user.getCompany();
-            CompanyDto companyDto =  modelMapper.map(company, CompanyDto.class);
-            UserDto userDto = modelMapper.map(user, UserDto.class);
-//            userDto.setCompany(companyDto);
-            userDtoList.add(userDto);
-        }
-        return userDtoList;
     }
-
 }

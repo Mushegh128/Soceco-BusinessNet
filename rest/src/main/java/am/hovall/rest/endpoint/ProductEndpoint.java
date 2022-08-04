@@ -1,76 +1,98 @@
 package am.hovall.rest.endpoint;
 
-import am.hovall.common.dto.ProductCreateDto;
-import am.hovall.common.dto.ProductDto;
-import am.hovall.common.dto.ProductUpdateDto;
-import am.hovall.common.entity.Brand;
-import am.hovall.common.entity.Product;
-import am.hovall.common.entity.ProductCategory;
+import am.hovall.common.exception.ProductNotFoundException;
+import am.hovall.common.request.ProductRequest;
+import am.hovall.common.response.ProductResponse;
 import am.hovall.common.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.LinkedList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/products")
 public class ProductEndpoint {
 
     private final ProductService productService;
-    private final ModelMapper modelMapper;
 
-    @GetMapping("/products/category")
-    public ResponseEntity<List<ProductDto>> getAllByCategory(@RequestBody ProductCategory productCategory){
-        return ResponseEntity.ok(parseToProductDtoList(productService.findAllByCategory(productCategory)));
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> findAll(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
-    @GetMapping("/products/brand")
-    public ResponseEntity<List<ProductDto>> getAllByBrand(@RequestBody Brand brand){
-        return ResponseEntity.ok(parseToProductDtoList(productService.findAllByBrand(brand)));
+    @GetMapping("/unSynchronized")
+    public ResponseEntity<List<ProductResponse>> findAllUnSynchronized() {
+        return ResponseEntity.ok(productService.findAllUnSynchronized());
     }
 
-    @GetMapping("/products/byRange")
-    public ResponseEntity<List<ProductDto>> getAllByRange(@RequestBody Double startPrice, Double endPrice){
-        return ResponseEntity.ok(parseToProductDtoList(productService.findAllByPriceRange(startPrice, endPrice)));
+    @GetMapping("/{barcode}")
+    public ResponseEntity<List<ProductResponse>> getAllByBarcode(@PathVariable long barcode) {
+        return ResponseEntity.ok(productService.getAllProductsByBarcode(barcode));
     }
 
-    @PutMapping("/products/add")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductCreateDto productCreateDto){
-        Product product = productService.add(modelMapper.map(productCreateDto, Product.class));
-        if (product == null){
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
+    @GetMapping("/category")
+    public ResponseEntity<List<ProductResponse>> getAllByCategory(@RequestParam long productCategoryId, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByCategoryId(productCategoryId, pageable));
     }
 
-    @PostMapping("/products/update")
-    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductUpdateDto productUpdateDto){
-        Product product = productService.update(modelMapper.map(productUpdateDto, Product.class));
-        if (product == null){
-            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).build();
-        }
-        return ResponseEntity.ok(modelMapper.map(product, ProductDto.class));
+    @GetMapping("/brand")
+    public ResponseEntity<List<ProductResponse>> getAllByBrand(@RequestParam long id, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByBrandId(id, pageable));
     }
 
-    @DeleteMapping("/products/deactivate/{id}")
-    public ResponseEntity deactivate(@PathVariable("id") Long id){
-        if (productService.deactivate(id)){
+    @GetMapping("/byRange")
+    public ResponseEntity<List<ProductResponse>> getAllByRange(@RequestParam double startPrice, double endPrice, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(productService.findAllByPriceRange(startPrice, endPrice, pageable));
+
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
+        return ResponseEntity.ok(productService.add(productRequest));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductRequest productRequest) {
+        return ResponseEntity.ok(productService.update(productRequest));
+    }
+
+    @DeleteMapping("/deactivate/{id}")
+    public ResponseEntity<?> deactivate(@PathVariable("id") Long id) {
+        if (productService.deactivate(id)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-
-    private List<ProductDto> parseToProductDtoList(List<Product> productList){
-        List<ProductDto> productDtoList = new LinkedList<>();
-        for (Product product : productList) {
-            productDtoList.add(modelMapper.map(product, ProductDto.class));
+    @PostMapping("/uploadImage/{productId}")
+    public ResponseEntity<?>
+    uploadProductImage(@RequestParam("image") MultipartFile file,
+                       @PathVariable("productId") long id) throws IOException {
+        try {
+            productService.saveImage(file, id);
+            return ResponseEntity.ok().build();
+        } catch (FileNotFoundException | ProductNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return productDtoList;
+    }
+
+    @PostMapping("/uploadImages")
+    public ResponseEntity<?> uploadProductsImages(@RequestParam List<MultipartFile> images) {
+        try {
+            productService.saveProductsImages(images);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

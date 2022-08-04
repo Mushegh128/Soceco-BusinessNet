@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Գրանցվել</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LINEARICONS -->
+    <link rel="stylesheet" href="fonts/linearicons/style.css">
+
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="css/register.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="css/animate.css">
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="css/icomoon.css">
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="css/magnific-popup.css">
+
+    <!-- Flexslider  -->
+    <link rel="stylesheet" href="css/flexslider.css">
+
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <!-- Flaticons  -->
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+    <!-- Theme style  -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Modernizr JS -->
+    <script src="js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>-->
+    <script src="js/respond.min.js"></script>
+</head>
+
+<body>
+<div th:include="/fragments/header"></div>
+
+<div class="wrapper">
+    <div class="inner">
+        <img src="images/image-1.png" alt="" class="image-1">
+        <form action="/user/register"  method="post" >
+            <h3>Ցանկանում եք գրանցվել?</h3>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" name='name' placeholder="Անուն">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" name='surname' placeholder="Ազգանուն">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-envelope"></span>
+                <input type="text" class="form-control" name='email' placeholder="Էլ. հասցե">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="password" class="form-control" name='password' placeholder="գաղտնաբառ">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="text" class="form-control" name='passportId' placeholder="անձնագրի համար">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" name='registerNumber' placeholder="ՀՎՀՀ">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-phone-handset"></span>
+                <input type="text" class="form-control" name='phoneNumber' placeholder="հեռախոսահամար">
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                մարզ: <select name="region">-->
+                <option th:each="region: ${regions}" th:text="${region.name}"
+                        th:value="${region.id}"></option>
+            </select>
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" name='address' placeholder="հասցե">
+            </div>
+            <span><input type="submit" value="Գրանցվել"></span>
+        </form>
+        <img src="images/image-2.png" alt="" class="image-2">
+    </div>
+
+</div>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/register.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

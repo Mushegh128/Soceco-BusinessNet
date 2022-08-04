@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>preSeller</title>
+</head>
+<body>
+<div th:include="/fragments/header"></div>
+
+<div>
+    <table>
+        <tr>
+            <th>Անուն</th>
+            <th>Ազգանուն</th>
+            <th>Հոռախոսահամար</th>
+            <th>Էլ. Հասցե</th>
+            <th>Ռեյտինգ</th>
+            <th>Ակտիվ է</th>
+        </tr>
+        <tr>
+            <td th:text="${preSeller.name}"></td>
+            <td th:text="${preSeller.surname}"></td>
+            <td th:text="${preSeller.phoneNumber}"></td>
+            <td th:text="${preSeller.email}"></td>
+            <td th:text="${preSeller.rating}"></td>
+            <td th:if="${preSeller.active}" th:text="Այո">Ոչ</td>
+    </table>
+    <form action="/preSeller/modify" method="post">
+        <input type="hidden" name="id" th:value="${preSeller.id}">
+        Անուն <input type="text" th:placeholder="${preSeller.name}" name="name" th:value="${preSeller.name}"><br>
+        Ազգանուն<input type="text" th:placeholder="${preSeller.surname}" name="surname" th:value="${preSeller.surname}"><br>
+        Հեռախոսահամար<input type="text" th:placeholder="${preSeller.phoneNumber}" name="phoneNumber" th:value="${preSeller.phoneNumber}"><br>
+        էլ․Հասցե<input type="text" th:placeholder="${preSeller.email}" name="email" th:value="${preSeller.email}"><br>
+        ՓոՓոխել<input type="submit" value="update">
+    </form>
+</div>
+</body>
+</html>
